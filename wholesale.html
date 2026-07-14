@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wholesale — Old Friends</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #9A9B6B;
+    --sage-light: #B0B18A;
+    --brown: #3E2A1A;
+    --terra: #B84A38;
+    --terra-light: #D4826E;
+    --cream: #F3EDE4;
+    --linen: #E8E0D4;
+    --stone: #D4CBC0;
+    --walnut: #5A4A3A;
+    --light-sage: #C5C6A0;
+    --white: #FDFBF8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--brown);
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .stitch-border-cream {
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='1' x2='6' y2='1' stroke='%23F3EDE4' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    height: 2px;
+    opacity: 0.4;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+  .section-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--terra); margin-bottom: 12px; font-weight: 500; }
+
+  .announcement {
+    background: var(--brown);
+    color: var(--linen);
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: var(--cream);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-right { display: flex; gap: 32px; align-items: center; }
+  .nav-right a {
+    text-decoration: none;
+    color: var(--brown);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 400;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-right a:hover { color: var(--terra); }
+  .nav-right a::after {
+    content: ''; position: absolute; left: 0; right: 100%; bottom: -5px;
+    border-bottom: 2px dashed var(--terra); transition: right .35s ease;
+  }
+  .nav-right a:hover::after { right: 0; }
+
+  .logo-img { height: 30px; width: auto; display: block; }
+  .logo-footer { height: 26px; width: auto; display: block; }
+
+  .search-icon, .basket-icon {
+    stroke: var(--brown); fill: none; stroke-width: 1.5;
+    stroke-linecap: round; stroke-linejoin: round;
+    cursor: pointer;
+    transition: stroke 0.3s;
+  }
+  .search-icon { width: 19px; height: 19px; }
+  .basket-icon { width: 22px; height: 22px; }
+  .search-icon:hover, .basket-icon:hover { stroke: var(--terra); }
+
+  /* ── PAGE HEAD ── */
+  .page-head { text-align: center; padding: 80px 0 40px; }
+  .page-head h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 5vw, 56px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.15;
+    color: var(--brown);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .page-head .lede {
+    color: var(--walnut);
+    font-size: 16px;
+    line-height: 1.8;
+    max-width: 560px;
+    margin: 24px auto 0;
+  }
+
+  /* ── OFFERING ── */
+  .offering { padding: 50px 0 80px; }
+  .offering-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .offering-card { background: var(--white); padding: 36px 32px; }
+  .offering-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 500; font-style: italic;
+    margin-bottom: 12px; color: var(--brown);
+  }
+  .offering-card p { color: var(--walnut); font-size: 14px; line-height: 1.8; margin-bottom: 10px; }
+  .offering-card ul { list-style: none; margin-top: 14px; }
+  .offering-card li {
+    color: var(--walnut); font-size: 14px; padding: 8px 0;
+    border-bottom: 1px dashed var(--stone);
+  }
+  .offering-card li:last-child { border-bottom: none; }
+  .offering-card li::before { content: '✂ '; color: var(--terra); font-size: 12px; margin-right: 6px; }
+
+  /* ── STOCKISTS ── */
+  .stockists { padding: 80px 0; background: var(--sage); text-align: center; }
+  .stockists h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px; font-weight: 400; font-style: italic;
+    color: var(--cream); margin-bottom: 14px;
+  }
+  .stockists .sub { color: var(--light-sage); font-size: 14px; margin-bottom: 40px; }
+  .stockist-row { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+  .stockist { color: var(--cream); font-size: 14px; }
+  .stockist strong {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 500; font-style: italic;
+    margin-bottom: 4px;
+  }
+
+  /* ── INQUIRE ── */
+  .inquire { padding: 90px 0; background: var(--brown); }
+  .inquire h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px; font-weight: 400; font-style: italic;
+    text-align: center; margin-bottom: 14px; color: var(--cream);
+  }
+  .inquire .sub { text-align: center; color: var(--light-sage); font-size: 14px; margin-bottom: 40px; }
+  .inquire-form { max-width: 520px; margin: 0 auto; display: grid; gap: 10px; }
+  .inquire-form input, .inquire-form textarea {
+    width: 100%; padding: 14px 18px;
+    border: 2px dashed rgba(243,237,228,0.35);
+    background: rgba(243,237,228,0.06);
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    color: var(--cream); outline: none;
+  }
+  .inquire-form input::placeholder, .inquire-form textarea::placeholder { color: rgba(243,237,228,0.45); }
+  .inquire-form input:focus, .inquire-form textarea:focus { border-color: var(--terra-light); }
+  .inquire-form textarea { min-height: 110px; resize: vertical; }
+  .inquire-form button {
+    padding: 15px;
+    background: var(--terra); color: var(--cream);
+    border: 2px dashed var(--terra);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .inquire-form button:hover { background: var(--brown); }
+  .inquire-note { text-align: center; color: rgba(243,237,228,0.5); font-size: 12px; margin-top: 18px; }
+
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1); }
+  .reveal.in-view { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+
+  footer {
+    background: var(--brown);
+    color: var(--linen);
+    padding: 60px 40px 30px;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px; margin-bottom: 50px;
+  }
+  .footer-brand p { font-size: 13px; line-height: 1.7; max-width: 280px; color: rgba(232,224,212,0.5); margin-top: 14px; }
+  .footer-col h4 {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 18px; color: var(--linen); font-weight: 500;
+  }
+  .footer-col a {
+    display: block; color: rgba(232,224,212,0.5);
+    text-decoration: none; font-size: 13px; margin-bottom: 10px;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--cream); }
+  .footer-bottom {
+    padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; color: rgba(232,224,212,0.3);
+  }
+
+  @media (max-width: 900px) {
+    .offering-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    nav { padding: 20px 24px; }
+    .container { padding: 0 24px; }
+  }
+  @media (max-width: 600px) {
+    .footer-top { grid-template-columns: 1fr; }
+    .logo-img { height: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="announcement">Free shipping on orders over $75 &middot; Handmade in Chattanooga</div>
+
+<nav>
+  <a href="index.html">
+    <img class="logo-img" src="Old Friends Logo/oldfriends.black.trim.png" alt="Old Friends">
+  </a>
+  <div class="nav-right">
+    <a href="shop.html">Shop</a>
+    <a href="commission.html">Commission</a>
+    <a href="about.html">About</a>
+    <a href="wholesale.html">Wholesale</a>
+    <svg class="search-icon" viewBox="0 0 24 24" role="button" aria-label="Search"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.3" y1="15.3" x2="21" y2="21"/></svg>
+    <svg class="basket-icon" viewBox="0 0 24 24" role="button" aria-label="Basket">
+      <path d="M8 9 C8 4.6 16 4.6 16 9"/>
+      <path d="M4 9 H20 L18.4 19.2 A2.1 2.1 0 0 1 16.3 21 H7.7 A2.1 2.1 0 0 1 5.6 19.2 Z"/>
+      <path d="M4.7 13.1 H19.3 M5.3 16.9 H18.7"/>
+      <path d="M8.8 9 L9.6 21 M15.2 9 L14.4 21 M12 9 V21"/>
+    </svg>
+  </div>
+</nav>
+
+<!-- Page head -->
+<div class="container">
+  <div class="page-head reveal">
+    <div class="section-label">Wholesale</div>
+    <h1>Stock Old Friends in your shop.</h1>
+    <p class="lede">If you run a store that loves handmade, sustainable goods with a story, I&rsquo;d love to be on your shelves. Here&rsquo;s how carrying Old Friends works.</p>
+  </div>
+</div>
+
+<!-- Offering -->
+<div class="container">
+  <section class="offering reveal">
+    <div class="offering-grid">
+      <div class="offering-card">
+        <h3>Small-batch goods</h3>
+        <p>Made in repeatable small runs &mdash; the best fit for regular wholesale orders. Line sheet available on request.</p>
+        <ul>
+          <li>Linen scrunchie sets</li>
+          <li>Hand-stitched hair ribbons</li>
+          <li>Folk motif patch kits</li>
+          <li>Patchwork totes</li>
+        </ul>
+      </div>
+      <div class="offering-card">
+        <h3>One-of-one pieces</h3>
+        <p>Quilt jackets, hoodies, and memory quilts are singular by nature. I offer these to stockists on a consignment or curated-drop basis, so your shop gets pieces nobody else can carry.</p>
+        <p>[ Lauren &mdash; adjust terms here: minimums, turnaround, consignment split, whatever you decide. This is draft copy. ]</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Current stockists -->
+<section class="stockists">
+  <div class="container reveal">
+    <h2>Currently stocked at.</h2>
+    <p class="sub">Come see the goods in person.</p>
+    <div class="stockist-row">
+      <div class="stockist"><strong>Sower</strong>3929 St Elmo Ave<br>Chattanooga, TN 37409</div>
+      <div class="stockist"><strong>Mara Mae&rsquo;s</strong>34 N Jefferson Ave<br>Cookeville, TN 38501</div>
+    </div>
+  </div>
+</section>
+
+<!-- Inquire -->
+<section class="inquire">
+  <div class="container reveal">
+    <h2>Let&rsquo;s talk shop.</h2>
+    <p class="sub">Tell me about your store and I&rsquo;ll send over the line sheet.</p>
+    <form class="inquire-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Sent ✂ (demo only)';">
+      <input type="text" placeholder="Your name" required>
+      <input type="text" placeholder="Shop name &amp; location" required>
+      <input type="email" placeholder="Your email" required>
+      <textarea placeholder="A little about your shop and what you're interested in carrying..." required></textarea>
+      <button type="submit">Request Line Sheet</button>
+    </form>
+    <p class="inquire-note">Prototype note: this form isn&rsquo;t wired to anything yet.</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="stitch-border-cream" style="margin-bottom: 40px;"></div>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img class="logo-footer" src="Old Friends Logo/oldfriends.cream.trim.png" alt="Old Friends">
+      <p>Handmade and upcycled goods from Chattanooga, TN. Every piece crafted with intention.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="shop.html">Core Collection</a>
+      <a href="shop.html">New Arrivals</a>
+      <a href="shop.html">Sold Archive</a>
+    </div>
+    <div class="footer-col">
+      <h4>About</h4>
+      <a href="about.html">Our Story</a>
+      <a href="commission.html">Commission</a>
+      <a href="wholesale.html">Wholesale</a>
+      <a href="index.html#contact">Stockists</a>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <a href="https://www.instagram.com/kind.handmade.goods/" target="_blank" rel="noopener">Instagram</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="index.html#newsletter">Newsletter</a>
+    </div>
+  </div>
+  <div class="stitch-border-cream" style="opacity: 0.3; margin-bottom: 20px;"></div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Old Friends</span>
+    <span>Chattanooga, TN</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var targets = document.querySelectorAll('.reveal');
+    if (!reduced && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      targets.forEach(function (el) { io.observe(el); });
+    } else {
+      targets.forEach(function (el) { el.classList.add('in-view'); });
+    }
+  })();
+</script>
+<script src="nav.js"></script>
+<script src="cart.js"></script>
+<script src="detail.js"></script>
+<script src="search.js"></script>
+
+</body>
+</html>

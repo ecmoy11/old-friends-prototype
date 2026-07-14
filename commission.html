@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commission — Old Friends</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #9A9B6B;
+    --sage-light: #B0B18A;
+    --brown: #3E2A1A;
+    --terra: #B84A38;
+    --terra-light: #D4826E;
+    --cream: #F3EDE4;
+    --linen: #E8E0D4;
+    --stone: #D4CBC0;
+    --walnut: #5A4A3A;
+    --light-sage: #C5C6A0;
+    --white: #FDFBF8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--brown);
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .stitch-border-cream {
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='1' x2='6' y2='1' stroke='%23F3EDE4' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    height: 2px;
+    opacity: 0.4;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+  .section-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--terra); margin-bottom: 12px; font-weight: 500; }
+
+  .announcement {
+    background: var(--brown);
+    color: var(--linen);
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: var(--cream);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-right { display: flex; gap: 32px; align-items: center; }
+  .nav-right a {
+    text-decoration: none;
+    color: var(--brown);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 400;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-right a:hover { color: var(--terra); }
+  .nav-right a::after {
+    content: ''; position: absolute; left: 0; right: 100%; bottom: -5px;
+    border-bottom: 2px dashed var(--terra); transition: right .35s ease;
+  }
+  .nav-right a:hover::after { right: 0; }
+
+  .logo-img { height: 30px; width: auto; display: block; }
+  .logo-footer { height: 26px; width: auto; display: block; }
+
+  .search-icon, .basket-icon {
+    stroke: var(--brown); fill: none; stroke-width: 1.5;
+    stroke-linecap: round; stroke-linejoin: round;
+    cursor: pointer;
+    transition: stroke 0.3s;
+  }
+  .search-icon { width: 19px; height: 19px; }
+  .basket-icon { width: 22px; height: 22px; }
+  .search-icon:hover, .basket-icon:hover { stroke: var(--terra); }
+
+  /* ── PAGE HEAD ── */
+  .page-head { text-align: center; padding: 80px 0 30px; }
+  .page-head h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 5vw, 56px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.15;
+    color: var(--brown);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .page-head .lede {
+    color: var(--walnut);
+    font-size: 16px;
+    line-height: 1.8;
+    max-width: 560px;
+    margin: 24px auto 0;
+  }
+
+  /* ── WHAT I CAN DO ── */
+  .cando { padding: 60px 0 80px; }
+  .cando-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .cando-item {
+    background: var(--white);
+    padding: 30px 24px;
+    text-align: center;
+  }
+  .cando-item h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 500;
+    margin-bottom: 8px; color: var(--brown);
+  }
+  .cando-item p { color: var(--walnut); font-size: 13px; line-height: 1.7; }
+
+  /* ── GALLERY ── */
+  .gallery { padding: 80px 0; background: var(--white); }
+  .gallery h2, .process h2, .inquire h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px; font-weight: 400; font-style: italic;
+    text-align: center; margin-bottom: 14px;
+  }
+  .gallery .sub, .process .sub {
+    text-align: center; color: var(--walnut); font-size: 14px; margin-bottom: 44px;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .gallery-item { position: relative; aspect-ratio: 1/1; background: var(--linen); overflow: hidden; }
+  .gallery-ph {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    color: var(--walnut); font-size: 13px; opacity: 0.5; padding: 16px;
+  }
+  .gallery-cap {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    background: rgba(62,42,26,0.9); color: var(--cream);
+    font-size: 11px; letter-spacing: 0.1em; padding: 10px 14px;
+    transform: translateY(100%); transition: transform .35s ease;
+  }
+  .gallery-item:hover .gallery-cap { transform: none; }
+
+  /* ── PROCESS ── */
+  .process { padding: 90px 0; }
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+  }
+  .step { text-align: center; }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 40px; color: var(--terra);
+    display: block; margin-bottom: 10px; line-height: 1;
+  }
+  .step h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px; font-weight: 500; margin-bottom: 8px;
+  }
+  .step p { color: var(--walnut); font-size: 13px; line-height: 1.7; }
+
+  /* ── INQUIRE ── */
+  .inquire { padding: 90px 0; background: var(--brown); }
+  .inquire h2 { color: var(--cream); }
+  .inquire .sub { text-align: center; color: var(--light-sage); font-size: 14px; margin-bottom: 40px; }
+  .inquire-form { max-width: 520px; margin: 0 auto; display: grid; gap: 10px; }
+  .inquire-form input, .inquire-form textarea {
+    width: 100%; padding: 14px 18px;
+    border: 2px dashed rgba(243,237,228,0.35);
+    background: rgba(243,237,228,0.06);
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    color: var(--cream); outline: none;
+  }
+  .inquire-form input::placeholder, .inquire-form textarea::placeholder { color: rgba(243,237,228,0.45); }
+  .inquire-form input:focus, .inquire-form textarea:focus { border-color: var(--terra-light); }
+  .inquire-form textarea { min-height: 130px; resize: vertical; }
+  .inquire-form button {
+    padding: 15px;
+    background: var(--terra); color: var(--cream);
+    border: 2px dashed var(--terra);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .inquire-form button:hover { background: var(--brown); }
+  .inquire-note { text-align: center; color: rgba(243,237,228,0.5); font-size: 12px; margin-top: 18px; }
+
+  /* ── REVEALS ── */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1); }
+  .reveal.in-view { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--brown);
+    color: var(--linen);
+    padding: 60px 40px 30px;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px; margin-bottom: 50px;
+  }
+  .footer-brand p { font-size: 13px; line-height: 1.7; max-width: 280px; color: rgba(232,224,212,0.5); margin-top: 14px; }
+  .footer-col h4 {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 18px; color: var(--linen); font-weight: 500;
+  }
+  .footer-col a {
+    display: block; color: rgba(232,224,212,0.5);
+    text-decoration: none; font-size: 13px; margin-bottom: 10px;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--cream); }
+  .footer-bottom {
+    padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; color: rgba(232,224,212,0.3);
+  }
+
+  @media (max-width: 900px) {
+    .cando-grid { grid-template-columns: 1fr 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .process-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    nav { padding: 20px 24px; }
+    .container { padding: 0 24px; }
+  }
+  @media (max-width: 600px) {
+    .cando-grid, .gallery-grid, .process-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .logo-img { height: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="announcement">Free shipping on orders over $75 &middot; Handmade in Chattanooga</div>
+
+<nav>
+  <a href="index.html">
+    <img class="logo-img" src="Old Friends Logo/oldfriends.black.trim.png" alt="Old Friends">
+  </a>
+  <div class="nav-right">
+    <a href="shop.html">Shop</a>
+    <a href="commission.html">Commission</a>
+    <a href="about.html">About</a>
+    <a href="wholesale.html">Wholesale</a>
+    <svg class="search-icon" viewBox="0 0 24 24" role="button" aria-label="Search"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.3" y1="15.3" x2="21" y2="21"/></svg>
+    <svg class="basket-icon" viewBox="0 0 24 24" role="button" aria-label="Basket">
+      <path d="M8 9 C8 4.6 16 4.6 16 9"/>
+      <path d="M4 9 H20 L18.4 19.2 A2.1 2.1 0 0 1 16.3 21 H7.7 A2.1 2.1 0 0 1 5.6 19.2 Z"/>
+      <path d="M4.7 13.1 H19.3 M5.3 16.9 H18.7"/>
+      <path d="M8.8 9 L9.6 21 M15.2 9 L14.4 21 M12 9 V21"/>
+    </svg>
+  </div>
+</nav>
+
+<!-- Page head -->
+<div class="container">
+  <div class="page-head reveal">
+    <div class="section-label">Commission</div>
+    <h1>Bring us your fabrics, your stories.</h1>
+    <p class="lede">Have a quilt from your grandmother? A shirt you can&rsquo;t bear to throw away? I turn the textiles that mean something to you into something new you&rsquo;ll actually use. Every commission is a collaboration &mdash; here&rsquo;s what that can look like.</p>
+  </div>
+</div>
+
+<!-- What I can do -->
+<div class="container">
+  <section class="cando reveal">
+    <div class="cando-grid">
+      <div class="cando-item">
+        <h3>Quilt Jackets</h3>
+        <p>Your heirloom quilt, cut and sewn into a jacket you&rsquo;ll wear for decades.</p>
+      </div>
+      <div class="cando-item">
+        <h3>Hoodies &amp; Pullovers</h3>
+        <p>Cozy silhouettes pieced from the fabrics you bring me.</p>
+      </div>
+      <div class="cando-item">
+        <h3>Totes &amp; Bags</h3>
+        <p>Everyday carry made from tablecloths, feed sacks, or worn denim.</p>
+      </div>
+      <div class="cando-item">
+        <h3>Memory Quilts</h3>
+        <p>Baby clothes, concert tees, a closet full of someone&rsquo;s shirts &mdash; stitched into a keepsake throw.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Gallery of past commissions -->
+<section class="gallery">
+  <div class="container">
+    <div class="reveal">
+      <h2>Past commissions.</h2>
+      <p class="sub">A few of the stories that have come through the studio. (Photos coming &mdash; placeholders for now.)</p>
+      <div class="gallery-grid">
+        <div class="gallery-item"><div class="gallery-ph">[ commission photo ]</div><div class="gallery-cap">Jacket from a 1940s wedding quilt</div></div>
+        <div class="gallery-item"><div class="gallery-ph">[ commission photo ]</div><div class="gallery-cap">Memory quilt from a father&rsquo;s flannels</div></div>
+        <div class="gallery-item"><div class="gallery-ph">[ commission photo ]</div><div class="gallery-cap">Tote from a childhood bedsheet set</div></div>
+        <div class="gallery-item"><div class="gallery-ph">[ commission photo ]</div><div class="gallery-cap">Hoodie from a grandmother&rsquo;s curtains</div></div>
+        <div class="gallery-item"><div class="gallery-ph">[ commission photo ]</div><div class="gallery-cap">Baby quilt from wedding linens</div></div>
+        <div class="gallery-item"><div class="gallery-ph">[ commission photo ]</div><div class="gallery-cap">Patch set from a retired work shirt</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section class="process">
+  <div class="container reveal">
+    <h2>How it works.</h2>
+    <p class="sub">From your closet to your keepsake, in four steps.</p>
+    <div class="process-grid">
+      <div class="step">
+        <span class="step-num">1</span>
+        <h3>Reach out</h3>
+        <p>Tell me about your fabrics and what you&rsquo;re dreaming of. No idea is too small or too sentimental.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <h3>Send your textiles</h3>
+        <p>Mail them or drop them off in Chattanooga. I&rsquo;ll assess what the fabric can become and quote the work.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <h3>We design together</h3>
+        <p>We settle the piece, the layout, and which parts of the fabric matter most to you.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">4</span>
+        <h3>Made by hand</h3>
+        <p>I sew it one seam at a time and send it home with the scraps I didn&rsquo;t use. Most pieces take 3&ndash;6 weeks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Inquire -->
+<section class="inquire">
+  <div class="container reveal">
+    <h2>Let&rsquo;s make something.</h2>
+    <p class="sub">Tell me a little about your project and I&rsquo;ll get back to you within a few days.</p>
+    <form class="inquire-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Sent ✂ (demo only)';">
+      <input type="text" placeholder="Your name" required>
+      <input type="email" placeholder="Your email" required>
+      <textarea placeholder="Tell me about your fabrics and what you have in mind..." required></textarea>
+      <button type="submit">Send Inquiry</button>
+    </form>
+    <p class="inquire-note">Prototype note: this form isn&rsquo;t wired to anything yet.</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="stitch-border-cream" style="margin-bottom: 40px;"></div>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img class="logo-footer" src="Old Friends Logo/oldfriends.cream.trim.png" alt="Old Friends">
+      <p>Handmade and upcycled goods from Chattanooga, TN. Every piece crafted with intention.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="shop.html">Core Collection</a>
+      <a href="shop.html">New Arrivals</a>
+      <a href="shop.html">Sold Archive</a>
+    </div>
+    <div class="footer-col">
+      <h4>About</h4>
+      <a href="about.html">Our Story</a>
+      <a href="commission.html">Commission</a>
+      <a href="wholesale.html">Wholesale</a>
+      <a href="index.html#contact">Stockists</a>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <a href="https://www.instagram.com/kind.handmade.goods/" target="_blank" rel="noopener">Instagram</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="index.html#newsletter">Newsletter</a>
+    </div>
+  </div>
+  <div class="stitch-border-cream" style="opacity: 0.3; margin-bottom: 20px;"></div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Old Friends</span>
+    <span>Chattanooga, TN</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var targets = document.querySelectorAll('.reveal');
+    if (!reduced && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      targets.forEach(function (el) { io.observe(el); });
+    } else {
+      targets.forEach(function (el) { el.classList.add('in-view'); });
+    }
+  })();
+</script>
+<script src="nav.js"></script>
+<script src="cart.js"></script>
+<script src="detail.js"></script>
+<script src="search.js"></script>
+
+</body>
+</html>

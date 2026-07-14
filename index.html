@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Old Friends — Handmade Goods</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  :root {
+    --sage: #9A9B6B;
+    --sage-light: #B0B18A;
+    --brown: #3E2A1A;
+    --terra: #B84A38;
+    --terra-light: #D4826E;
+    --cream: #F3EDE4;
+    --linen: #E8E0D4;
+    --stone: #D4CBC0;
+    --walnut: #5A4A3A;
+    --light-sage: #C5C6A0;
+    --white: #FDFBF8;
+    --stitch: #B84A38;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--brown);
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── LINEN TEXTURE (subtle fabric feel) ── */
+  .texture-linen {
+    position: relative;
+  }
+  .texture-linen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h1v1H0zM3 3h1v1H3z' fill='%233E2A1A' fill-opacity='1'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  /* ── STITCH PATTERNS ── */
+  .stitch-border {
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='1' x2='6' y2='1' stroke='%23B84A38' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    height: 2px;
+  }
+  .stitch-border-brown {
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='1' x2='6' y2='1' stroke='%233E2A1A' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    height: 2px;
+    opacity: 0.3;
+  }
+  .stitch-border-cream {
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='1' x2='6' y2='1' stroke='%23F3EDE4' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    height: 2px;
+    opacity: 0.4;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+  .section-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--terra); margin-bottom: 12px; font-weight: 500; }
+
+  /* ── FOLK ART MOTIFS (reusable SVG) ── */
+  .motif { display: inline-block; }
+  .motif-star { width: 24px; height: 24px; }
+  .motif-flower { width: 20px; height: 20px; }
+  .motif-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--terra); display: inline-block; }
+
+  /* ── ANNOUNCEMENT BAR ── */
+  .announcement {
+    background: var(--brown);
+    color: var(--linen);
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    position: relative;
+  }
+  .announcement .motif-inline {
+    vertical-align: middle;
+    margin: 0 8px;
+    opacity: 0.4;
+  }
+
+  /* ── NAVIGATION ── */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: var(--cream);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-stitch { margin-bottom: 0; }
+  .nav-left, .nav-right {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+  .nav-left a, .nav-right a {
+    text-decoration: none;
+    color: var(--brown);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 400;
+    transition: color 0.3s;
+  }
+  .nav-left a:hover, .nav-right a:hover { color: var(--terra); }
+
+  /* ── LOGO (real brand mark) ── */
+  .logo-img { height: 30px; width: auto; display: block; }
+  .logo-hero { width: min(560px, 82vw); height: auto; display: block; margin: 0 auto; background: var(--cream); padding: 28px 40px; box-sizing: content-box; max-width: calc(82vw - 80px); }
+  .logo-footer { height: 26px; width: auto; display: block; }
+
+  .search-icon, .basket-icon {
+    stroke: var(--brown); fill: none; stroke-width: 1.5;
+    stroke-linecap: round; stroke-linejoin: round;
+    cursor: pointer;
+    transition: stroke 0.3s;
+  }
+  .search-icon { width: 19px; height: 19px; }
+  .basket-icon { width: 22px; height: 22px; }
+  .search-icon:hover, .basket-icon:hover { stroke: var(--terra); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 85vh;
+    min-height: 600px;
+    background: var(--sage) url('hero-totes.png') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero-motifs {
+    display: none; /* hidden now that the hero uses a photo */
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    opacity: 0.07;
+  }
+  .hero-motifs svg {
+    position: absolute;
+  }
+  .hero p {
+    display: inline-block;
+    background: var(--cream);
+    color: var(--brown);
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 400;
+    padding: 12px 24px;
+    margin-top: 24px;
+    margin-bottom: 40px;
+  }
+  .hero-btn {
+    display: inline-block;
+    padding: 14px 40px;
+    background: var(--cream);
+    border: 2px dashed var(--brown);
+    color: var(--brown);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: all 0.4s;
+    position: relative;
+  }
+  .hero-btn:hover {
+    background: var(--brown);
+    color: var(--cream);
+  }
+
+  /* ── INTRO / STORY ── */
+  .intro {
+    padding: 80px 0 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .intro h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.2;
+    margin-bottom: 30px;
+    color: var(--brown);
+  }
+  .intro p {
+    color: var(--walnut);
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 18px;
+  }
+  .intro-decoration {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 30px;
+    opacity: 0.3;
+  }
+
+  /* ── FEATURED SECTION ── */
+  .featured {
+    padding: 80px 0 100px;
+    background: var(--white);
+    position: relative;
+  }
+  .featured-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 50px;
+  }
+  .featured-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .featured h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 400;
+    font-style: italic;
+  }
+  .featured-link {
+    color: var(--terra);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border-bottom: 2px dashed var(--terra);
+    padding-bottom: 3px;
+    transition: opacity 0.3s;
+  }
+  .featured-link:hover { opacity: 0.7; }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .product-card { cursor: pointer; }
+  .product-img-wrap {
+    aspect-ratio: 1/1;
+    background: var(--linen);
+    overflow: hidden;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .add-to-bag {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 13px;
+    background: rgba(62, 42, 26, 0.94);
+    color: var(--cream);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transform: translateY(100%);
+    transition: transform 0.35s ease, background 0.3s;
+  }
+  .add-to-bag:hover { background: var(--terra); }
+  .add-to-bag[disabled] { background: rgba(90, 74, 58, 0.85); color: rgba(243, 237, 228, 0.6); cursor: default; }
+  .product-card:hover .add-to-bag,
+  .add-to-bag:focus-visible { transform: none; }
+  @media (hover: none) { .add-to-bag { transform: none; } }
+  .product-img-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; color: var(--walnut); font-size: 14px; opacity: 0.35;
+  }
+  .product-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .product-img-hover { opacity: 0; transition: opacity 0.45s ease; }
+  .product-card:hover .product-img-hover { opacity: 1; }
+  .product-tag {
+    position: absolute;
+    top: 12px; left: 12px;
+    background: var(--terra);
+    color: var(--cream);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+  }
+  .product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px; font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .product-price { color: var(--walnut); font-size: 13px; }
+
+  /* ── SPLIT SECTION (Commission) ── */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 500px;
+  }
+  .split-image {
+    background: var(--stone);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; color: var(--walnut); font-size: 16px; opacity: 0.4;
+    position: relative;
+  }
+  .split-content {
+    background: var(--brown);
+    padding: 80px 60px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative;
+  }
+  .split-content .section-label { color: var(--terra); }
+  .split-content h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px; font-weight: 400; font-style: italic;
+    color: var(--cream); line-height: 1.2; margin-bottom: 24px;
+  }
+  .split-content p {
+    color: var(--linen); font-size: 15px; line-height: 1.8;
+    margin-bottom: 32px; max-width: 420px; opacity: 0.85;
+  }
+  .btn-stitch {
+    display: inline-block;
+    padding: 14px 36px;
+    border: 2px dashed var(--cream);
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: all 0.4s;
+    align-self: flex-start;
+    border-radius: 4px;
+  }
+  .btn-stitch:hover { background: rgba(243, 237, 228, 0.12); }
+
+  /* ── VALUES ── */
+  .values {
+    padding: 100px 0;
+    text-align: center;
+    position: relative;
+  }
+  .values h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-weight: 400; font-style: italic;
+    margin-bottom: 60px;
+  }
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+  }
+  .value-item { text-align: center; }
+  .value-item h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 500;
+    margin-bottom: 12px; color: var(--brown);
+  }
+  .value-item p {
+    color: var(--walnut); font-size: 14px; line-height: 1.7;
+    max-width: 280px; margin: 0 auto;
+  }
+  .value-motif {
+    margin: 0 auto 18px;
+    display: block;
+  }
+
+  /* ── LOCATION ── */
+  .location {
+    background: var(--sage);
+    padding: 80px 0;
+    position: relative;
+  }
+  .location-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: center;
+  }
+  .location h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-weight: 400; font-style: italic;
+    color: var(--cream); margin-bottom: 24px;
+  }
+  .location p {
+    color: var(--light-sage); font-size: 15px; line-height: 1.8; margin-bottom: 12px;
+  }
+  .location-details { color: var(--cream); font-size: 14px; }
+  .location-details a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--terra-light);
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+  }
+  .location-details a:hover { color: var(--terra-light); }
+  .location-details strong {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 500;
+    margin-bottom: 6px; margin-top: 24px;
+  }
+  .location-map {
+    aspect-ratio: 4/3;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid rgba(243,237,228,0.35);
+    box-shadow: 0 8px 30px rgba(62,42,26,0.25);
+    position: relative;
+    z-index: 1;
+  }
+  #stockist-map { width: 100%; height: 100%; background: var(--linen); }
+  /* tint the map tiles toward the linen/sage palette */
+  #stockist-map .leaflet-tile {
+    filter: grayscale(0.4) sepia(0.35) hue-rotate(35deg) saturate(0.85) brightness(1.04);
+  }
+  #stockist-map .leaflet-popup-content-wrapper {
+    background: var(--cream);
+    color: var(--brown);
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(62,42,26,0.3);
+    font-family: 'DM Sans', sans-serif;
+  }
+  #stockist-map .leaflet-popup-tip { background: var(--cream); }
+  #stockist-map .leaflet-popup-content { margin: 14px 18px; font-size: 13px; line-height: 1.6; color: var(--walnut); }
+  #stockist-map .leaflet-popup-content strong {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 500; font-style: italic;
+    color: var(--brown); margin-bottom: 2px;
+  }
+  .stitch-pin { background: none; border: none; }
+
+  /* ── EMBROIDERED INTERACTIONS ── */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1); }
+  .reveal.in-view { opacity: 1; transform: none; }
+  .product-grid .product-card:nth-child(2), .values-grid .value-item:nth-child(2) { transition-delay: .12s; }
+  .product-grid .product-card:nth-child(3), .values-grid .value-item:nth-child(3) { transition-delay: .24s; }
+  .product-grid .product-card:nth-child(4) { transition-delay: .36s; }
+
+  /* underline that sews itself in beneath headings */
+  .stitch-underline { display: block; margin-top: 10px; overflow: visible; clip-path: inset(-8px 100% -8px 0); }
+  .in-view .stitch-underline { clip-path: inset(-8px 0% -8px 0); transition: clip-path 1.3s ease .35s; }
+  .stitch-underline path { stroke: var(--terra); stroke-width: 2; fill: none; stroke-dasharray: 7 5; stroke-linecap: round; opacity: .75; }
+  .location .stitch-underline path { stroke: var(--cream); }
+
+  /* nav links sew themselves on hover */
+  .nav-left a, .nav-right a { position: relative; }
+  .nav-left a::after, .nav-right a::after {
+    content: ''; position: absolute; left: 0; right: 100%; bottom: -5px;
+    border-bottom: 2px dashed var(--terra); transition: right .35s ease;
+  }
+  .nav-left a:hover::after, .nav-right a:hover::after { right: 0; }
+
+  /* product cards: lift, tilt, stitched frame appears */
+  .product-card { transition: transform .5s cubic-bezier(.22,1,.36,1), opacity .8s ease; }
+
+  /* folk motifs twirl on hover */
+  .value-motif { transition: transform .5s cubic-bezier(.34,1.56,.64,1); }
+  .value-item:hover .value-motif { transform: rotate(12deg) scale(1.12); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; }
+    .stitch-underline { clip-path: none; animation: none; }
+  }
+
+  /* ── NEWSLETTER ── */
+  .newsletter {
+    padding: 80px 0;
+    text-align: center;
+    background: var(--white);
+    position: relative;
+  }
+  .newsletter h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 400; font-style: italic;
+    margin-bottom: 12px;
+  }
+  .newsletter p {
+    color: var(--walnut); font-size: 14px; margin-bottom: 30px;
+  }
+  .newsletter-form {
+    display: flex; max-width: 440px; margin: 0 auto;
+  }
+  .newsletter-form input {
+    flex: 1; padding: 14px 18px;
+    border: 2px dashed var(--stone); border-right: none;
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    color: var(--brown); outline: none;
+    border-radius: 4px 0 0 4px;
+  }
+  .newsletter-form input::placeholder { color: var(--stone); }
+  .newsletter-form input:focus { border-color: var(--sage); }
+  .newsletter-form button {
+    padding: 14px 28px;
+    background: var(--brown); color: var(--cream);
+    border: 2px dashed var(--brown);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+    border-radius: 0 4px 4px 0;
+  }
+  .newsletter-form button:hover {
+    background: var(--terra); border-color: var(--terra);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--brown);
+    color: var(--linen);
+    padding: 60px 40px 30px;
+    position: relative;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px; margin-bottom: 50px;
+  }
+  .footer-brand p { font-size: 13px; line-height: 1.7; max-width: 280px; color: rgba(232,224,212,0.5); margin-top: 14px; }
+  .footer-col h4 {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 18px; color: var(--linen); font-weight: 500;
+  }
+  .footer-col a {
+    display: block; color: rgba(232,224,212,0.5);
+    text-decoration: none; font-size: 13px; margin-bottom: 10px;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--cream); }
+  .footer-bottom {
+    padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; color: rgba(232,224,212,0.3);
+  }
+  .footer-motifs {
+    position: absolute;
+    top: 30px; right: 40px;
+    opacity: 0.05;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .intro { grid-template-columns: 1fr; gap: 40px; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .split { grid-template-columns: 1fr; }
+    .split-image { min-height: 300px; }
+    .values-grid { grid-template-columns: 1fr; gap: 36px; }
+    .location-inner { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    nav { padding: 20px 24px; }
+    .container { padding: 0 24px; }
+  }
+  @media (max-width: 600px) {
+    .product-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .footer-top { grid-template-columns: 1fr; }
+    .logo-img { height: 26px; }
+    .split-content { padding: 50px 30px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ -->
+<!-- INLINE SVG DEFINITIONS             -->
+<!-- ═══════════════════════════════════ -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <defs>
+    <!-- Folk art 8-pointed star -->
+    <symbol id="folk-star" viewBox="0 0 40 40">
+      <path d="M20 2 L23 14 L35 11 L26 20 L35 29 L23 26 L20 38 L17 26 L5 29 L14 20 L5 11 L17 14 Z"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 3" stroke-linecap="round"/>
+      <circle cx="20" cy="20" r="2.5" fill="currentColor" opacity="0.6"/>
+    </symbol>
+    <!-- Folk art flower/quatrefoil -->
+    <symbol id="folk-flower" viewBox="0 0 36 36">
+      <circle cx="18" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="3 2.5"/>
+      <circle cx="10" cy="18" r="7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="3 2.5"/>
+      <circle cx="26" cy="18" r="7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="3 2.5"/>
+      <circle cx="18" cy="26" r="7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="3 2.5"/>
+      <circle cx="18" cy="18" r="3" fill="currentColor" opacity="0.5"/>
+    </symbol>
+    <!-- Simple hand-drawn circle -->
+    <symbol id="folk-circle" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="3 2"/>
+      <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.5"/>
+    </symbol>
+    <!-- Folk art cat (from inspo) -->
+    <symbol id="folk-cat" viewBox="0 0 60 40">
+      <path d="M10 30 Q8 20 12 15 L15 8 L18 15 L42 12 L45 6 L48 14 Q55 18 52 30 Z"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 3" stroke-linecap="round"/>
+      <circle cx="22" cy="20" r="1.5" fill="currentColor"/>
+      <line x1="52" y1="28" x2="58" y2="32" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
+    </symbol>
+    <!-- Small leaf -->
+    <symbol id="folk-leaf" viewBox="0 0 24 24">
+      <path d="M12 3 Q20 8 18 18 Q12 14 6 18 Q4 8 12 3Z"
+        fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2.5" stroke-linecap="round"/>
+      <line x1="12" y1="6" x2="12" y2="20" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- Announcement Bar -->
+<div class="announcement">
+  <svg width="12" height="12" class="motif-inline" style="color: var(--cream)"><use href="#folk-star"/></svg>
+  Free shipping on orders over $75
+  <svg width="12" height="12" class="motif-inline" style="color: var(--cream)"><use href="#folk-circle"/></svg>
+  Handmade in Chattanooga
+  <svg width="12" height="12" class="motif-inline" style="color: var(--cream)"><use href="#folk-star"/></svg>
+</div>
+
+<!-- Navigation -->
+<nav>
+  <!-- LOGO far left -->
+  <a href="#">
+    <img class="logo-img" src="Old Friends Logo/oldfriends.black.trim.png" alt="Old Friends">
+  </a>
+
+  <div class="nav-right">
+    <a href="shop.html">Shop</a>
+    <a href="commission.html">Commission</a>
+    <a href="about.html">About</a>
+    <a href="wholesale.html">Wholesale</a>
+    <!-- Search -->
+    <svg class="search-icon" viewBox="0 0 24 24" role="button" aria-label="Search"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.3" y1="15.3" x2="21" y2="21"/></svg>
+    <!-- Woven basket cart -->
+    <svg class="basket-icon" viewBox="0 0 24 24" role="button" aria-label="Basket">
+      <path d="M8 9 C8 4.6 16 4.6 16 9"/>
+      <path d="M4 9 H20 L18.4 19.2 A2.1 2.1 0 0 1 16.3 21 H7.7 A2.1 2.1 0 0 1 5.6 19.2 Z"/>
+      <path d="M4.7 13.1 H19.3 M5.3 16.9 H18.7"/>
+      <path d="M8.8 9 L9.6 21 M15.2 9 L14.4 21 M12 9 V21"/>
+    </svg>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <!-- Background folk art motifs -->
+  <div class="hero-motifs">
+    <svg width="80" height="80" style="top:10%; left:8%; color: var(--cream)"><use href="#folk-star"/></svg>
+    <svg width="50" height="50" style="top:60%; left:5%; color: var(--cream)"><use href="#folk-flower"/></svg>
+    <svg width="100" height="65" style="top:20%; right:6%; color: var(--cream)"><use href="#folk-cat"/></svg>
+    <svg width="40" height="40" style="bottom:15%; right:12%; color: var(--cream)"><use href="#folk-star"/></svg>
+    <svg width="35" height="35" style="bottom:25%; left:15%; color: var(--cream)"><use href="#folk-leaf"/></svg>
+    <svg width="60" height="60" style="top:55%; right:20%; color: var(--cream)"><use href="#folk-flower"/></svg>
+    <svg width="45" height="45" style="top:8%; right:30%; color: var(--cream)"><use href="#folk-circle"/></svg>
+    <svg width="30" height="30" style="bottom:10%; left:30%; color: var(--cream)"><use href="#folk-circle"/></svg>
+  </div>
+
+  <div class="hero-content">
+    <!-- Large hero logo -->
+    <img class="logo-hero" src="Old Friends Logo/oldfriends.black.trim.png" alt="Old Friends">
+    <p>Handmade goods · Chattanooga, TN</p>
+    <a href="shop.html" class="hero-btn">Shop the Collection</a>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section id="shop" class="featured texture-linen">
+  <div class="container">
+    <div class="featured-header">
+      <div class="featured-title-wrap">
+        <h2>Core Collection</h2>
+      </div>
+      <a href="shop.html" class="featured-link">View All</a>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <img class="product-img" src="images/bag1.jpg" alt="Patchwork Tote — Garden" loading="lazy">
+          <img class="product-img product-img-hover" src="images/bag2.jpg" alt="" loading="lazy">
+          <div class="product-tag">New</div>
+          <button class="add-to-bag">Add to Bag</button>
+        </div>
+        <div class="product-name">Patchwork Tote — Garden</div>
+        <div class="product-price">$48</div>
+      </div>
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder">product photo</div>
+          <button class="add-to-bag">Add to Bag</button>
+        </div>
+        <div class="product-name">Quilted Hoodie — Floral</div>
+        <div class="product-price">$85</div>
+      </div>
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder">product photo</div>
+          <button class="add-to-bag">Add to Bag</button>
+        </div>
+        <div class="product-name">Linen Scrunchie Set</div>
+        <div class="product-price">$18</div>
+      </div>
+      <div class="product-card">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder">product photo</div>
+          <div class="product-tag">Sold</div>
+          <button class="add-to-bag" disabled>Sold Out</button>
+        </div>
+        <div class="product-name">Vintage Quilt Jacket</div>
+        <div class="product-price">$120</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stitch divider -->
+<div class="stitch-border" style="opacity: 0.4;"></div>
+
+<!-- Commission Section -->
+<section id="commission" class="split">
+  <div class="split-image">[ commission work photography ]</div>
+  <div class="split-content">
+    <div class="section-label">Commission</div>
+    <h2>Bring us your<br>fabrics, your stories.</h2>
+    <p>Have a quilt from your grandmother? A shirt you can't bear to throw away? We turn the textiles that mean something to you into something new — hoodies, jackets, tote bags, and more. Every commission is a collaboration.</p>
+    <a href="commission.html" class="btn-stitch">Inquire Now</a>
+  </div>
+</section>
+
+<!-- Values -->
+<section class="values texture-linen">
+  <div class="container">
+    <h2>Rooted in intention.</h2>
+    <div class="values-grid">
+      <div class="value-item">
+        <h3>Made With Love</h3>
+        <p>Every stitch, every seam, every detail — crafted by hand with care. No shortcuts, no mass production.</p>
+      </div>
+      <div class="value-item">
+        <h3>Built to Last</h3>
+        <p>We make things meant to stay — pieces you'll reach for again and again, that get better with age.</p>
+      </div>
+      <div class="value-item">
+        <h3>Mindful Materials</h3>
+        <p>Responsibly sourced linens and fabrics, pre-loved textiles given new purpose. Sustainability isn't a trend for us.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Location -->
+<section id="contact" class="location texture-linen">
+  <div class="container">
+    <div class="location-inner">
+      <div>
+        <div class="section-label" style="color: var(--cream); opacity: 0.5;">Visit Us</div>
+        <h2>Where to find us.</h2>
+        <p>Shop our pieces in person or come say hello at our next pop-up event.</p>
+        <div class="location-details">
+          <strong>Sower</strong>
+          3929 St Elmo Ave<br>
+          Chattanooga, TN 37409
+
+          <strong>Mara Mae's</strong>
+          34 N Jefferson Ave<br>
+          Cookeville, TN 38501
+
+          <strong>Next Pop Up</strong>
+          Date & time coming soon.<br>
+          Follow us on <a href="https://www.instagram.com/kind.handmade.goods/" target="_blank" rel="noopener">Instagram</a> for updates.
+        </div>
+      </div>
+      <div class="location-map"><div id="stockist-map"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Stitch divider -->
+<div class="stitch-border" style="opacity: 0.4;"></div>
+
+<!-- Newsletter -->
+<section id="newsletter" class="newsletter">
+  <div class="container">
+    <h2>Stay in the loop.</h2>
+    <p>New drops, pop-up dates, and the occasional love letter.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="Your email address">
+      <button type="submit">Sign Up</button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="stitch-border-cream" style="margin-bottom: 40px;"></div>
+  <div class="footer-motifs">
+    <svg width="60" height="60" style="color: var(--cream)"><use href="#folk-star"/></svg>
+  </div>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <!-- Footer logo -->
+      <img class="logo-footer" src="Old Friends Logo/oldfriends.cream.trim.png" alt="Old Friends">
+      <p>Handmade and upcycled goods from Chattanooga, TN. Every piece crafted with intention.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="#">Core Collection</a>
+      <a href="#">New Arrivals</a>
+      <a href="#">Sold Archive</a>
+    </div>
+    <div class="footer-col">
+      <h4>About</h4>
+      <a href="about.html">Our Story</a>
+      <a href="commission.html">Commission</a>
+      <a href="wholesale.html">Wholesale</a>
+      <a href="#contact">Stockists</a>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <a href="https://www.instagram.com/kind.handmade.goods/" target="_blank" rel="noopener">Instagram</a>
+      <a href="#contact">Contact</a>
+      <a href="#newsletter">Newsletter</a>
+    </div>
+  </div>
+  <div class="stitch-border-cream" style="opacity: 0.3; margin-bottom: 20px;"></div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Old Friends</span>
+    <span>Chattanooga, TN</span>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  (function () {
+    var stockists = [
+      { name: "Sower", addr: "3929 St Elmo Ave<br>Chattanooga, TN 37409", coords: [35.009629, -85.328242] },
+      { name: "Mara Mae's", addr: "34 N Jefferson Ave<br>Cookeville, TN 38501", coords: [36.163866, -85.500130] }
+    ];
+
+    var map = L.map('stockist-map', {
+      scrollWheelZoom: false,
+      attributionControl: true
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
+    // forest-green sewing needle with red thread; the tip marks the spot
+    var pinIcon = L.divIcon({
+      className: 'stitch-pin',
+      html: '<svg width="36" height="59" viewBox="0 0 56 92" xmlns="http://www.w3.org/2000/svg">' +
+            '<g transform="rotate(8 20 88)">' +
+            '<path fill-rule="evenodd" fill="#2F6B51" d="M20 88 C19 64 16.2 36 15.7 20 C15.4 9.5 16.8 3.5 20 3.5 C23.2 3.5 24.6 9.5 24.3 20 C23.8 36 21 64 20 88 Z ' +
+            'M20 6.8 C21.8 6.8 22.5 9.2 22.3 12.2 C22.1 15.2 21.2 17.8 20 17.8 C18.8 17.8 17.9 15.2 17.7 12.2 C17.5 9.2 18.2 6.8 20 6.8 Z"/>' +
+            '</g></svg>',
+      iconSize: [36, 59],
+      iconAnchor: [13, 56],
+      popupAnchor: [0, -52]
+    });
+
+    var bounds = [];
+    stockists.forEach(function (s) {
+      L.marker(s.coords, { icon: pinIcon })
+        .addTo(map)
+        .bindPopup('<strong>' + s.name + '</strong>' + s.addr);
+      bounds.push(s.coords);
+    });
+
+    map.fitBounds(bounds, { padding: [50, 50] });
+  })();
+</script>
+<script>
+  /* ── embroidered interactions ── */
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // sew-in underlines beneath section headings
+    var underline = '<svg class="stitch-underline" width="190" height="14" viewBox="0 0 190 14" xmlns="http://www.w3.org/2000/svg">' +
+      '<path d="M2 9 Q 14 3 26 8 T 50 8 T 74 8 T 98 8 T 122 8 T 146 8 T 170 8 L 188 7"/></svg>';
+    document.querySelectorAll('.location h2').forEach(function (h) {
+      h.insertAdjacentHTML('beforeend', underline);
+    });
+
+    // scroll reveals
+    var targets = document.querySelectorAll('h2, .section-label, .product-card, .value-item, .intro p, .split-content p, .location-details, .newsletter-form, .btn-stitch');
+    targets.forEach(function (el) { el.classList.add('reveal'); });
+    if (!reduced && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      targets.forEach(function (el) { io.observe(el); });
+    } else {
+      targets.forEach(function (el) { el.classList.add('in-view'); });
+    }
+
+  })();
+</script>
+<script src="nav.js"></script>
+<script src="cart.js"></script>
+<script src="detail.js"></script>
+<script src="search.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+# macOS / system junk
+.DS_Store
+.fuse_hidden*
+holder.main
+
+# Working files (not part of the live prototype)
+pin-variations.html
+old-friends-prototype.html
+hero-totes_.png
+fontlookup.jpg
+fontlookup2.jpg
+Old_Friends_Brand_Guide.pdf
+
+# Unused image variants
+images/bag3.jpg
+images/bag4.jpg
+images/scrunchie.WEBP
+images/screunchie1.WEBP
+Old Friends Logo/oldfriends.black.png
+Old Friends Logo/oldfriends.cream.png
+Old Friends Logo/oldfriends.white.png
+Old Friends Logo/oldfriends.white.trim.png
