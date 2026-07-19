@@ -737,7 +737,18 @@
   }
   .filter-btn:hover { color: var(--terra); transform: translateY(-2px); }
   .filter-btn.active { border-color: var(--terra); color: var(--terra); background: rgba(184,74,56,0.06); }
-  .shop-grid { padding-bottom: 90px; }
+  /* photo-forward: break out of the 1200px container to near-full width, tight gaps */
+  .shop-grid {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: 0 12px 90px;
+    gap: 2px;
+  }
+  .shop-grid .product-img-wrap { margin-bottom: 8px; }
+  @media (max-width: 600px) {
+    .shop-grid { padding: 0 4px 70px; gap: 2px; }
+  }
   .shop-grid .product-card.hide { display: none; }
   .shop-grid .product-card:nth-child(4n+2) { transition-delay: .08s; }
   .shop-grid .product-card:nth-child(4n+3) { transition-delay: .16s; }
