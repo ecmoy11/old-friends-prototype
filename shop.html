@@ -9,18 +9,19 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
   :root {
-    --sage: #9A9B6B;
-    --sage-light: #B0B18A;
-    --brown: #3E2A1A;
-    --terra: #B84A38;
-    --terra-light: #D4826E;
-    --cream: #F3EDE4;
-    --linen: #E8E0D4;
-    --stone: #D4CBC0;
+    --sage: #9E983C;
+    --sage-light: #C0BC80;
+    --brown: #6A4630;
+    --terra: #9E1431;
+    --terra-light: #BE5C72;
+    --cream: #EDE1C5;
+    --linen: #E2D5B7;
+    --stone: #CFC1A3;
     --walnut: #5A4A3A;
-    --light-sage: #C5C6A0;
+    --light-sage: #D3D0A7;
     --white: #FDFBF8;
-    --stitch: #B84A38;
+    --dusty: #B7C9CB;
+    --stitch: #9E1431;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -45,24 +46,24 @@
     position: absolute;
     inset: 0;
     opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h1v1H0zM3 3h1v1H3z' fill='%233E2A1A' fill-opacity='1'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h1v1H0zM3 3h1v1H3z' fill='%236A4630' fill-opacity='1'/%3E%3C/svg%3E");
     pointer-events: none;
   }
 
   /* ── STITCH PATTERNS ── */
   .stitch-border {
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='1' x2='6' y2='1' stroke='%23B84A38' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='1' x2='6' y2='1' stroke='%239E1431' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: repeat-x;
     height: 2px;
   }
   .stitch-border-brown {
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='1' x2='6' y2='1' stroke='%233E2A1A' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='1' x2='6' y2='1' stroke='%236A4630' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: repeat-x;
     height: 2px;
     opacity: 0.3;
   }
   .stitch-border-cream {
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='1' x2='6' y2='1' stroke='%23F3EDE4' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='0' y1='1' x2='6' y2='1' stroke='%23EDE1C5' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: repeat-x;
     height: 2px;
     opacity: 0.4;
@@ -182,7 +183,7 @@
     position: relative;
   }
   .hero-btn:hover {
-    background: rgba(243, 237, 228, 0.15);
+    background: rgba(237,225,197, 0.15);
   }
 
   /* ── WAVY SECTION DIVIDER ── */
@@ -298,7 +299,7 @@
     position: absolute;
     left: 0; right: 0; bottom: 0;
     padding: 13px;
-    background: rgba(62, 42, 26, 0.94);
+    background: rgba(106,70,48, 0.94);
     color: var(--cream);
     border: none;
     font-family: 'DM Sans', sans-serif;
@@ -310,7 +311,7 @@
     transition: transform 0.35s ease, background 0.3s;
   }
   .add-to-bag:hover { background: var(--terra); }
-  .add-to-bag[disabled] { background: rgba(90, 74, 58, 0.85); color: rgba(243, 237, 228, 0.6); cursor: default; }
+  .add-to-bag[disabled] { background: rgba(90, 74, 58, 0.85); color: rgba(237,225,197, 0.6); cursor: default; }
   .product-card:hover .add-to-bag,
   .add-to-bag:focus-visible { transform: none; }
   @media (hover: none) { .add-to-bag { transform: none; } }
@@ -337,6 +338,7 @@
     text-transform: uppercase;
     padding: 4px 10px;
   }
+  .product-tag--sold { background: var(--dusty); color: var(--brown); }
   .product-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 16px; font-weight: 500;
@@ -351,7 +353,7 @@
     width: 72%;
     border-radius: 8px;
     transform: translate(-50%, -50%);
-    box-shadow: 0 16px 34px rgba(62, 42, 26, 0.38);
+    box-shadow: 0 16px 34px rgba(106,70,48, 0.38);
     transition: transform 0.45s ease;
   }
   .product-card:hover .giftcard-env {
@@ -377,7 +379,7 @@
     display: flex; flex-direction: column; justify-content: center;
     position: relative;
   }
-  .split-content .section-label { color: var(--terra); }
+  .split-content .section-label { color: var(--dusty); }
   .split-content h2 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 38px; font-weight: 400; font-style: italic;
@@ -400,7 +402,7 @@
     align-self: flex-start;
     border-radius: 4px;
   }
-  .btn-stitch:hover { background: rgba(243, 237, 228, 0.12); }
+  .btn-stitch:hover { background: rgba(237,225,197, 0.12); }
   .split-motif {
     position: absolute;
     bottom: 30px; right: 30px;
@@ -468,8 +470,8 @@
     aspect-ratio: 4/3;
     border-radius: 6px;
     overflow: hidden;
-    border: 2px solid rgba(243,237,228,0.35);
-    box-shadow: 0 8px 30px rgba(62,42,26,0.25);
+    border: 2px solid rgba(237,225,197,0.35);
+    box-shadow: 0 8px 30px rgba(106,70,48,0.25);
     position: relative;
     z-index: 1;
   }
@@ -482,7 +484,7 @@
     background: var(--cream);
     color: var(--brown);
     border-radius: 6px;
-    box-shadow: 0 4px 16px rgba(62,42,26,0.3);
+    box-shadow: 0 4px 16px rgba(106,70,48,0.3);
     font-family: 'DM Sans', sans-serif;
   }
   #stockist-map .leaflet-popup-tip { background: var(--cream); }
@@ -587,13 +589,13 @@
     grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 40px; margin-bottom: 50px;
   }
-  .footer-brand p { font-size: 13px; line-height: 1.7; max-width: 280px; color: rgba(232,224,212,0.5); margin-top: 14px; }
+  .footer-brand p { font-size: 13px; line-height: 1.7; max-width: 280px; color: rgba(226,213,183,0.5); margin-top: 14px; }
   .footer-col h4 {
     font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
     margin-bottom: 18px; color: var(--linen); font-weight: 500;
   }
   .footer-col a {
-    display: block; color: rgba(232,224,212,0.5);
+    display: block; color: rgba(226,213,183,0.5);
     text-decoration: none; font-size: 13px; margin-bottom: 10px;
     transition: color 0.3s;
   }
@@ -601,7 +603,7 @@
   .footer-bottom {
     padding-top: 24px;
     display: flex; justify-content: space-between; align-items: center;
-    font-size: 11px; color: rgba(232,224,212,0.3);
+    font-size: 11px; color: rgba(226,213,183,0.3);
   }
   .footer-motifs {
     position: absolute;
@@ -744,18 +746,20 @@
     transition: color .3s ease, border-color .3s ease, background .3s ease, transform .3s ease;
   }
   .filter-btn:hover { color: var(--terra); transform: translateY(-2px); }
-  .filter-btn.active { border-color: var(--terra); color: var(--terra); background: rgba(184,74,56,0.06); }
+  .filter-btn.active { border-color: var(--terra); color: var(--terra); background: rgba(158,20,49,0.06); }
   /* photo-forward: break out of the 1200px container to near-full width, tight gaps */
   .shop-grid {
     width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
     padding: 0 12px 90px;
-    gap: 2px;
+    gap: 28px 2px; /* roomy rows so text belongs to its photo; columns stay flush */
   }
-  .shop-grid .product-img-wrap { margin-bottom: 8px; }
+  .shop-grid .product-img-wrap { margin-bottom: 6px; }
+  .shop-grid .product-name { padding-left: 10px; }
+  .shop-grid .product-price { padding-right: 10px; }
   @media (max-width: 600px) {
-    .shop-grid { padding: 0 4px 70px; gap: 2px; }
+    .shop-grid { padding: 0 4px 70px; gap: 22px 2px; }
   }
   .shop-grid .product-card.hide { display: none; }
   .shop-grid .product-card:nth-child(4n+2) { transition-delay: .08s; }
@@ -802,7 +806,7 @@
       <div class="product-card" data-cat="preloved">
         <div class="product-img-wrap">
           <div class="product-img-placeholder">product photo</div>
-          <div class="product-tag">Sold</div>
+          <div class="product-tag product-tag--sold">Sold</div>
           <button class="add-to-bag" disabled>Sold Out</button>
         </div>
         <div class="product-name">Vintage Quilt Jacket</div>

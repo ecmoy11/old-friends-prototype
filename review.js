@@ -11,12 +11,12 @@
 
   var bar = document.createElement('div');
   bar.id = 'rv-bar';
-  bar.style.cssText = 'position:fixed; bottom:20px; right:20px; z-index:99999; display:flex; gap:10px; align-items:center; background:#F3EDE4; border:2px dashed #3E2A1A; padding:10px 14px; font-family:Georgia,serif; font-size:12px; color:#3E2A1A; box-shadow:0 4px 14px rgba(62,42,26,.25);';
+  bar.style.cssText = 'position:fixed; bottom:20px; right:20px; z-index:99999; display:flex; gap:10px; align-items:center; background:#EDE1C5; border:2px dashed #6A4630; padding:10px 14px; font-family:Georgia,serif; font-size:12px; color:#6A4630; box-shadow:0 4px 14px rgba(106,70,48,.25);';
   bar.innerHTML =
-    '<button id="rv-toggle" style="background:#3E2A1A; color:#F3EDE4; border:none; padding:8px 14px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; cursor:pointer;">&#9986; Start review</button>' +
+    '<button id="rv-toggle" style="background:#6A4630; color:#EDE1C5; border:none; padding:8px 14px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; cursor:pointer;">&#9986; Start review</button>' +
     '<span id="rv-hint" style="display:none; max-width:220px; line-height:1.4;">Click = flag element &middot; Shift-click = flag whole section &middot; click again to unflag &middot; Esc to stop</span>' +
     '<span id="rv-count" style="display:none; font-weight:bold;">0 flagged</span>' +
-    '<button id="rv-copy" style="display:none; background:#B84A38; color:#F3EDE4; border:none; padding:8px 14px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; cursor:pointer;">Copy list</button>';
+    '<button id="rv-copy" style="display:none; background:#9E1431; color:#EDE1C5; border:none; padding:8px 14px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; cursor:pointer;">Copy list</button>';
   document.body.appendChild(bar);
 
   var btn = document.getElementById('rv-toggle');
@@ -55,8 +55,8 @@
   }
   function setFlag(el) {
     flagged.set(el, { desc: describe(el), outline: el.style.outline, background: el.style.background });
-    el.style.outline = '2px dashed #B84A38';
-    el.style.background = 'rgba(184,74,56,.14)';
+    el.style.outline = '2px dashed #9E1431';
+    el.style.background = 'rgba(158,20,49,.14)';
   }
   function unflag(el) {
     var s = flagged.get(el);
@@ -90,7 +90,7 @@
     clearHover();
     hoverEl = e.target;
     hoverPrev = hoverEl.style.outline;
-    if (!flagged.has(hoverEl)) hoverEl.style.outline = '2px solid #B84A38';
+    if (!flagged.has(hoverEl)) hoverEl.style.outline = '2px solid #9E1431';
   }, true);
 
   document.addEventListener('click', function (e) {
