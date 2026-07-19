@@ -269,8 +269,9 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
   }
-  .product-card { cursor: pointer; }
+  .product-card { cursor: pointer; display: grid; grid-template-columns: 1fr auto; column-gap: 10px; align-items: baseline; }
   .product-img-wrap {
+    grid-column: 1 / -1;
     aspect-ratio: 1/1;
     background: var(--linen);
     overflow: hidden;
@@ -323,9 +324,9 @@
   .product-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 16px; font-weight: 500;
-    margin-bottom: 4px;
+    margin-bottom: 0;
   }
-  .product-price { color: var(--walnut); font-size: 13px; }
+  .product-price { color: var(--walnut); font-size: 13px; justify-self: end; white-space: nowrap; }
 
   /* ── SPLIT SECTION (Commission) ── */
   .split {
