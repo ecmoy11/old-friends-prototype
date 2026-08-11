@@ -133,8 +133,8 @@
     '.pd-row dt { width: 92px; flex-shrink: 0; color: var(--brown); font-weight: 400; }',
     '.pd-row dd { color: var(--walnut); }',
     '.pd-note { font-size: 12.5px; font-style: italic; font-family: "Cormorant Garamond", serif; font-size: 15px; color: var(--brown); margin-bottom: 24px; padding-left: 12px; border-left: 2px solid var(--terra); }',
-    '.pd-add { display: block; width: 100%; padding: 15px; background: var(--brown); color: var(--cream); border: 2px dashed var(--brown); font-family: "DM Sans", sans-serif; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; cursor: pointer; transition: background .3s, border-color .3s; }',
-    '.pd-add:hover { background: var(--terra); border-color: var(--terra); }',
+    '.pd-add { display: block; width: 100%; padding: 15px; background: var(--terra); color: var(--cream); border: 2px dashed var(--terra); font-family: "DM Sans", sans-serif; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; cursor: pointer; transition: background .3s, border-color .3s; }',
+    '.pd-add:hover { background: #7A0F26; border-color: #7A0F26; }',
     '.pd-add[disabled] { background: var(--walnut); border-color: var(--walnut); opacity: .55; cursor: default; }',
     /* ── gift card mode ── */
     '.pd-main img.pd-env { inset: auto; left: 50%; top: 47%; width: 74%; height: auto; border-radius: 8px; transform: translate(-50%, -50%); box-shadow: 0 16px 36px rgba(106,70,48,0.4); }',

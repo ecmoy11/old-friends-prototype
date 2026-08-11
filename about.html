@@ -12,6 +12,7 @@
     --sage-light: #C0BC80;
     --brown: #6A4630;
     --terra: #9E1431;
+    --terra-dark: #7A0F26;
     --terra-light: #BE5C72;
     --cream: #EDE1C5;
     --linen: #E2D5B7;
@@ -230,10 +231,10 @@
     font-weight: 500;
     transition: all 0.3s;
   }
-  .btn-solid { background: var(--brown); color: var(--cream); border: 2px dashed var(--brown); }
-  .btn-solid:hover { background: var(--terra); border-color: var(--terra); }
-  .btn-outline { border: 2px dashed var(--brown); color: var(--brown); }
-  .btn-outline:hover { background: var(--brown); color: var(--cream); }
+  .btn-solid { background: var(--terra); color: var(--cream); border: 2px dashed var(--terra); }
+  .btn-solid:hover { background: var(--terra-dark); border-color: var(--terra-dark); }
+  .btn-outline { border: 2px dashed var(--terra); color: var(--terra); }
+  .btn-outline:hover { background: var(--terra); color: var(--cream); }
 
   /* ── REVEALS ── */
   .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1); }
