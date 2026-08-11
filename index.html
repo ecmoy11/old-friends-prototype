@@ -16,6 +16,7 @@
     --terra-dark: #7A0F26;
     --terra-light: #BE5C72;
     --cream: #EDE1C5;
+    --cream-text: #FFFAEE;
     --linen: #E2D5B7;
     --stone: #CFC1A3;
     --walnut: #5A4A3A;
@@ -186,7 +187,7 @@
     padding: 14px 40px;
     background: var(--terra);
     border: 2px dashed var(--terra);
-    color: var(--cream);
+    color: var(--cream-text);
     text-decoration: none;
     font-size: 11px;
     letter-spacing: 0.2em;
@@ -198,7 +199,7 @@
   .hero-btn:hover {
     background: var(--terra-dark);
     border-color: var(--terra-dark);
-    color: var(--cream);
+    color: var(--cream-text);
   }
 
   /* ── INTRO / STORY ── */
@@ -286,7 +287,7 @@
     left: 0; right: 0; bottom: 0;
     padding: 13px;
     background: rgba(158,20,49, 0.94);
-    color: var(--cream);
+    color: var(--cream-text);
     border: none;
     font-family: 'DM Sans', sans-serif;
     font-size: 11px;
@@ -297,7 +298,7 @@
     transition: transform 0.35s ease, background 0.3s;
   }
   .add-to-bag:hover { background: var(--terra-dark); }
-  .add-to-bag[disabled] { background: rgba(90, 74, 58, 0.85); color: rgba(237,225,197, 0.6); cursor: default; }
+  .add-to-bag[disabled] { background: rgba(90, 74, 58, 0.85); color: rgba(255, 250, 238, 0.6); cursor: default; }
   .product-card:hover .add-to-bag,
   .add-to-bag:focus-visible { transform: none; }
   @media (hover: none) { .add-to-bag { transform: none; } }
@@ -318,7 +319,7 @@
     position: absolute;
     top: 12px; left: 12px;
     background: var(--terra);
-    color: var(--cream);
+    color: var(--cream-text);
     font-size: 9px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -356,7 +357,7 @@
   .split-content h2 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 38px; font-weight: 400; font-style: italic;
-    color: var(--cream); line-height: 1.2; margin-bottom: 24px;
+    color: var(--cream-text); line-height: 1.2; margin-bottom: 24px;
   }
   .split-content p {
     color: var(--linen); font-size: 15px; line-height: 1.8;
@@ -367,7 +368,7 @@
     padding: 14px 36px;
     background: var(--terra);
     border: 2px dashed var(--terra);
-    color: var(--cream);
+    color: var(--cream-text);
     text-decoration: none;
     font-size: 11px;
     letter-spacing: 0.18em;
@@ -423,12 +424,12 @@
   .location h2 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 36px; font-weight: 400; font-style: italic;
-    color: var(--cream); margin-bottom: 24px;
+    color: var(--cream-text); margin-bottom: 24px;
   }
   .location p {
-    color: var(--cream); font-size: 15px; line-height: 1.8; margin-bottom: 12px;
+    color: var(--cream-text); font-size: 15px; line-height: 1.8; margin-bottom: 12px;
   }
-  .location-details { color: var(--cream); font-size: 14px; }
+  .location-details { color: var(--cream-text); font-size: 14px; }
   .location-details a {
     color: inherit;
     text-decoration: underline;
@@ -537,7 +538,7 @@
   .newsletter-form input:focus { border-color: var(--sage); }
   .newsletter-form button {
     padding: 14px 28px;
-    background: var(--terra); color: var(--cream);
+    background: var(--terra); color: var(--cream-text);
     border: 2px dashed var(--terra);
     font-family: 'DM Sans', sans-serif;
     font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
@@ -570,7 +571,7 @@
     text-decoration: none; font-size: 13px; margin-bottom: 10px;
     transition: color 0.3s;
   }
-  .footer-col a:hover { color: var(--cream); }
+  .footer-col a:hover { color: var(--cream-text); }
   .footer-bottom {
     padding-top: 24px;
     display: flex; justify-content: space-between; align-items: center;
@@ -646,11 +647,11 @@
 
 <!-- Announcement Bar -->
 <div class="announcement">
-  <svg width="12" height="12" class="motif-inline" style="color: var(--cream)"><use href="#folk-star"/></svg>
+  <svg width="12" height="12" class="motif-inline" style="color: var(--cream-text)"><use href="#folk-star"/></svg>
   Free shipping on orders over $75
-  <svg width="12" height="12" class="motif-inline" style="color: var(--cream)"><use href="#folk-circle"/></svg>
+  <svg width="12" height="12" class="motif-inline" style="color: var(--cream-text)"><use href="#folk-circle"/></svg>
   Handmade in Chattanooga
-  <svg width="12" height="12" class="motif-inline" style="color: var(--cream)"><use href="#folk-star"/></svg>
+  <svg width="12" height="12" class="motif-inline" style="color: var(--cream-text)"><use href="#folk-star"/></svg>
 </div>
 
 <!-- Navigation -->
@@ -681,14 +682,14 @@
 <section class="hero">
   <!-- Background folk art motifs -->
   <div class="hero-motifs">
-    <svg width="80" height="80" style="top:10%; left:8%; color: var(--cream)"><use href="#folk-star"/></svg>
-    <svg width="50" height="50" style="top:60%; left:5%; color: var(--cream)"><use href="#folk-flower"/></svg>
-    <svg width="100" height="65" style="top:20%; right:6%; color: var(--cream)"><use href="#folk-cat"/></svg>
-    <svg width="40" height="40" style="bottom:15%; right:12%; color: var(--cream)"><use href="#folk-star"/></svg>
-    <svg width="35" height="35" style="bottom:25%; left:15%; color: var(--cream)"><use href="#folk-leaf"/></svg>
-    <svg width="60" height="60" style="top:55%; right:20%; color: var(--cream)"><use href="#folk-flower"/></svg>
-    <svg width="45" height="45" style="top:8%; right:30%; color: var(--cream)"><use href="#folk-circle"/></svg>
-    <svg width="30" height="30" style="bottom:10%; left:30%; color: var(--cream)"><use href="#folk-circle"/></svg>
+    <svg width="80" height="80" style="top:10%; left:8%; color: var(--cream-text)"><use href="#folk-star"/></svg>
+    <svg width="50" height="50" style="top:60%; left:5%; color: var(--cream-text)"><use href="#folk-flower"/></svg>
+    <svg width="100" height="65" style="top:20%; right:6%; color: var(--cream-text)"><use href="#folk-cat"/></svg>
+    <svg width="40" height="40" style="bottom:15%; right:12%; color: var(--cream-text)"><use href="#folk-star"/></svg>
+    <svg width="35" height="35" style="bottom:25%; left:15%; color: var(--cream-text)"><use href="#folk-leaf"/></svg>
+    <svg width="60" height="60" style="top:55%; right:20%; color: var(--cream-text)"><use href="#folk-flower"/></svg>
+    <svg width="45" height="45" style="top:8%; right:30%; color: var(--cream-text)"><use href="#folk-circle"/></svg>
+    <svg width="30" height="30" style="bottom:10%; left:30%; color: var(--cream-text)"><use href="#folk-circle"/></svg>
   </div>
 
   <!-- hero is now photo-only, no overlaid type -->
@@ -783,7 +784,7 @@
   <div class="container">
     <div class="location-inner">
       <div>
-        <div class="section-label" style="color: var(--cream); opacity: 0.5;">Visit Us</div>
+        <div class="section-label" style="color: var(--cream-text); opacity: 0.5;">Visit Us</div>
         <h2>Where to find us.</h2>
         <p>Shop our pieces in person or come say hello at our next pop-up event.</p>
         <div class="location-details">
@@ -824,7 +825,7 @@
 <footer>
   <div class="stitch-border-cream" style="margin-bottom: 40px;"></div>
   <div class="footer-motifs">
-    <svg width="60" height="60" style="color: var(--cream)"><use href="#folk-star"/></svg>
+    <svg width="60" height="60" style="color: var(--cream-text)"><use href="#folk-star"/></svg>
   </div>
   <div class="footer-top">
     <div class="footer-brand">

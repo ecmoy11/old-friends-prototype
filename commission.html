@@ -15,6 +15,7 @@
     --terra-dark: #7A0F26;
     --terra-light: #BE5C72;
     --cream: #EDE1C5;
+    --cream-text: #FFFAEE;
     --linen: #E2D5B7;
     --stone: #CFC1A3;
     --walnut: #5A4A3A;
@@ -160,7 +161,7 @@
   }
   .gallery-cap {
     position: absolute; left: 0; right: 0; bottom: 0;
-    background: rgba(106,70,48,0.9); color: var(--cream);
+    background: rgba(106,70,48,0.9); color: var(--cream-text);
     font-size: 11px; letter-spacing: 0.1em; padding: 10px 14px;
     transform: translateY(100%); transition: transform .35s ease;
   }
@@ -187,7 +188,7 @@
 
   /* ── INQUIRE ── */
   .inquire { padding: 90px 0; background: var(--brown); }
-  .inquire h2 { color: var(--cream); }
+  .inquire h2 { color: var(--cream-text); }
   .inquire .sub { text-align: center; color: var(--light-sage); font-size: 14px; margin-bottom: 40px; }
   .inquire-form { max-width: 520px; margin: 0 auto; display: grid; gap: 10px; }
   .inquire-form input, .inquire-form textarea {
@@ -195,21 +196,21 @@
     border: 2px dashed rgba(237,225,197,0.35);
     background: rgba(237,225,197,0.06);
     font-family: 'DM Sans', sans-serif; font-size: 13px;
-    color: var(--cream); outline: none;
+    color: var(--cream-text); outline: none;
   }
-  .inquire-form input::placeholder, .inquire-form textarea::placeholder { color: rgba(237,225,197,0.45); }
+  .inquire-form input::placeholder, .inquire-form textarea::placeholder { color: rgba(255, 250, 238,0.45); }
   .inquire-form input:focus, .inquire-form textarea:focus { border-color: var(--terra-light); }
   .inquire-form textarea { min-height: 130px; resize: vertical; }
   .inquire-form button {
     padding: 15px;
-    background: var(--terra); color: var(--cream);
+    background: var(--terra); color: var(--cream-text);
     border: 2px dashed var(--terra);
     font-family: 'DM Sans', sans-serif;
     font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
     cursor: pointer; transition: all 0.3s;
   }
   .inquire-form button:hover { background: var(--terra-dark); border-color: var(--terra-dark); }
-  .inquire-note { text-align: center; color: rgba(237,225,197,0.5); font-size: 12px; margin-top: 18px; }
+  .inquire-note { text-align: center; color: rgba(255, 250, 238,0.5); font-size: 12px; margin-top: 18px; }
 
   /* ── REVEALS ── */
   .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1); }
@@ -237,7 +238,7 @@
     text-decoration: none; font-size: 13px; margin-bottom: 10px;
     transition: color 0.3s;
   }
-  .footer-col a:hover { color: var(--cream); }
+  .footer-col a:hover { color: var(--cream-text); }
   .footer-bottom {
     padding-top: 24px;
     display: flex; justify-content: space-between; align-items: center;

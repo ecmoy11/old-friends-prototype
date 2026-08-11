@@ -15,6 +15,7 @@
     --terra-dark: #7A0F26;
     --terra-light: #BE5C72;
     --cream: #EDE1C5;
+    --cream-text: #FFFAEE;
     --linen: #E2D5B7;
     --stone: #CFC1A3;
     --walnut: #5A4A3A;
@@ -176,7 +177,7 @@
     font-weight: 400;
     font-size: clamp(24px, 3.4vw, 34px);
     line-height: 1.4;
-    color: var(--cream);
+    color: var(--cream-text);
     max-width: 720px;
     margin: 0 auto;
   }
@@ -231,10 +232,10 @@
     font-weight: 500;
     transition: all 0.3s;
   }
-  .btn-solid { background: var(--terra); color: var(--cream); border: 2px dashed var(--terra); }
+  .btn-solid { background: var(--terra); color: var(--cream-text); border: 2px dashed var(--terra); }
   .btn-solid:hover { background: var(--terra-dark); border-color: var(--terra-dark); }
   .btn-outline { border: 2px dashed var(--terra); color: var(--terra); }
-  .btn-outline:hover { background: var(--terra); color: var(--cream); }
+  .btn-outline:hover { background: var(--terra); color: var(--cream-text); }
 
   /* ── REVEALS ── */
   .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1); }
@@ -262,7 +263,7 @@
     text-decoration: none; font-size: 13px; margin-bottom: 10px;
     transition: color 0.3s;
   }
-  .footer-col a:hover { color: var(--cream); }
+  .footer-col a:hover { color: var(--cream-text); }
   .footer-bottom {
     padding-top: 24px;
     display: flex; justify-content: space-between; align-items: center;

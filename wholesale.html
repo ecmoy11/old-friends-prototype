@@ -15,6 +15,7 @@
     --terra-dark: #7A0F26;
     --terra-light: #BE5C72;
     --cream: #EDE1C5;
+    --cream-text: #FFFAEE;
     --linen: #E2D5B7;
     --stone: #CFC1A3;
     --walnut: #5A4A3A;
@@ -144,11 +145,11 @@
   .stockists h2 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 34px; font-weight: 400; font-style: italic;
-    color: var(--cream); margin-bottom: 14px;
+    color: var(--cream-text); margin-bottom: 14px;
   }
   .stockists .sub { color: var(--light-sage); font-size: 14px; margin-bottom: 40px; }
   .stockist-row { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
-  .stockist { color: var(--cream); font-size: 14px; }
+  .stockist { color: var(--cream-text); font-size: 14px; }
   .stockist strong {
     display: block;
     font-family: 'Cormorant Garamond', serif;
@@ -161,7 +162,7 @@
   .inquire h2 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 34px; font-weight: 400; font-style: italic;
-    text-align: center; margin-bottom: 14px; color: var(--cream);
+    text-align: center; margin-bottom: 14px; color: var(--cream-text);
   }
   .inquire .sub { text-align: center; color: var(--light-sage); font-size: 14px; margin-bottom: 40px; }
   .inquire-form { max-width: 520px; margin: 0 auto; display: grid; gap: 10px; }
@@ -170,21 +171,21 @@
     border: 2px dashed rgba(237,225,197,0.35);
     background: rgba(237,225,197,0.06);
     font-family: 'DM Sans', sans-serif; font-size: 13px;
-    color: var(--cream); outline: none;
+    color: var(--cream-text); outline: none;
   }
-  .inquire-form input::placeholder, .inquire-form textarea::placeholder { color: rgba(237,225,197,0.45); }
+  .inquire-form input::placeholder, .inquire-form textarea::placeholder { color: rgba(255, 250, 238,0.45); }
   .inquire-form input:focus, .inquire-form textarea:focus { border-color: var(--terra-light); }
   .inquire-form textarea { min-height: 110px; resize: vertical; }
   .inquire-form button {
     padding: 15px;
-    background: var(--terra); color: var(--cream);
+    background: var(--terra); color: var(--cream-text);
     border: 2px dashed var(--terra);
     font-family: 'DM Sans', sans-serif;
     font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
     cursor: pointer; transition: all 0.3s;
   }
   .inquire-form button:hover { background: var(--terra-dark); border-color: var(--terra-dark); }
-  .inquire-note { text-align: center; color: rgba(237,225,197,0.5); font-size: 12px; margin-top: 18px; }
+  .inquire-note { text-align: center; color: rgba(255, 250, 238,0.5); font-size: 12px; margin-top: 18px; }
 
   .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1); }
   .reveal.in-view { opacity: 1; transform: none; }
@@ -210,7 +211,7 @@
     text-decoration: none; font-size: 13px; margin-bottom: 10px;
     transition: color 0.3s;
   }
-  .footer-col a:hover { color: var(--cream); }
+  .footer-col a:hover { color: var(--cream-text); }
   .footer-bottom {
     padding-top: 24px;
     display: flex; justify-content: space-between; align-items: center;
