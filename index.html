@@ -512,8 +512,19 @@
   .newsletter {
     padding: 80px 0;
     text-align: center;
-    background: var(--white);
     position: relative;
+    background-color: var(--cream-text);
+    background-image:
+      repeating-linear-gradient(90deg, rgba(183,201,203,0.60) 0 3px, transparent 3px 6px),
+      repeating-linear-gradient(0deg,  rgba(183,201,203,0.60) 0 3px, transparent 3px 6px);
+  }
+  .newsletter-panel {
+    position: relative;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 44px 34px;
+    background: var(--cream-text);
+    border: 2px dashed rgba(106, 70, 48, 0.34);
   }
   .newsletter h2 {
     font-family: 'Cormorant Garamond', serif;
@@ -600,6 +611,7 @@
     .footer-top { grid-template-columns: 1fr; }
     .logo-img { height: 26px; }
     .split-content { padding: 50px 30px; }
+    .newsletter-panel { padding: 34px 20px; }
   }
 </style>
 </head>
@@ -811,11 +823,13 @@
 <!-- Newsletter -->
 <section id="newsletter" class="newsletter">
   <div class="container">
-    <h2>Stay in the loop.</h2>
-    <p>New drops, pop-up dates, and the occasional love letter.</p>
-    <div class="newsletter-form">
-      <input type="email" placeholder="Your email address">
-      <button type="submit">Sign Up</button>
+    <div class="newsletter-panel">
+      <h2>Stay in the loop.</h2>
+      <p>New drops, pop-up dates, and the occasional love letter.</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="Your email address">
+        <button type="submit">Sign Up</button>
+      </div>
     </div>
   </div>
 </section>

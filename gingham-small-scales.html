@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gingham &mdash; smaller scales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#FFFAEE;--dusty:#B7C9CB;--terra:#9E1431;--terra-dark:#7A0F26;--brown:#6A4630;--walnut:#5A4A3A;--stone:#CFC1A3}
+  *{box-sizing:border-box}
+  body{margin:0;background:#f2f2f0;font-family:'DM Sans',system-ui,sans-serif;color:#1a1a1a}
+  .chrome-head{padding:20px 26px 16px;border-bottom:1px solid #dcdcda;background:#fff}
+  .chrome-head h1{margin:0 0 4px;font-size:14px;font-weight:500}
+  .chrome-head .meta{font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#8a8a86;letter-spacing:.04em}
+  .note{margin-top:10px;font-size:11px;color:#77776f;line-height:1.5;max-width:760px}
+  .section-label{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+        color:#8a8a86;padding:24px 26px 10px}
+  .section-label b{color:#1a1a1a;font-weight:500}
+  .grid{display:grid;gap:16px;padding:0 26px 30px;grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+  .card{background:#fff;border:1px solid #dcdcda;display:flex;flex-direction:column;overflow:hidden}
+  .card-head{padding:11px 14px;border-bottom:1px solid #ececea;background:#fbfbfa;min-height:98px}
+  .card-head .n{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.08em;display:block;margin-bottom:3px}
+  .card-head .bet{font-size:11px;line-height:1.45;color:#77776f;margin:0}
+  .card-body{flex:1;display:flex}
+
+  .nl{flex:1;padding:54px 26px;text-align:center;position:relative;overflow:hidden;
+      display:flex;flex-direction:column;justify-content:center;min-height:300px}
+  .nl-inner{position:relative;z-index:2}
+  .nl h2{font-family:'Cormorant Garamond',serif;font-size:29px;font-weight:400;font-style:italic;margin:0 0 10px;color:var(--brown)}
+  .nl p{color:var(--walnut);font-size:13px;margin:0 0 26px;line-height:1.6}
+  .nl-form{display:flex;max-width:390px;margin:0 auto}
+  .nl-form input{flex:1;min-width:0;padding:13px 16px;border:2px dashed var(--stone);border-right:none;background:var(--cream);
+      font-family:'DM Sans',sans-serif;font-size:12px;color:var(--brown);outline:none;border-radius:4px 0 0 4px}
+  .nl-form input::placeholder{color:var(--stone)}
+  .nl-form button{padding:13px 22px;background:var(--terra);color:var(--cream);border:2px dashed var(--terra);
+      font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;
+      transition:all .3s;border-radius:0 4px 4px 0;white-space:nowrap}
+  .nl-form button:hover{background:var(--terra-dark);border-color:var(--terra-dark)}
+  .scale-tag{position:absolute;top:8px;right:10px;z-index:3;font-family:ui-monospace,Menlo,monospace;font-size:9px;
+      color:#8a8a86;background:rgba(255,255,255,.8);padding:2px 6px;letter-spacing:.05em}
+
+  /* 1:1 detail strip */
+  .strip{display:grid;gap:16px;padding:0 26px 44px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  .swatch{background:#fff;border:1px solid #dcdcda;padding:8px}
+  .swatch .sw-fill{height:150px}
+  .swatch span{display:block;margin-top:7px;font-family:ui-monospace,Menlo,monospace;font-size:9.5px;color:#77776f}
+</style></head>
+<body>
+<div class="chrome-head">
+  <h1>Testing: gingham weave at smaller scales</h1>
+  <div class="meta">5 variations &middot; cream #FFFAEE + dusty blue #B7C9CB &middot; original was a 10px cell</div>
+  <p class="note">As the cell shrinks the check stops reading as a pattern and starts reading as paper texture &mdash; which is why none of these need a cream halo behind the type the way the 10px version did. Contrast is tuned per scale: smaller cells need a touch more of it or they vanish, but too much and a fine check will shimmer when the page scrolls.</p>
+</div>
+
+<div class="section-label"><b>In context</b> &mdash; the full section</div>
+<div class="grid">
+  <div class="card">
+    <div class="card-head"><span class="n">S1 &middot; 3px micro-weave</span>
+      <p class="bet">Smallest that still reads as woven. At this scale it stops being a pattern and becomes a paper texture &mdash; you notice it as warmth, not as check. Needs the contrast up to survive.</p></div>
+    <div class="card-body"><div class="nl" style="background-color:#FFFAEE;background-image:repeating-linear-gradient(90deg,rgba(183,201,203,0.6) 0 3px,transparent 3px 6px),repeating-linear-gradient(0deg,rgba(183,201,203,0.6) 0 3px,transparent 3px 6px)">
+      <div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div>
+      <span class="scale-tag">3px</span>
+    </div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">S2 &middot; 4px linen check</span>
+      <p class="bet">The sweet spot in my view. Small enough to sit under type with zero scrim, big enough that you can still see it&rsquo;s a check if you lean in. Closest to a woven linen.</p></div>
+    <div class="card-body"><div class="nl" style="background-color:#FFFAEE;background-image:repeating-linear-gradient(90deg,rgba(183,201,203,0.52) 0 4px,transparent 4px 8px),repeating-linear-gradient(0deg,rgba(183,201,203,0.52) 0 4px,transparent 4px 8px)">
+      <div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div>
+      <span class="scale-tag">4px</span>
+    </div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">S3 &middot; 6px fine check</span>
+      <p class="bet">Half of the original 10px. Still clearly gingham from across the room, but no longer fights the headline. The most literal &ldquo;small gingham&rdquo; answer.</p></div>
+    <div class="card-body"><div class="nl" style="background-color:#FFFAEE;background-image:repeating-linear-gradient(90deg,rgba(183,201,203,0.45) 0 6px,transparent 6px 12px),repeating-linear-gradient(0deg,rgba(183,201,203,0.45) 0 6px,transparent 6px 12px)">
+      <div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div>
+      <span class="scale-tag">6px</span>
+    </div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">S4 &middot; 4px, blue ground</span>
+      <p class="bet">Same micro check, colors swapped &mdash; cream thread on a dusty blue field. Gives the section a color block while keeping the texture whisper-quiet.</p></div>
+    <div class="card-body"><div class="nl" style="background-color:#B7C9CB;background-image:repeating-linear-gradient(90deg,rgba(255,250,238,.50) 0 4px,transparent 4px 8px),repeating-linear-gradient(0deg,rgba(255,250,238,.50) 0 4px,transparent 4px 8px)">
+      <div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div>
+      <span class="scale-tag">4px,</span>
+    </div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">S5 &middot; 4px + windowpane</span>
+      <p class="bet">The swing. Micro check underneath, with a wider single line every 40px on top &mdash; a tattersall. The big grid gives the eye structure so the fine weave can stay very faint.</p></div>
+    <div class="card-body"><div class="nl" style="background-color:#FFFAEE;background-image:repeating-linear-gradient(90deg,rgba(183,201,203,0.42) 0 4px,transparent 4px 8px),repeating-linear-gradient(0deg,rgba(183,201,203,0.42) 0 4px,transparent 4px 8px),repeating-linear-gradient(90deg,rgba(183,201,203,.85) 0 1.5px,transparent 1.5px 40px),repeating-linear-gradient(0deg,rgba(183,201,203,.85) 0 1.5px,transparent 1.5px 40px)">
+      <div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div>
+      <span class="scale-tag">4px</span>
+    </div></div>
+  </div>
+</div>
+
+<div class="section-label"><b>The weave at 1:1</b> &mdash; same patterns, nothing on top</div>
+<div class="strip"><div class='swatch'><div class='sw-fill' style='background-color:#FFFAEE;background-image:repeating-linear-gradient(90deg,rgba(183,201,203,0.6) 0 3px,transparent 3px 6px),repeating-linear-gradient(0deg,rgba(183,201,203,0.6) 0 3px,transparent 3px 6px)'></div><span>S1 &middot; 3px micro-weave</span></div><div class='swatch'><div class='sw-fill' style='background-color:#FFFAEE;background-image:repeating-linear-gradient(90deg,rgba(183,201,203,0.52) 0 4px,transparent 4px 8px),repeating-linear-gradient(0deg,rgba(183,201,203,0.52) 0 4px,transparent 4px 8px)'></div><span>S2 &middot; 4px linen check</span></div><div class='swatch'><div class='sw-fill' style='background-color:#FFFAEE;background-image:repeating-linear-gradient(90deg,rgba(183,201,203,0.45) 0 6px,transparent 6px 12px),repeating-linear-gradient(0deg,rgba(183,201,203,0.45) 0 6px,transparent 6px 12px)'></div><span>S3 &middot; 6px fine check</span></div><div class='swatch'><div class='sw-fill' style='background-color:#B7C9CB;background-image:repeating-linear-gradient(90deg,rgba(255,250,238,.50) 0 4px,transparent 4px 8px),repeating-linear-gradient(0deg,rgba(255,250,238,.50) 0 4px,transparent 4px 8px)'></div><span>S4 &middot; 4px, blue ground</span></div><div class='swatch'><div class='sw-fill' style='background-color:#FFFAEE;background-image:repeating-linear-gradient(90deg,rgba(183,201,203,0.42) 0 4px,transparent 4px 8px),repeating-linear-gradient(0deg,rgba(183,201,203,0.42) 0 4px,transparent 4px 8px),repeating-linear-gradient(90deg,rgba(183,201,203,.85) 0 1.5px,transparent 1.5px 40px),repeating-linear-gradient(0deg,rgba(183,201,203,.85) 0 1.5px,transparent 1.5px 40px)'></div><span>S5 &middot; 4px + windowpane</span></div></div>
+
+</body></html>

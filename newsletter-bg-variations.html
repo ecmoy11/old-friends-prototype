@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Newsletter background — 5 variations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream-text:#FFFAEE;
+    --dusty:#B7C9CB;
+    --terra:#9E1431;
+    --terra-dark:#7A0F26;
+    --brown:#6A4630;
+    --walnut:#5A4A3A;
+    --stone:#CFC1A3;
+    --linen:#E2D5B7;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:#f2f2f0;
+    font-family:'DM Sans',system-ui,sans-serif;color:#1a1a1a;
+  }
+
+  /* ── comparison chrome (deliberately quiet) ── */
+  .chrome-head{
+    padding:22px 26px;border-bottom:1px solid #dcdcda;background:#fff;
+    position:sticky;top:0;z-index:10;
+  }
+  .chrome-head h1{margin:0 0 4px;font-size:14px;font-weight:500;letter-spacing:.01em}
+  .chrome-head .meta{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:#8a8a86;letter-spacing:.04em}
+  .swatches{display:flex;gap:14px;margin-top:12px;flex-wrap:wrap}
+  .sw{display:flex;align-items:center;gap:6px;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#8a8a86}
+  .sw i{width:14px;height:14px;border:1px solid #d2d2d0;display:block}
+
+  .section-label{
+    font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:#8a8a86;padding:20px 26px 10px;
+  }
+  .grid{
+    display:grid;gap:16px;padding:0 26px 40px;
+    grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+  }
+  .card{background:#fff;border:1px solid #dcdcda;display:flex;flex-direction:column;overflow:hidden}
+  .card-head{padding:11px 14px;border-bottom:1px solid #ececea;background:#fbfbfa}
+  .card-head .n{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.08em;color:#1a1a1a;display:block;margin-bottom:3px}
+  .card-head .bet{font-size:11px;line-height:1.45;color:#77776f;margin:0}
+  .card-body{flex:1;display:flex}
+
+  /* ── the newsletter block itself (shared across all 5) ── */
+  .nl{
+    flex:1;padding:54px 26px;text-align:center;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:center;min-height:280px;
+  }
+  .nl-inner{position:relative;z-index:2}
+  .nl h2{
+    font-family:'Cormorant Garamond',serif;font-size:29px;font-weight:400;font-style:italic;
+    margin:0 0 10px;color:var(--brown);
+  }
+  .nl p{color:var(--walnut);font-size:13px;margin:0 0 26px;line-height:1.6}
+  .nl-form{display:flex;max-width:400px;margin:0 auto}
+  .nl-form input{
+    flex:1;min-width:0;padding:13px 16px;
+    border:2px dashed var(--stone);border-right:none;background:#FFFAEE;
+    font-family:'DM Sans',sans-serif;font-size:12px;color:var(--brown);outline:none;
+    border-radius:4px 0 0 4px;
+  }
+  .nl-form input::placeholder{color:var(--stone)}
+  .nl-form button{
+    padding:13px 22px;background:var(--terra);color:var(--cream-text);
+    border:2px dashed var(--terra);font-family:'DM Sans',sans-serif;
+    font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;
+    transition:all .3s;border-radius:0 4px 4px 0;white-space:nowrap;
+  }
+  .nl-form button:hover{background:var(--terra-dark);border-color:var(--terra-dark)}
+
+  /* ═══ V1 — GINGHAM WEAVE ═══ */
+  .v1{
+    background-color:#FFFAEE;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(183,201,203,.40) 0 11px, transparent 11px 22px),
+      repeating-linear-gradient(0deg,  rgba(183,201,203,.40) 0 11px, transparent 11px 22px);
+  }
+  /* soften behind the copy so type stays legible */
+  .v1 .nl-inner::before{
+    content:'';position:absolute;inset:-22px -18px;z-index:-1;
+    background:radial-gradient(ellipse at center, rgba(255,250,238,.94) 42%, rgba(255,250,238,0) 78%);
+  }
+
+  /* ═══ V2 — QUILT BLOCK ═══ */
+  .v2{
+    background-color:#FFFAEE;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='%23B7C9CB'%3E%3Cpath d='M0 0h36v36H0z' opacity='.30'/%3E%3Cpath d='M36 36h36v36H36z' opacity='.30'/%3E%3Cpath d='M36 0l36 36H36z' opacity='.55'/%3E%3Cpath d='M36 72L0 36h36z' opacity='.55'/%3E%3C/g%3E%3Cg fill='none' stroke='%23FFFAEE' stroke-width='1.5' opacity='.7'%3E%3Cpath d='M0 36h72M36 0v72M0 0l72 72M72 0L0 72'/%3E%3C/g%3E%3C/svg%3E");
+    background-size:72px 72px;
+  }
+  .v2 .nl-inner{
+    background:rgba(255,250,238,.93);
+    padding:30px 22px;
+    border:2px dashed rgba(106,70,48,.35);
+    max-width:440px;margin:0 auto;
+  }
+
+  /* ═══ V3 — SCATTERED FOLK MOTIFS ═══ */
+  .v3{
+    background-color:#FFFAEE;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23B7C9CB' stroke-width='1.6' stroke-linecap='round' opacity='.6'%3E%3Cpath d='M28 26v16M20 34h16M22.5 28.5l11 11M33.5 28.5l-11 11'/%3E%3Ccircle cx='132' cy='40' r='7'/%3E%3Cpath d='M132 33v-6M132 47v6M125 40h-6M139 40h6'/%3E%3Cpath d='M60 118c6-9 16-9 22 0-6 9-16 9-22 0z'/%3E%3Cpath d='M71 109v18'/%3E%3Cpath d='M160 132v14M153 139h14M155 134l10 10M165 134l-10 10'/%3E%3Cpath d='M96 176c0-7 5-12 12-12-1 7-6 12-12 12z'/%3E%3Cpath d='M108 164c7 0 12 5 12 12-7 0-12-5-12-12z'/%3E%3Ccircle cx='40' cy='168' r='4.5'/%3E%3Ccircle cx='186' cy='88' r='3.5'/%3E%3Ccircle cx='10' cy='96' r='3.5'/%3E%3Cpath d='M96 62v12M90 68h12'/%3E%3C/g%3E%3C/svg%3E");
+    background-size:200px 200px;
+  }
+
+  /* ═══ V4 — STITCHED FRAME ═══ */
+  .v4{
+    background:#FFFAEE;
+    background-image:linear-gradient(180deg, rgba(183,201,203,.22), rgba(183,201,203,0) 55%);
+  }
+  .v4::before{
+    content:'';position:absolute;inset:14px;z-index:1;pointer-events:none;
+    border:2px dashed var(--dusty);
+  }
+  .v4::after{
+    content:'';position:absolute;inset:22px;z-index:1;pointer-events:none;
+    border:1px solid rgba(183,201,203,.55);
+  }
+  .v4 .corner{
+    position:absolute;z-index:1;width:34px;height:34px;color:var(--dusty);
+  }
+  .v4 .corner.tl{top:22px;left:22px}
+  .v4 .corner.tr{top:22px;right:22px;transform:scaleX(-1)}
+  .v4 .corner.bl{bottom:22px;left:22px;transform:scaleY(-1)}
+  .v4 .corner.br{bottom:22px;right:22px;transform:scale(-1)}
+
+  /* ═══ V5 — INVERTED SCALLOP WALLPAPER (the swing) ═══ */
+  .v5{
+    background-color:#B7C9CB;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='34' viewBox='0 0 60 34'%3E%3Cpath d='M0 34c0-16.6 6.7-30 15-30s15 13.4 15 30c0-16.6 6.7-30 15-30s15 13.4 15 30' fill='none' stroke='%23FFFAEE' stroke-width='2.2' opacity='.75'/%3E%3C/svg%3E");
+    background-size:60px 34px;
+  }
+  .v5 .nl-inner{
+    background:#FFFAEE;padding:32px 24px;max-width:440px;margin:0 auto;
+    box-shadow:0 12px 34px rgba(90,74,58,.18);
+  }
+</style>
+</head>
+<body>
+
+<div class="chrome-head">
+  <h1>Testing: “Stay in the loop” newsletter background</h1>
+  <div class="meta">5 variations · one feature · cream + dusty blue · Old Friends</div>
+  <div class="swatches">
+    <span class="sw"><i style="background:#FFFAEE"></i>#FFFAEE cream</span>
+    <span class="sw"><i style="background:#B7C9CB"></i>#B7C9CB dusty blue</span>
+    <span class="sw"><i style="background:#9E1431"></i>#9E1431 berry (button, unchanged)</span>
+  </div>
+</div>
+
+<div class="section-label">Background pattern</div>
+
+<div class="grid">
+
+  <!-- V1 -->
+  <div class="card">
+    <div class="card-head">
+      <span class="n">V1 · Gingham weave</span>
+      <p class="bet">The safe one. Fine woven check, the most literal “cottage textile.” Pattern is everywhere but quiet; a soft cream halo keeps the type readable.</p>
+    </div>
+    <div class="card-body">
+      <div class="nl v1">
+        <div class="nl-inner">
+          <h2>Stay in the loop.</h2>
+          <p>New drops, pop-up dates, and the occasional love letter.</p>
+          <div class="nl-form">
+            <input type="email" placeholder="Your email address">
+            <button type="submit">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- V2 -->
+  <div class="card">
+    <div class="card-head">
+      <span class="n">V2 · Quilt block</span>
+      <p class="bet">Loudest and most on-message: an actual patchwork quilt tile. Bold enough that the copy needs its own cream patch sitting on top, like a label stitched onto fabric.</p>
+    </div>
+    <div class="card-body">
+      <div class="nl v2">
+        <div class="nl-inner">
+          <h2>Stay in the loop.</h2>
+          <p>New drops, pop-up dates, and the occasional love letter.</p>
+          <div class="nl-form">
+            <input type="email" placeholder="Your email address">
+            <button type="submit">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- V3 -->
+  <div class="card">
+    <div class="card-head">
+      <span class="n">V3 · Scattered folk motifs</span>
+      <p class="bet">Sparse and hand-drawn — stars, buds, leaves floating on open cream. Reads as personality rather than texture, and needs no scrim behind the type.</p>
+    </div>
+    <div class="card-body">
+      <div class="nl v3">
+        <div class="nl-inner">
+          <h2>Stay in the loop.</h2>
+          <p>New drops, pop-up dates, and the occasional love letter.</p>
+          <div class="nl-form">
+            <input type="email" placeholder="Your email address">
+            <button type="submit">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- V4 -->
+  <div class="card">
+    <div class="card-head">
+      <span class="n">V4 · Stitched frame</span>
+      <p class="bet">Pattern lives at the edges, not under the words. A double embroidery-hoop border with corner sprigs plus a faint blue wash from the top. Most restrained; most legible.</p>
+    </div>
+    <div class="card-body">
+      <div class="nl v4">
+        <svg class="corner tl" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 20c0-10 8-18 18-18"/><path d="M9 13c4-1 7 2 6 6-4 1-7-2-6-6z"/><path d="M15 19l7 7"/><circle cx="24" cy="28" r="2.4"/></svg>
+        <svg class="corner tr" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 20c0-10 8-18 18-18"/><path d="M9 13c4-1 7 2 6 6-4 1-7-2-6-6z"/><path d="M15 19l7 7"/><circle cx="24" cy="28" r="2.4"/></svg>
+        <svg class="corner bl" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 20c0-10 8-18 18-18"/><path d="M9 13c4-1 7 2 6 6-4 1-7-2-6-6z"/><path d="M15 19l7 7"/><circle cx="24" cy="28" r="2.4"/></svg>
+        <svg class="corner br" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 20c0-10 8-18 18-18"/><path d="M9 13c4-1 7 2 6 6-4 1-7-2-6-6z"/><path d="M15 19l7 7"/><circle cx="24" cy="28" r="2.4"/></svg>
+        <div class="nl-inner">
+          <h2>Stay in the loop.</h2>
+          <p>New drops, pop-up dates, and the occasional love letter.</p>
+          <div class="nl-form">
+            <input type="email" placeholder="Your email address">
+            <button type="submit">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- V5 -->
+  <div class="card">
+    <div class="card-head">
+      <span class="n">V5 · Inverted scallop (the swing)</span>
+      <p class="bet">Flips the ratio: dusty blue becomes the field, cream becomes the line. Vintage scalloped wallpaper with the sign-up floating on a cream card. Turns the section into a colored band that breaks up a long cream page.</p>
+    </div>
+    <div class="card-body">
+      <div class="nl v5">
+        <div class="nl-inner">
+          <h2>Stay in the loop.</h2>
+          <p>New drops, pop-up dates, and the occasional love letter.</p>
+          <div class="nl-form">
+            <input type="email" placeholder="Your email address">
+            <button type="submit">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

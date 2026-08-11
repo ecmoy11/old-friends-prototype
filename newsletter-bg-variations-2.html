@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Newsletter background &mdash; round 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--cream:#FFFAEE;--dusty:#B7C9CB;--terra:#9E1431;--terra-dark:#7A0F26;--brown:#6A4630;--walnut:#5A4A3A;--stone:#CFC1A3}
+  *{box-sizing:border-box}
+  body{margin:0;background:#f2f2f0;font-family:'DM Sans',system-ui,sans-serif;color:#1a1a1a}
+  .chrome-head{padding:20px 26px 16px;border-bottom:1px solid #dcdcda;background:#fff}
+  .chrome-head h1{margin:0 0 4px;font-size:14px;font-weight:500}
+  .chrome-head .meta{font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#8a8a86;letter-spacing:.04em}
+  .swatches{display:flex;gap:14px;margin-top:11px;flex-wrap:wrap}
+  .sw{display:flex;align-items:center;gap:6px;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#8a8a86}
+  .sw i{width:14px;height:14px;border:1px solid #d2d2d0;display:block}
+  nav{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid #dcdcda;padding:0 26px;display:flex;gap:2px}
+  nav a{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+        color:#77776f;text-decoration:none;padding:12px 13px;border-bottom:2px solid transparent}
+  nav a:hover{color:#1a1a1a;border-bottom-color:#c8c8c4}
+  .section-label{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+        color:#8a8a86;padding:26px 26px 10px;scroll-margin-top:44px}
+  .section-label b{color:#1a1a1a;font-weight:500}
+  .grid{display:grid;gap:16px;padding:0 26px 30px;grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+  .card{background:#fff;border:1px solid #dcdcda;display:flex;flex-direction:column;overflow:hidden}
+  .card-head{padding:11px 14px;border-bottom:1px solid #ececea;background:#fbfbfa;min-height:104px}
+  .card-head .n{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.08em;display:block;margin-bottom:3px}
+  .card-head .bet{font-size:11px;line-height:1.45;color:#77776f;margin:0}
+  .card-body{flex:1;display:flex}
+
+  .nl{flex:1;padding:54px 26px;text-align:center;position:relative;overflow:hidden;
+      display:flex;flex-direction:column;justify-content:center;min-height:300px}
+  .nl-inner{position:relative;z-index:2}
+  .nl h2{font-family:'Cormorant Garamond',serif;font-size:29px;font-weight:400;font-style:italic;margin:0 0 10px;color:var(--brown)}
+  .nl p{color:var(--walnut);font-size:13px;margin:0 0 26px;line-height:1.6}
+  .nl-form{display:flex;max-width:390px;margin:0 auto}
+  .nl-form input{flex:1;min-width:0;padding:13px 16px;border:2px dashed var(--stone);border-right:none;background:var(--cream);
+      font-family:'DM Sans',sans-serif;font-size:12px;color:var(--brown);outline:none;border-radius:4px 0 0 4px}
+  .nl-form input::placeholder{color:var(--stone)}
+  .nl-form button{padding:13px 22px;background:var(--terra);color:var(--cream);border:2px dashed var(--terra);
+      font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;
+      transition:all .3s;border-radius:0 4px 4px 0;white-space:nowrap}
+  .nl-form button:hover{background:var(--terra-dark);border-color:var(--terra-dark)}
+  .patch{position:relative;z-index:2;background:rgba(255,250,238,.95);padding:28px 22px;max-width:430px;margin:0 auto}
+  .patch--stitched{border:2px dashed rgba(106,70,48,.32)}
+  .patch--basted{border:2px dashed rgba(106,70,48,.32);transform:rotate(-.7deg);box-shadow:0 8px 24px rgba(90,74,58,.13)}
+
+  /* ── A · gingham ── */
+  .a1{background-color:var(--cream);background-image:
+      repeating-linear-gradient(90deg,rgba(183,201,203,.38) 0 10px,transparent 10px 20px),
+      repeating-linear-gradient(0deg,rgba(183,201,203,.38) 0 10px,transparent 10px 20px)}
+  .a1 .nl-inner::before,.a4 .nl-inner::before{content:'';position:absolute;inset:-24px -20px;z-index:-1;
+      background:radial-gradient(ellipse at center,rgba(255,250,238,.95) 40%,rgba(255,250,238,0) 76%)}
+  .a2{background-color:var(--cream);background-image:
+      repeating-linear-gradient(90deg,rgba(183,201,203,.62) 0 30px,transparent 30px 60px),
+      repeating-linear-gradient(0deg,rgba(183,201,203,.62) 0 30px,transparent 30px 60px)}
+  .a3{background-color:var(--cream)}
+  .a3::before,.a3::after{content:'';position:absolute;left:0;right:0;height:46px;z-index:1;pointer-events:none;background-image:
+      repeating-linear-gradient(90deg,rgba(183,201,203,.55) 0 12px,transparent 12px 24px),
+      repeating-linear-gradient(0deg,rgba(183,201,203,.55) 0 12px,transparent 12px 24px)}
+  .a3::before{top:0}.a3::after{bottom:0}
+  .a4{background-color:var(--cream)}
+  .a4::before{content:'';position:absolute;inset:-40%;z-index:0;transform:rotate(45deg);background-image:
+      repeating-linear-gradient(90deg,rgba(183,201,203,.42) 0 13px,transparent 13px 26px),
+      repeating-linear-gradient(0deg,rgba(183,201,203,.42) 0 13px,transparent 13px 26px)}
+  .a5{background-color:var(--cream)}
+  .a5::before{content:'';position:absolute;inset:0;z-index:0;background-image:
+      repeating-linear-gradient(90deg,rgba(183,201,203,.80) 0 14px,transparent 14px 28px),
+      repeating-linear-gradient(0deg,rgba(183,201,203,.80) 0 14px,transparent 14px 28px);
+      -webkit-mask-image:radial-gradient(ellipse 62% 72% at 50% 50%,transparent 18%,#000 88%);
+      mask-image:radial-gradient(ellipse 62% 72% at 50% 50%,transparent 18%,#000 88%)}
+
+  /* ── B · stitched plus grid ── */
+  .b1{background-color:var(--cream);background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27120%27%20height%3D%27120%27%20viewBox%3D%270%200%20120%20120%27%3E%3Cg%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%271.5%27%20fill%3D%27none%27%20stroke-linecap%3D%27round%27%20opacity%3D%27.62%27%3E%3Cpath%20d%3D%27M0%2030.5%20C30%2028.8%2C%2090%2032.2%2C%20120%2029.6%27%2F%3E%3Cpath%20d%3D%27M0%2090%20C30%2091.6%2C%2090%2088.4%2C%20120%2090.8%27%2F%3E%3Cpath%20d%3D%27M30.5%200%20C28.9%2030%2C%2032%2090%2C%2029.7%20120%27%2F%3E%3Cpath%20d%3D%27M90%200%20C91.5%2030%2C%2088.6%2090%2C%2090.6%20120%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2830%2C30%29%20rotate%280%29%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-8.0%200%20H7.4%27%2F%3E%3Cpath%20d%3D%27M0%20-7.4%20V8.0%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2890%2C30%29%20rotate%28-7%29%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-7.0%200%20H8.2%27%2F%3E%3Cpath%20d%3D%27M0%20-8.2%20V7.0%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2830%2C90%29%20rotate%286%29%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-8.4%200%20H7.0%27%2F%3E%3Cpath%20d%3D%27M0%20-7.0%20V8.4%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2890%2C90%29%20rotate%28-3%29%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-7.4%200%20H8.0%27%2F%3E%3Cpath%20d%3D%27M0%20-8.0%20V7.4%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");background-size:120px 120px}
+  .b2{background-color:var(--dusty);background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27120%27%20height%3D%27120%27%20viewBox%3D%270%200%20120%20120%27%3E%3Cg%20stroke%3D%27%23FFFAEE%27%20stroke-width%3D%271.5%27%20fill%3D%27none%27%20stroke-linecap%3D%27round%27%20opacity%3D%27.62%27%3E%3Cpath%20d%3D%27M0%2030.5%20C30%2028.8%2C%2090%2032.2%2C%20120%2029.6%27%2F%3E%3Cpath%20d%3D%27M0%2090%20C30%2091.6%2C%2090%2088.4%2C%20120%2090.8%27%2F%3E%3Cpath%20d%3D%27M30.5%200%20C28.9%2030%2C%2032%2090%2C%2029.7%20120%27%2F%3E%3Cpath%20d%3D%27M90%200%20C91.5%2030%2C%2088.6%2090%2C%2090.6%20120%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2830%2C30%29%20rotate%280%29%27%20stroke%3D%27%23FFFAEE%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-8.0%200%20H7.4%27%2F%3E%3Cpath%20d%3D%27M0%20-7.4%20V8.0%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2890%2C30%29%20rotate%28-7%29%27%20stroke%3D%27%23FFFAEE%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-7.0%200%20H8.2%27%2F%3E%3Cpath%20d%3D%27M0%20-8.2%20V7.0%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2830%2C90%29%20rotate%286%29%27%20stroke%3D%27%23FFFAEE%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-8.4%200%20H7.0%27%2F%3E%3Cpath%20d%3D%27M0%20-7.0%20V8.4%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2890%2C90%29%20rotate%28-3%29%27%20stroke%3D%27%23FFFAEE%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-7.4%200%20H8.0%27%2F%3E%3Cpath%20d%3D%27M0%20-8.0%20V7.4%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");background-size:120px 120px}
+  .b3{background-color:var(--cream);background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27120%27%20height%3D%27120%27%20viewBox%3D%270%200%20120%20120%27%3E%3Cg%20transform%3D%27translate%2830%2C30%29%20rotate%280%29%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%272.6%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-8.0%200%20H7.4%27%2F%3E%3Cpath%20d%3D%27M0%20-7.4%20V8.0%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2890%2C30%29%20rotate%28-7%29%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%272.6%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-7.0%200%20H8.2%27%2F%3E%3Cpath%20d%3D%27M0%20-8.2%20V7.0%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2830%2C90%29%20rotate%286%29%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%272.6%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-8.4%200%20H7.0%27%2F%3E%3Cpath%20d%3D%27M0%20-7.0%20V8.4%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2890%2C90%29%20rotate%28-3%29%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%272.6%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-7.4%200%20H8.0%27%2F%3E%3Cpath%20d%3D%27M0%20-8.0%20V7.4%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");background-size:120px 120px}
+  .b4{background-color:var(--terra);background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27120%27%20height%3D%27120%27%20viewBox%3D%270%200%20120%20120%27%3E%3Cg%20stroke%3D%27%23FFFAEE%27%20stroke-width%3D%271.5%27%20fill%3D%27none%27%20stroke-linecap%3D%27round%27%20opacity%3D%27.62%27%3E%3Cpath%20d%3D%27M0%2030.5%20C30%2028.8%2C%2090%2032.2%2C%20120%2029.6%27%2F%3E%3Cpath%20d%3D%27M0%2090%20C30%2091.6%2C%2090%2088.4%2C%20120%2090.8%27%2F%3E%3Cpath%20d%3D%27M30.5%200%20C28.9%2030%2C%2032%2090%2C%2029.7%20120%27%2F%3E%3Cpath%20d%3D%27M90%200%20C91.5%2030%2C%2088.6%2090%2C%2090.6%20120%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2830%2C30%29%20rotate%280%29%27%20stroke%3D%27%23FFFAEE%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-8.0%200%20H7.4%27%2F%3E%3Cpath%20d%3D%27M0%20-7.4%20V8.0%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2890%2C30%29%20rotate%28-7%29%27%20stroke%3D%27%23FFFAEE%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-7.0%200%20H8.2%27%2F%3E%3Cpath%20d%3D%27M0%20-8.2%20V7.0%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2830%2C90%29%20rotate%286%29%27%20stroke%3D%27%23FFFAEE%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-8.4%200%20H7.0%27%2F%3E%3Cpath%20d%3D%27M0%20-7.0%20V8.4%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2890%2C90%29%20rotate%28-3%29%27%20stroke%3D%27%23FFFAEE%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-7.4%200%20H8.0%27%2F%3E%3Cpath%20d%3D%27M0%20-8.0%20V7.4%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");background-size:120px 120px}
+  .b5{background-color:var(--cream);background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27120%27%20height%3D%27120%27%20viewBox%3D%270%200%20120%20120%27%3E%3Cg%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%271.3%27%20fill%3D%27none%27%20stroke-linecap%3D%27round%27%20opacity%3D%27.62%27%3E%3Cpath%20d%3D%27M0%2030.5%20C30%2028.8%2C%2090%2032.2%2C%20120%2029.6%27%2F%3E%3Cpath%20d%3D%27M0%2090%20C30%2091.6%2C%2090%2088.4%2C%20120%2090.8%27%2F%3E%3Cpath%20d%3D%27M30.5%200%20C28.9%2030%2C%2032%2090%2C%2029.7%20120%27%2F%3E%3Cpath%20d%3D%27M90%200%20C91.5%2030%2C%2088.6%2090%2C%2090.6%20120%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2830%2C30%29%20rotate%280%29%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%272.0%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-8.0%200%20H7.4%27%2F%3E%3Cpath%20d%3D%27M0%20-7.4%20V8.0%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2890%2C30%29%20rotate%28-7%29%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%272.0%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-7.0%200%20H8.2%27%2F%3E%3Cpath%20d%3D%27M0%20-8.2%20V7.0%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2830%2C90%29%20rotate%286%29%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%272.0%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-8.4%200%20H7.0%27%2F%3E%3Cpath%20d%3D%27M0%20-7.0%20V8.4%27%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%27translate%2890%2C90%29%20rotate%28-3%29%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%272.0%27%20stroke-linecap%3D%27round%27%3E%3Cpath%20d%3D%27M-7.4%200%20H8.0%27%2F%3E%3Cpath%20d%3D%27M0%20-8.0%20V7.4%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");background-size:72px 72px}
+
+  /* ── C · ogee block print ── */
+  .c1{background-color:var(--cream);background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27100%27%20height%3D%27140%27%20viewBox%3D%270%200%20100%20140%27%3E%3Cpath%20d%3D%27M50%200%20C90%2026%2C%20100%2054%2C%20100%2070%20C100%2086%2C%2090%20114%2C%2050%20140%20C10%20114%2C%200%2086%2C%200%2070%20C0%2054%2C%2010%2026%2C%2050%200%20Z%27%20fill%3D%27%23B7C9CB%27%2F%3E%3Cg%20transform%3D%27translate%2850%2C74%29%27%20fill%3D%27%23FFFAEE%27%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-104%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-78%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-52%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-26%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%280%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2826%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2852%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2878%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28104%29%27%2F%3E%3Ccircle%20cx%3D%270%27%20cy%3D%270%27%20r%3D%275.4%27%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%27%23FFFAEE%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2712%27%20r%3D%273%27%2F%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%27128%27%20r%3D%273%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");background-size:100px 140px}
+  .c2{background-color:var(--dusty);background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27100%27%20height%3D%27140%27%20viewBox%3D%270%200%20100%20140%27%3E%3Cpath%20d%3D%27M50%200%20C90%2026%2C%20100%2054%2C%20100%2070%20C100%2086%2C%2090%20114%2C%2050%20140%20C10%20114%2C%200%2086%2C%200%2070%20C0%2054%2C%2010%2026%2C%2050%200%20Z%27%20fill%3D%27%23FFFAEE%27%2F%3E%3Cg%20transform%3D%27translate%2850%2C74%29%27%20fill%3D%27%23B7C9CB%27%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-104%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-78%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-52%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-26%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%280%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2826%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2852%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2878%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28104%29%27%2F%3E%3Ccircle%20cx%3D%270%27%20cy%3D%270%27%20r%3D%275.4%27%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%27%23B7C9CB%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2712%27%20r%3D%273%27%2F%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%27128%27%20r%3D%273%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");background-size:100px 140px}
+  .c3{background-color:var(--cream);background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27100%27%20height%3D%27140%27%20viewBox%3D%270%200%20100%20140%27%3E%3Cpath%20d%3D%27M50%200%20C90%2026%2C%20100%2054%2C%20100%2070%20C100%2086%2C%2090%20114%2C%2050%20140%20C10%20114%2C%200%2086%2C%200%2070%20C0%2054%2C%2010%2026%2C%2050%200%20Z%27%20fill%3D%27none%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%272.0%27%2F%3E%3Cg%20transform%3D%27translate%2850%2C74%29%27%20fill%3D%27none%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%271.5%27%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-104%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-78%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-52%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-26%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%280%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2826%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2852%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2878%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28104%29%27%2F%3E%3Ccircle%20cx%3D%270%27%20cy%3D%270%27%20r%3D%275.4%27%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%27none%27%20stroke%3D%27%23B7C9CB%27%20stroke-width%3D%271.5%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2712%27%20r%3D%273%27%2F%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%27128%27%20r%3D%273%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");background-size:100px 140px}
+  .c4{background-color:var(--cream);background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27100%27%20height%3D%27140%27%20viewBox%3D%270%200%20100%20140%27%3E%3Cpath%20d%3D%27M50%200%20C90%2026%2C%20100%2054%2C%20100%2070%20C100%2086%2C%2090%20114%2C%2050%20140%20C10%20114%2C%200%2086%2C%200%2070%20C0%2054%2C%2010%2026%2C%2050%200%20Z%27%20fill%3D%27%23B7C9CB%27%2F%3E%3Cg%20transform%3D%27translate%2850%2C74%29%27%20fill%3D%27%23FFFAEE%27%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-104%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-78%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-52%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-26%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%280%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2826%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2852%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2878%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28104%29%27%2F%3E%3Ccircle%20cx%3D%270%27%20cy%3D%270%27%20r%3D%275.4%27%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%27%23FFFAEE%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2712%27%20r%3D%273%27%2F%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%27128%27%20r%3D%273%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");background-size:172px 240px}
+  .c5{background-color:var(--cream);padding-bottom:96px}
+  .c5::after{content:'';position:absolute;left:0;right:0;bottom:0;height:112px;z-index:1;pointer-events:none;
+      background-color:var(--cream);background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27100%27%20height%3D%27140%27%20viewBox%3D%270%200%20100%20140%27%3E%3Cpath%20d%3D%27M50%200%20C90%2026%2C%20100%2054%2C%20100%2070%20C100%2086%2C%2090%20114%2C%2050%20140%20C10%20114%2C%200%2086%2C%200%2070%20C0%2054%2C%2010%2026%2C%2050%200%20Z%27%20fill%3D%27%23B7C9CB%27%2F%3E%3Cg%20transform%3D%27translate%2850%2C74%29%27%20fill%3D%27%23FFFAEE%27%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-104%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-78%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-52%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28-26%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%280%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2826%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2852%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%2878%29%27%2F%3E%3Cellipse%20cx%3D%270%27%20cy%3D%27-15%27%20rx%3D%274.2%27%20ry%3D%2714%27%20transform%3D%27rotate%28104%29%27%2F%3E%3Ccircle%20cx%3D%270%27%20cy%3D%270%27%20r%3D%275.4%27%2F%3E%3C%2Fg%3E%3Cg%20fill%3D%27%23FFFAEE%27%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%2712%27%20r%3D%273%27%2F%3E%3Ccircle%20cx%3D%2750%27%20cy%3D%27128%27%20r%3D%273%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");background-size:100px 140px;background-position:center bottom;
+      border-top:2px dashed rgba(183,201,203,.9)}
+</style></head>
+<body>
+<div class="chrome-head">
+  <h1>Testing: &ldquo;Stay in the loop&rdquo; background &mdash; round 2</h1>
+  <div class="meta">3 patterns &middot; 5 variations each &middot; cream #FFFAEE + dusty blue #B7C9CB</div>
+  <div class="swatches">
+    <span class="sw"><i style="background:#FFFAEE"></i>#FFFAEE cream</span>
+    <span class="sw"><i style="background:#B7C9CB"></i>#B7C9CB dusty blue</span>
+    <span class="sw"><i style="background:#9E1431"></i>#9E1431 berry</span>
+    <span class="sw"><i style="background:#6A4630"></i>#6A4630 brown (type)</span>
+  </div>
+</div>
+<nav><a href="#a">A &middot; Gingham</a><a href="#b">B &middot; Stitched plus grid</a><a href="#c">C &middot; Ogee block print</a></nav>
+
+<div class="section-label" id="a"><b>A &middot; Gingham weave</b> &mdash; five ways to run the check</div>
+<div class="grid">
+  <div class="card">
+    <div class="card-head"><span class="n">A1 &middot; Fine check</span>
+      <p class="bet">Baseline. 10px weave at low contrast, running everywhere. Needs a soft cream halo behind the copy &mdash; at this scale the check reads as static under type.</p></div>
+    <div class="card-body"><div class="nl a1"><div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">A2 &middot; Big picnic check</span>
+      <p class="bet">Scaled to 30px with the contrast up. Confident and tablecloth-y. Squares are large enough to read as blocks rather than noise, so the type sits straight on it with no scrim.</p></div>
+    <div class="card-body"><div class="nl a2"><div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">A3 &middot; Gingham hem</span>
+      <p class="bet">Check only along the top and bottom edges, like the hem of a tablecloth. The middle stays clean cream so nothing competes with the sign-up.</p></div>
+    <div class="card-body"><div class="nl a3"><div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">A4 &middot; Cut on the bias</span>
+      <p class="bet">Same weave rotated 45&deg;. Diagonal reads as fabric grain rather than graph paper and softens the grid&rsquo;s rigidity &mdash; a sewing-room detail more than a pattern.</p></div>
+    <div class="card-body"><div class="nl a4"><div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">A5 &middot; Dissolving check</span>
+      <p class="bet">The swing. Strongest weave of the set, masked so it fades to nothing behind the words. Full pattern at the edges, clean cream where the type lives &mdash; legibility without faking it.</p></div>
+    <div class="card-body"><div class="nl a5"><div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+</div>
+
+<div class="section-label" id="b"><b>B &middot; Stitched plus grid</b> &mdash; from your first inspo: hand-drawn lattice, plus at each intersection</div>
+<div class="grid">
+  <div class="card">
+    <div class="card-head"><span class="n">B1 &middot; Blue grid on cream</span>
+      <p class="bet">Your inspo translated straight into the palette: hand-drawn grid, plus at every intersection, blue on cream. Light and quiet &mdash; sits closest to the rest of the page.</p></div>
+    <div class="card-body"><div class="nl b1"><div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">B2 &middot; Cream grid on blue</span>
+      <p class="bet">The inspo&rsquo;s actual tonal relationship &mdash; light marks on a colored ground. Blue does the work, cream is the thread. Reads as a real piece of cloth rather than a texture.</p></div>
+    <div class="card-body"><div class="nl b2"><div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">B3 &middot; Plus marks only</span>
+      <p class="bet">Grid lines removed, just the stitches floating on cream. Most restrained of the three; the plusses read as scattered hand-sewn tacks instead of a lattice.</p></div>
+    <div class="card-body"><div class="nl b3"><div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">B4 &middot; Cream on berry</span>
+      <p class="bet">Closest to the inspo&rsquo;s actual coloring, with berry standing in for the rust. Bold &mdash; the copy moves onto a cream patch so the berry button still works against it.</p></div>
+    <div class="card-body"><div class="nl b4"><div class="patch patch--stitched"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">B5 &middot; Basted label</span>
+      <p class="bet">The swing. Tight 72px grid edge to edge, with the sign-up on a cream patch tacked on at a slight angle, like a label basted onto the cloth before it&rsquo;s sewn down.</p></div>
+    <div class="card-body"><div class="nl b5"><div class="patch patch--basted"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+</div>
+
+<div class="section-label" id="c"><b>C &middot; Ogee block print</b> &mdash; from your second inspo: lozenge lattice with a fanned palmette</div>
+<div class="grid">
+  <div class="card">
+    <div class="card-head"><span class="n">C1 &middot; Blue ogee on cream</span>
+      <p class="bet">Your second inspo in the palette: ogee lattice with a fanned palmette in each lozenge. Blue shapes, cream ground and cream fans. Reads as vintage block-print wallpaper.</p></div>
+    <div class="card-body"><div class="nl c1"><div class="patch"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">C2 &middot; Cream ogee on blue</span>
+      <p class="bet">Inverted to match the inspo&rsquo;s tonality &mdash; colored ground, light lattice. Richer and more enveloping; turns the section into a distinct band on the page.</p></div>
+    <div class="card-body"><div class="nl c2"><div class="patch"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">C3 &middot; Ogee in outline</span>
+      <p class="bet">Linework only, no fills. Same motif at a whisper &mdash; keeps the shape language without the weight, so the copy can sit right on it.</p></div>
+    <div class="card-body"><div class="nl c3"><div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">C4 &middot; Oversized ogee</span>
+      <p class="bet">Scaled up to ~170px so only a few repeats show. Stops reading as pattern and starts reading as a graphic &mdash; the boldest use of the motif.</p></div>
+    <div class="card-body"><div class="nl c4"><div class="patch"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="n">C5 &middot; Ogee valance</span>
+      <p class="bet">The swing. Plain cream for the copy, with a band of ogee across the bottom like a pelmet or the printed border of a curtain. Pattern as an edge, not a field.</p></div>
+    <div class="card-body"><div class="nl c5"><div class="nl-inner"><h2>Stay in the loop.</h2>
+        <p>New drops, pop-up dates, and the occasional love letter.</p>
+        <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div></div>
+  </div>
+</div>
+
+</body></html>
