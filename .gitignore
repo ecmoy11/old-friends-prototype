@@ -25,3 +25,4 @@ _to_delete/
 # Purchased font set -- only the two webfont files in fonts/ are published.
 # The desktop OTF/TTF are licensed for local use, not for serving.
 fonts/Le-Studio-Nocturne-Nostalgic-Set/
+fonts/LeStudioNocturne-Bold.woff2
