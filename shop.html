@@ -10,7 +10,8 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
   /* ── DISPLAY SCRIPT ────────────────────────────────────────────────
-     Italianno is served from this repo, not from Google. It is the most
+     Le Studio Nocturne is the display face; Italianno stays behind it as
+     the fallback, served from this repo rather than from Google. It is the most
      visible type on the site, and routing it through a third party meant
      that on a phone it could quietly fail and fall through to whatever
      the OS calls "cursive" -- Snell Roundhand on iOS, something else on
@@ -19,6 +20,20 @@
 
      To switch to Le Studio Nocturne once you own it: drop the woff2 in
      this folder and paste the @font-face from fonts/README.txt below. */
+  /* Le Studio Nocturne -- licensed (PeachCreme). Only these two webfont
+     files are published; the desktop OTF/TTF in the purchased set are
+     git-ignored, since serving those publicly is redistribution rather
+     than embedding. */
+  @font-face {
+    font-family: 'Le Studio Nocturne';
+    src: url('fonts/LeStudioNocturne-Standard.woff2') format('woff2');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Le Studio Nocturne';
+    src: url('fonts/LeStudioNocturne-Bold.woff2') format('woff2');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
   @font-face {
     font-family: 'Italianno';
     src: url('fonts/italianno-latin-400.woff2') format('woff2');
@@ -828,6 +843,13 @@
     background: currentColor; opacity: 0.42;
   }
   .announcement .motif-inline { display: none; }
+
+  /* Le Studio Nocturne sets about a quarter wider than the Italianno it
+     replaced, so on a phone the section head no longer fits on one line
+     beside "View all". Let the row wrap rather than squeezing either. */
+  @media (max-width: 700px) {
+    .featured-header { flex-wrap: wrap; gap: 12px; }
+  }
 </style>
 
 <!-- Collection -->

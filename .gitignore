@@ -21,3 +21,7 @@ _to_delete/
 # local safety copies made before edits
 *.bak
 *.bak[0-9]
+
+# Purchased font set -- only the two webfont files in fonts/ are published.
+# The desktop OTF/TTF are licensed for local use, not for serving.
+fonts/Le-Studio-Nocturne-Nostalgic-Set/
