@@ -564,53 +564,6 @@
   }
 
   /* ── NEWSLETTER ── */
-  .newsletter {
-    padding: 80px 0;
-    text-align: center;
-    position: relative;
-    background-color: var(--brown);
-  }
-  .newsletter-panel {
-    position: relative;
-    max-width: 520px;
-    margin: 0 auto;
-    padding: 44px 34px;
-    background: var(--cream-light);
-    border: 2px dashed rgba(106, 70, 48, 0.34);
-  }
-  .newsletter h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px; font-weight: 400; font-style: italic;
-    margin-bottom: 12px;
-  }
-  .newsletter p {
-    color: var(--walnut); font-size: 14px; margin-bottom: 30px;
-  }
-  .newsletter-form {
-    display: flex; max-width: 440px; margin: 0 auto;
-  }
-  .newsletter-form input {
-    flex: 1; padding: 14px 18px;
-    border: 2px dashed var(--stone); border-right: none;
-    background: var(--cream);
-    font-family: 'DM Sans', sans-serif; font-size: 13px;
-    color: var(--brown); outline: none;
-    border-radius: 4px 0 0 4px;
-  }
-  .newsletter-form input::placeholder { color: var(--stone); }
-  .newsletter-form input:focus { border-color: var(--sage); }
-  .newsletter-form button {
-    padding: 14px 28px;
-    background: var(--terra); color: var(--cream-text);
-    border: 2px dashed var(--terra);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
-    cursor: pointer; transition: all 0.3s;
-    border-radius: 0 4px 4px 0;
-  }
-  .newsletter-form button:hover {
-    background: var(--terra-dark); border-color: var(--terra-dark);
-  }
 
   /* ── FOOTER ── */
   footer {
@@ -663,7 +616,6 @@
     .footer-top { grid-template-columns: 1fr; }
     .logo-img { height: 26px; }
     .split-content { padding: 50px 30px; }
-    .newsletter-panel { padding: 34px 20px; }
   }
 
   /* ══ DISPLAY SCRIPT ══════════════════════════════════════════════
@@ -673,7 +625,7 @@
      faces run small for their point size, so each is stepped up and
      given tighter leading than the serif it replaces. */
   .intro h2, .featured h2, .split-content h2,
-  .values h2, .location h2, .newsletter h2 {
+  .values h2, .location h2 {
     font-family: var(--font-script);
     font-style: normal;
     font-weight: 400;
@@ -686,7 +638,6 @@
                       margin-bottom: 0.7em; }
   .values h2        { font-size: clamp(38px, 5vw,   56px); }
   .location h2      { font-size: clamp(38px, 5vw,   56px); }
-  .newsletter h2    { font-size: clamp(34px, 4.4vw, 48px); }
 
   /* Script faces hang a long way below the baseline and rise a long way
      above it, so the gap under a heading has to scale with the heading
@@ -694,7 +645,7 @@
      replaced. padding-bottom gives the descenders somewhere to go;
      margin-bottom in em keeps the rhythm right at every size. */
   .intro h2, .featured h2, .split-content h2,
-  .values h2, .location h2, .newsletter h2 {
+  .values h2, .location h2 {
     padding-bottom: 0.14em;
     margin-bottom: 0.55em;
   }
@@ -723,7 +674,12 @@
      lines agree with each other -- which is what stops it reading as
      vector art.
   */
-  .value-motif  { height: 92px; width: auto; margin: 0 auto 20px; display: block; }
+    .value-motif  { height: 96px; width: auto; margin: 0 auto 20px; display: block; }
+  /* The cotton is a tall, narrow, fine-lined drawing -- at the same height
+     as the other two it reads far lighter than they do. It gets more height
+     to match their weight, and a negative top margin equal to the extra, so
+     all three still sit on one baseline and the headings stay level. */
+  .motif-mind   { height: 124px; margin-top: -28px; }
 
   /* == ONE PAPER, ONE CREAM ========================================
      Every cream on the site is now the same cream, and the texture is
@@ -766,6 +722,49 @@
   .location-details a.addr:hover {
     color: var(--terra);
     text-decoration-color: var(--terra);
+  }
+
+  /* ── FOOTER SIGN-UP ───────────────────────────────────────────────
+     Was a full brown section with a cream panel floating on it, sitting
+     directly above the brown footer -- two browns meeting at a seam for
+     no reason. Folded into the footer instead: one uninterrupted block,
+     no panel, and the form shrinks to a field and a word. */
+  .foot-signup { text-align: center; padding: 4px 0 44px; }
+  .foot-signup h2 {
+    font-family: var(--font-script);
+    font-weight: 400; font-style: normal;
+    font-size: 34px; line-height: 1.05;
+    padding-bottom: 0.12em; margin-bottom: 10px;
+    color: var(--cream-text);
+  }
+  .foot-signup p {
+    font-size: 13px; color: rgba(226, 213, 183, 0.62);
+    margin: 0 0 22px;
+  }
+  .foot-form { display: flex; justify-content: center; align-items: stretch; gap: 10px; }
+  .foot-form input {
+    width: min(320px, 58vw);
+    padding: 12px 16px;
+    border: none;
+    background: var(--cream-light);
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    color: var(--brown); outline: none;
+  }
+  .foot-form input::placeholder { color: rgba(90, 74, 58, 0.45); }
+  .foot-form input:focus { box-shadow: inset 0 0 0 2px var(--terra); }
+  .foot-form button {
+    padding: 12px 22px;
+    background: var(--terra);
+    border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 10px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--cream-text);
+    transition: background .25s ease;
+  }
+  .foot-form button:hover { background: var(--terra-dark); }
+  @media (max-width: 600px) {
+    .foot-form { flex-direction: column; align-items: center; }
+    .foot-form input { width: min(320px, 84vw); }
   }
 </style>
 </head>
@@ -981,21 +980,16 @@
 <div class="stitch-border" style="opacity: 0.4;"></div>
 
 <!-- Newsletter -->
-<section id="newsletter" class="newsletter">
-  <div class="container">
-    <div class="newsletter-panel">
-      <h2>Stay in the loop.</h2>
-      <p>New drops, pop-up dates, and the occasional love letter.</p>
-      <div class="newsletter-form">
-        <input type="email" placeholder="Your email address">
-        <button type="submit">Sign Up</button>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- Footer -->
 <footer>
+  <div id="newsletter" class="foot-signup">
+    <h2>Stay in the loop.</h2>
+    <p>New drops, pop-up dates, and the occasional love letter.</p>
+    <form class="foot-form" onsubmit="return false;">
+      <input type="email" placeholder="Email address" aria-label="Email address">
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
   <div class="stitch-border-cream" style="margin-bottom: 40px;"></div>
   <div class="footer-motifs">
     <svg width="60" height="60" style="color: var(--cream-text)"><use href="#folk-star"/></svg>
@@ -1089,7 +1083,7 @@
     });
 
     // scroll reveals
-    var targets = document.querySelectorAll('h2, .section-label, .product-card, .value-item, .intro p, .split-content p, .location-details, .newsletter-form, .btn-stitch');
+    var targets = document.querySelectorAll('h2, .section-label, .product-card, .value-item, .intro p, .split-content p, .location-details, .foot-form, .btn-stitch');
     targets.forEach(function (el) { el.classList.add('reveal'); });
     if (!reduced && 'IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
