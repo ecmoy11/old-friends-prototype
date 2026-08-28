@@ -12,12 +12,12 @@ fontlookup2.jpg
 Old_Friends_Brand_Guide.pdf
 
 # Unused image variants
-images/bag3.jpg
-images/bag4.jpg
-images/scrunchie.WEBP
-images/screunchie1.WEBP
 Old Friends Logo/oldfriends.black.png
 Old Friends Logo/oldfriends.cream.png
 Old Friends Logo/oldfriends.white.png
 Old Friends Logo/oldfriends.white.trim.png
 _to_delete/
+
+# local safety copies made before edits
+*.bak
+*.bak[0-9]

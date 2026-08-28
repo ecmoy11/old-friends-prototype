@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Old Friends — layered cloth, four amounts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&family=Italianno&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F6EDD8;--cream-text:#FFFAEE;--sage:#9E983C;--terra:#9E1431;
+  --brown:#6A4630;--walnut:#5A4A3A;--stone:#CFC1A3;
+  --font-script:'Le Studio Nocturne','Italianno',cursive;
+}
+*{box-sizing:border-box}
+body{margin:0;position:relative;background:var(--cream);color:var(--brown);
+  font-family:'DM Sans',system-ui,sans-serif;font-weight:300;line-height:1.7;font-size:15px;
+  -webkit-font-smoothing:antialiased}
+.paper-grain{position:absolute;inset:0;z-index:4;pointer-events:none;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='pf'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23pf)' opacity='0.17'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='760' height='760'%3E%3Cfilter id='pm'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='760' height='760' filter='url(%23pm)' opacity='0.11'/%3E%3C/svg%3E");
+  background-size:320px 320px,760px 760px}
+
+.chrome{position:sticky;top:0;z-index:60;background:rgba(24,24,24,.94);color:#e8e8e4;
+  padding:12px 22px;font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.04em;
+  backdrop-filter:blur(6px)}
+.card{max-width:660px;margin:0 auto;padding:74px 26px 34px}
+.card .n{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--terra);display:block;margin-bottom:10px}
+.card h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
+  font-size:32px;line-height:1.2;margin:0 0 14px}
+.card p{color:var(--walnut);font-size:14px;margin:0 0 8px}
+.card .how{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8a8a86;
+  border-left:2px solid var(--stone);padding-left:12px;margin-top:14px;line-height:1.65}
+
+/* ── the two real sections, exactly as they are on the homepage ── */
+.hero{height:78vh;min-height:520px;
+  background:var(--sage) url('hero-totes.png') center/cover no-repeat}
+.collection{background:var(--cream);padding:56px 0 80px}
+.coll-head{display:flex;justify-content:space-between;align-items:center;
+  max-width:1180px;margin:0 auto 26px;padding:0 26px}
+.coll-head h3{font-family:var(--font-script);font-weight:400;font-size:52px;
+  line-height:1.05;padding-bottom:.1em;margin:0}
+.coll-head a{color:var(--terra);text-decoration:none;font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;border-bottom:2px dashed var(--terra);padding-bottom:3px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:28px 8px;
+  max-width:1180px;margin:0 auto;padding:0 26px}
+.tile{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--stone)}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.meta{display:flex;justify-content:space-between;font-family:'Cormorant Garamond',serif;
+  font-size:15px;padding:6px 10px 0}
+.meta span:last-child{font-family:'DM Sans',sans-serif;font-size:13px;color:var(--walnut)}
+
+/* ══ A · none ══ */
+.takeA .collection{position:relative;z-index:1}
+
+/* ══ B · overlap only — no pinning, no JS ══
+   The cream simply starts 46px early and carries a shadow on its
+   leading edge, so it reads as a piece laid down on top. */
+.takeB .collection{position:relative;z-index:1;margin-top:-46px;
+  box-shadow:0 -16px 34px rgba(90,74,58,.20)}
+
+/* ══ C · hold ══
+   The photo pins and the cream travels up over it. One handoff. */
+.takeC .hero{position:sticky;top:0;z-index:0}
+.takeC .collection{position:relative;z-index:1;margin-top:-46px;
+  box-shadow:0 -16px 34px rgba(90,74,58,.22)}
+
+/* ══ D · hold + settle ══
+   Same, plus the photo drifts and dims as it goes under. */
+.takeD .hero{position:sticky;top:0;z-index:0;overflow:hidden}
+.takeD .hero .veil{position:absolute;inset:0;background:var(--brown);opacity:0}
+.takeD .hero .shot{position:absolute;inset:0;
+  background:var(--sage) url('hero-totes.png') center/cover no-repeat;
+  will-change:transform}
+.takeD .collection{position:relative;z-index:1;margin-top:-46px;
+  box-shadow:0 -16px 34px rgba(90,74,58,.22)}
+
+.tail{height:38vh}
+
+@media (prefers-reduced-motion:reduce){
+  .takeC .hero,.takeD .hero{position:static}
+  .takeD .hero .shot{transform:none!important}
+  .takeD .hero .veil{opacity:0!important}
+}
+@media (max-width:820px){.grid4{grid-template-columns:repeat(2,1fr)}}
+</style></head>
+<body>
+
+<div class="chrome"><b>Old Friends</b> &nbsp;·&nbsp; layered cloth &nbsp;·&nbsp; the same two real sections, four amounts of it</div>
+
+<!-- A -->
+<div class="card">
+  <span class="n">A · None</span>
+  <h2>What it does now.</h2>
+  <p>The photo scrolls away and the cream follows it up. Two sections, one after the other, no relationship between them. Here as the control &mdash; scroll the four in order and this is the one to compare against.</p>
+</div>
+<div class="takeA">
+  <div class="hero"></div>
+  <section class="collection">
+    <div class="coll-head"><h3>Core Collection</h3><a href="#">View all</a></div>
+    <div class="grid4">
+      <div><div class="tile"><img src="images/bag1.jpg" alt=""></div><div class="meta"><span>Patchwork Tote</span><span>$48</span></div></div>
+      <div><div class="tile"><img src="images/bag3.jpg" alt=""></div><div class="meta"><span>Quilted Hoodie</span><span>$85</span></div></div>
+      <div><div class="tile"><img src="images/scrunchie.WEBP" alt=""></div><div class="meta"><span>Scrunchie Set</span><span>$18</span></div></div>
+      <div><div class="tile"><img src="images/bag4.jpg" alt=""></div><div class="meta"><span>Quilt Jacket</span><span>$120</span></div></div>
+    </div>
+  </section>
+</div>
+
+<!-- B -->
+<div class="card">
+  <span class="n">B · Overlap only &nbsp;&larr; my pick</span>
+  <h2>The cream is laid on top.</h2>
+  <p>Nothing pins and nothing moves at a different speed. The cream section just starts 46 pixels early and carries a soft shadow along its top edge, so it sits <em>on</em> the photograph instead of after it.</p>
+  <p>This is the whole idea of layered cloth without any of the theatre. You will feel it and not notice it, which for a shop is exactly right.</p>
+  <div class="how">Two CSS lines: margin-top -46px and a shadow. No JavaScript, no sticky, nothing to go wrong on an old phone.</div>
+</div>
+<div class="takeB">
+  <div class="hero"></div>
+  <section class="collection">
+    <div class="coll-head"><h3>Core Collection</h3><a href="#">View all</a></div>
+    <div class="grid4">
+      <div><div class="tile"><img src="images/bag1.jpg" alt=""></div><div class="meta"><span>Patchwork Tote</span><span>$48</span></div></div>
+      <div><div class="tile"><img src="images/bag3.jpg" alt=""></div><div class="meta"><span>Quilted Hoodie</span><span>$85</span></div></div>
+      <div><div class="tile"><img src="images/scrunchie.WEBP" alt=""></div><div class="meta"><span>Scrunchie Set</span><span>$18</span></div></div>
+      <div><div class="tile"><img src="images/bag4.jpg" alt=""></div><div class="meta"><span>Quilt Jacket</span><span>$120</span></div></div>
+    </div>
+  </section>
+</div>
+
+<!-- C -->
+<div class="card">
+  <span class="n">C · Hold</span>
+  <h2>The photo waits while the cream covers it.</h2>
+  <p>Now the hero pins and the collection travels up over the top of it. The photo gets a moment to be looked at, and the products arrive as a deliberate act rather than a scroll position.</p>
+  <p>Used once, at the top of the homepage only, I think this earns its keep. Used at every section boundary it would become the website's personality, and that isn't what you want the personality to be.</p>
+  <div class="how">position: sticky; top: 0 on the hero, plus the same overlap and shadow. Still no JavaScript.</div>
+</div>
+<div class="takeC">
+  <div class="hero"></div>
+  <section class="collection">
+    <div class="coll-head"><h3>Core Collection</h3><a href="#">View all</a></div>
+    <div class="grid4">
+      <div><div class="tile"><img src="images/bag1.jpg" alt=""></div><div class="meta"><span>Patchwork Tote</span><span>$48</span></div></div>
+      <div><div class="tile"><img src="images/bag3.jpg" alt=""></div><div class="meta"><span>Quilted Hoodie</span><span>$85</span></div></div>
+      <div><div class="tile"><img src="images/scrunchie.WEBP" alt=""></div><div class="meta"><span>Scrunchie Set</span><span>$18</span></div></div>
+      <div><div class="tile"><img src="images/bag4.jpg" alt=""></div><div class="meta"><span>Quilt Jacket</span><span>$120</span></div></div>
+    </div>
+  </section>
+</div>
+
+<!-- D -->
+<div class="card">
+  <span class="n">D · Hold and settle</span>
+  <h2>And the photo gives way.</h2>
+  <p>The same hold, but the photograph drifts up a little and dims as the cream covers it &mdash; the way the underneath layer falls into shadow when you lay cloth over it.</p>
+  <p>This is the far end. It is the most convincing as an effect and the most likely to feel like a website showing off, because it needs JavaScript on every scroll frame to do something a shadow was already implying.</p>
+  <div class="how">Sticky hero, plus one scroll handler setting a translateY and an opacity on a brown veil. The only take here that costs you anything.</div>
+</div>
+<div class="takeD">
+  <div class="hero" id="heroD"><div class="shot" id="shotD"></div><div class="veil" id="veilD"></div></div>
+  <section class="collection">
+    <div class="coll-head"><h3>Core Collection</h3><a href="#">View all</a></div>
+    <div class="grid4">
+      <div><div class="tile"><img src="images/bag1.jpg" alt=""></div><div class="meta"><span>Patchwork Tote</span><span>$48</span></div></div>
+      <div><div class="tile"><img src="images/bag3.jpg" alt=""></div><div class="meta"><span>Quilted Hoodie</span><span>$85</span></div></div>
+      <div><div class="tile"><img src="images/scrunchie.WEBP" alt=""></div><div class="meta"><span>Scrunchie Set</span><span>$18</span></div></div>
+      <div><div class="tile"><img src="images/bag4.jpg" alt=""></div><div class="meta"><span>Quilt Jacket</span><span>$120</span></div></div>
+    </div>
+  </section>
+</div>
+
+<div class="card">
+  <span class="n">Read</span>
+  <h2>B everywhere, C once.</h2>
+  <p>B is two lines of CSS and it does ninety per cent of the work. Put it on every boundary where a cream section meets a photograph or a colour band and the whole site quietly gains a sense of being made of pieces laid down.</p>
+  <p>Then C on the homepage hero and nowhere else, so there is exactly one moment on the site where something holds still and waits for you. D I would leave alone &mdash; it spends JavaScript on every scroll frame to say something the shadow in B already says.</p>
+</div>
+<div class="tail"></div>
+
+<div class="paper-grain" aria-hidden="true"></div>
+
+<script>
+(function () {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var hero = document.getElementById('heroD'),
+      shot = document.getElementById('shotD'),
+      veil = document.getElementById('veilD'), ticking = false;
+  function update() {
+    /* Measure the COLLECTION, not the hero. A pinned element's rect stops
+       changing the moment it sticks, so reading it reports no progress
+       until the pin releases -- which is far too late. */
+    var coll = document.querySelector('.takeD .collection');
+    var h = hero.offsetHeight;
+    var p = 1 - coll.getBoundingClientRect().top / h;
+    p = p < 0 ? 0 : p > 1 ? 1 : p;
+    shot.style.transform = 'translateY(' + (p * -34) + 'px) scale(' + (1 + p * 0.03) + ')';
+    veil.style.opacity = (p * 0.32).toFixed(3);
+    ticking = false;
+  }
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  update();
+})();
+</script>
+</body></html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Texture studies — cloth, not color blocking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#EDE1C5;--cream-lt:#FFFAEE;--dusty:#B7C9CB;--olive:#9E983C;
+  --terra:#9E1431;--terra-dark:#7A0F26;--brown:#6A4630;--walnut:#5A4A3A;--stone:#CFC1A3;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box}
+body{margin:0;background:#f2f2f0;font-family:'DM Sans',system-ui,sans-serif;color:#1a1a1a}
+
+.chrome-head{padding:22px 26px 18px;border-bottom:1px solid #dcdcda;background:#fff}
+.chrome-head h1{margin:0 0 5px;font-size:15px;font-weight:500}
+.chrome-head .meta{font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#8a8a86;letter-spacing:.04em;line-height:1.7}
+.section-label{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:#8a8a86;padding:30px 26px 12px}
+.section-label b{color:#1a1a1a;font-weight:500}
+.section-note{padding:0 26px 14px;font-size:11.5px;color:#77776f;max-width:760px;line-height:1.6;margin:0}
+
+.grid{display:grid;gap:16px;padding:0 26px 20px;grid-template-columns:repeat(auto-fit,minmax(310px,1fr))}
+.card{background:#fff;border:1px solid #dcdcda;overflow:hidden;display:flex;flex-direction:column}
+.sw{height:190px;position:relative;overflow:hidden}
+.sw::after{content:'';position:absolute;inset:0;background-image:var(--grain);background-size:140px 140px;
+  opacity:.20;mix-blend-mode:multiply;pointer-events:none}
+.sw.nograin::after{display:none}
+.sw.grain-hi::after{opacity:.42}
+.card-foot{padding:11px 13px 13px}
+.card-foot .n{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.08em;display:block;margin-bottom:4px}
+.card-foot p{font-size:11px;line-height:1.5;color:#77776f;margin:0}
+
+/* ---------- the textures ---------- */
+.t-tooth{background-color:var(--cream);
+  background-image:
+    repeating-linear-gradient(90deg,rgba(106,70,48,.09) 0 1px,transparent 1px 3px),
+    repeating-linear-gradient(0deg,rgba(106,70,48,.09) 0 1px,transparent 1px 3px)}
+
+.t-slub{background-color:var(--cream);
+  background-image:
+    repeating-linear-gradient(90deg,rgba(90,74,58,.11) 0 1px,transparent 1px 4px,rgba(90,74,58,.05) 4px 5px,transparent 5px 9px,rgba(90,74,58,.14) 9px 10.5px,transparent 10.5px 15px),
+    repeating-linear-gradient(0deg,rgba(90,74,58,.08) 0 1px,transparent 1px 5px,rgba(90,74,58,.13) 5px 6.5px,transparent 6.5px 11px,rgba(90,74,58,.05) 11px 12px,transparent 12px 17px)}
+
+.t-weft{background-color:var(--cream);
+  background-image:
+    repeating-linear-gradient(0deg,rgba(106,70,48,.12) 0 1.5px,transparent 1.5px 5px,rgba(106,70,48,.06) 5px 6px,transparent 6px 10px,rgba(106,70,48,.15) 10px 11px,transparent 11px 16px)}
+
+.t-herring{background-color:var(--cream);background-size:24px 24px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cdefs%3E%3Cpattern id='a' width='5' height='5' patternUnits='userSpaceOnUse' patternTransform='rotate(45)'%3E%3Crect width='2.2' height='5' fill='%236A4630' opacity='.20'/%3E%3C/pattern%3E%3Cpattern id='b' width='5' height='5' patternUnits='userSpaceOnUse' patternTransform='rotate(-45)'%3E%3Crect width='2.2' height='5' fill='%236A4630' opacity='.20'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='12' height='24' fill='url(%23a)'/%3E%3Crect x='12' width='12' height='24' fill='url(%23b)'/%3E%3C/svg%3E")}
+
+.t-basket{background-color:var(--cream-lt);background-size:16px 16px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cg fill='%239E983C' opacity='.30'%3E%3Crect y='0.5' width='7' height='2.6'/%3E%3Crect y='4.4' width='7' height='2.6'/%3E%3Crect x='8.5' width='2.6' height='7'/%3E%3Crect x='12.4' width='2.6' height='7'/%3E%3Crect x='8' y='8.5' width='7' height='2.6'/%3E%3Crect x='8' y='12.4' width='7' height='2.6'/%3E%3Crect x='0.5' y='8' width='2.6' height='7'/%3E%3Crect x='4.4' y='8' width='2.6' height='7'/%3E%3C/g%3E%3C/svg%3E")}
+
+.t-chevron{background-color:var(--cream);background-size:16px 6px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='6'%3E%3Cpath d='M0 6 L8 0 L16 6' fill='none' stroke='%236A4630' stroke-width='1.3' opacity='.20'/%3E%3C/svg%3E")}
+
+.t-waffle{background-color:var(--cream);
+  background-image:
+    repeating-linear-gradient(90deg,rgba(106,70,48,.17) 0 1.5px,transparent 1.5px 11px),
+    repeating-linear-gradient(0deg,rgba(106,70,48,.17) 0 1.5px,transparent 1.5px 11px),
+    repeating-linear-gradient(90deg,rgba(106,70,48,.06) 0 3.5px,transparent 3.5px 11px),
+    repeating-linear-gradient(0deg,rgba(106,70,48,.06) 0 3.5px,transparent 3.5px 11px)}
+
+.t-rib{background-color:var(--cream);
+  background-image:
+    repeating-linear-gradient(90deg,rgba(90,74,58,.15) 0 1px,rgba(90,74,58,.04) 1px 2px,transparent 2px 4px)}
+
+.t-boucle{background-color:var(--cream);
+  background-image:
+    radial-gradient(circle at 12% 22%,rgba(106,70,48,.17) 0 1.4px,transparent 1.9px),
+    radial-gradient(circle at 63% 9%,rgba(106,70,48,.12) 0 1.1px,transparent 1.6px),
+    radial-gradient(circle at 38% 61%,rgba(106,70,48,.16) 0 1.6px,transparent 2.1px),
+    radial-gradient(circle at 86% 47%,rgba(106,70,48,.11) 0 1.2px,transparent 1.7px),
+    radial-gradient(circle at 22% 84%,rgba(106,70,48,.15) 0 1.3px,transparent 1.8px),
+    radial-gradient(circle at 72% 91%,rgba(106,70,48,.11) 0 1.5px,transparent 2px),
+    repeating-linear-gradient(90deg,rgba(106,70,48,.05) 0 1px,transparent 1px 3px),
+    repeating-linear-gradient(0deg,rgba(106,70,48,.05) 0 1px,transparent 1px 3px);
+  background-size:34px 34px,34px 34px,34px 34px,29px 29px,29px 29px,29px 29px,auto,auto}
+
+.t-scrim{background-color:var(--cream-lt);
+  background-image:
+    repeating-linear-gradient(90deg,rgba(183,201,203,.60) 0 1px,transparent 1px 7px),
+    repeating-linear-gradient(0deg,rgba(183,201,203,.60) 0 1px,transparent 1px 7px)}
+
+.t-seersucker{background-color:var(--cream);
+  background-image:
+    repeating-linear-gradient(90deg,rgba(183,201,203,.30) 0 9px,transparent 9px 21px),
+    repeating-linear-gradient(90deg,rgba(90,74,58,.07) 0 1px,transparent 1px 3px),
+    repeating-linear-gradient(0deg,rgba(90,74,58,.05) 0 1px,transparent 1px 3px)}
+
+.t-duck{background-color:var(--cream);
+  background-image:
+    repeating-linear-gradient(90deg,rgba(90,74,58,.13) 0 2px,transparent 2px 5px),
+    repeating-linear-gradient(0deg,rgba(90,74,58,.10) 0 2px,transparent 2px 5px)}
+
+/* ---------- applied section ---------- */
+.full{padding:0 26px 10px}
+.full-wrap{border:1px solid #dcdcda;background:#fff;overflow:hidden}
+.nl{padding:64px 30px;text-align:center;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;min-height:340px}
+.nl::after{content:'';position:absolute;inset:0;background-image:var(--grain);background-size:140px 140px;
+  opacity:.20;mix-blend-mode:multiply;pointer-events:none}
+.panel{position:relative;z-index:2;background:var(--cream-lt);padding:36px 30px;max-width:470px;width:100%;margin:0 auto;
+  transform:rotate(-.7deg);box-shadow:0 8px 22px rgba(90,74,58,.12)}
+.panel::before{content:'';position:absolute;inset:-7px;z-index:-1;
+  border:2px dashed rgba(160,146,120,.9);transform:rotate(.7deg);pointer-events:none}
+.nl h2{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;font-style:italic;margin:0 0 10px;color:var(--brown)}
+.nl p{color:var(--walnut);font-size:13.5px;margin:0 0 26px;line-height:1.6}
+.nl-form{display:flex;max-width:390px;margin:0 auto}
+.nl-form input{flex:1;min-width:0;padding:13px 16px;border:2px dashed var(--stone);border-right:none;background:var(--cream-lt);
+  font-family:'DM Sans',sans-serif;font-size:12.5px;color:var(--brown);outline:none;border-radius:4px 0 0 4px}
+.nl-form input::placeholder{color:var(--stone)}
+.nl-form button{padding:13px 24px;background:var(--terra);color:var(--cream-lt);border:2px dashed var(--terra);
+  font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;
+  transition:all .3s;border-radius:0 4px 4px 0;white-space:nowrap}
+.nl-form button:hover{background:var(--terra-dark);border-color:var(--terra-dark)}
+.applied-cap{font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#8a8a86;padding:8px 26px 24px;letter-spacing:.05em}
+</style></head>
+<body>
+
+<div class="chrome-head">
+  <h1>Texture studies &mdash; cloth, not color blocking</h1>
+  <div class="meta">
+    Every swatch below is ONE ink on a cream ground. No second color, no grid of blocks.<br>
+    All twelve carry a woven-fiber grain (SVG turbulence, 20% multiply) &mdash; that&rsquo;s the part that makes it read as fabric instead of pattern.
+  </div>
+</div>
+
+<div class="section-label"><b>The library</b> &mdash; twelve weaves, tonal only</div>
+<p class="section-note">Ordered roughly quietest to loudest. The first four are the ones I&rsquo;d actually put behind type; the back half are stronger and want to be used in a strip or a single panel, not a full page.</p>
+
+<div class="grid">
+
+  <div class="card"><div class="sw t-tooth"></div>
+    <div class="card-foot"><span class="n">01 &middot; Plain-weave tooth</span>
+    <p>1px warp and weft on a 3px pitch, 9% brown. Below the threshold where your eye resolves squares &mdash; it just reads as slightly rough paper-cloth. The safest full-page ground here.</p></div></div>
+
+  <div class="card"><div class="sw t-slub"></div>
+    <div class="card-foot"><span class="n">02 &middot; Slub linen &nbsp;&larr; my pick</span>
+    <p>The threads are deliberately uneven &mdash; thick, thin, thick, on different rhythms in each direction. That irregularity is the whole difference between &ldquo;hand-loomed&rdquo; and &ldquo;CSS gingham.&rdquo; Never resolves into a grid.</p></div></div>
+
+  <div class="card"><div class="sw t-weft"></div>
+    <div class="card-foot"><span class="n">03 &middot; Handloom weft</span>
+    <p>Horizontal threads only, uneven spacing. Kills the checkerboard problem outright because there&rsquo;s no cross-axis to form squares with. Reads like the back of a woven runner.</p></div></div>
+
+  <div class="card"><div class="sw t-herring"></div>
+    <div class="card-foot"><span class="n">04 &middot; Herringbone</span>
+    <p>Real herringbone &mdash; opposing diagonal bands, 12px columns. Classic heirloom-textile move (think an old wool coat). Directional energy without any color contrast.</p></div></div>
+
+  <div class="card"><div class="sw t-chevron"></div>
+    <div class="card-foot"><span class="n">05 &middot; Chevron twill</span>
+    <p>Herringbone&rsquo;s cousin, drawn as a continuous line instead of blocks. Softer, a little more decorative. Nice as a thin band under a section header rather than a whole background.</p></div></div>
+
+  <div class="card"><div class="sw t-basket"></div>
+    <div class="card-foot"><span class="n">06 &middot; Basketweave, tonal</span>
+    <p>This is your reference image&rsquo;s actual structure &mdash; over-under-over &mdash; with the four colors stripped out and one olive doing all the work. Same weave, none of the blocking. Worth comparing side by side with what you sent.</p></div></div>
+
+  <div class="card"><div class="sw t-duck"></div>
+    <div class="card-foot"><span class="n">07 &middot; Canvas duck</span>
+    <p>Heavier plain weave, 2px threads on a 5px pitch. Utility-bag texture. Would suit the tote and commission pages better than the shop grid.</p></div></div>
+
+  <div class="card"><div class="sw t-rib"></div>
+    <div class="card-foot"><span class="n">08 &middot; Grosgrain rib</span>
+    <p>Vertical only, with a light side to each rib so it looks raised. Reads as ribbon or corduroy. Good for a narrow vertical element &mdash; a sidebar, a nav rail, a label.</p></div></div>
+
+  <div class="card"><div class="sw t-boucle"></div>
+    <div class="card-foot"><span class="n">09 &middot; Bouclé nub</span>
+    <p>Scattered slubs at three different tile sizes so the nubs never line up, over a faint weave. The most tactile of the set and the only one that isn&rsquo;t on a strict axis.</p></div></div>
+
+  <div class="card"><div class="sw t-waffle"></div>
+    <div class="card-foot"><span class="n">10 &middot; Waffle</span>
+    <p>Cell wall plus a lighter inner shadow, 11px cells. Honest warning: this one is closest to reintroducing a grid. Keep it under 12px and it stays cloth; scale it up and it becomes graph paper.</p></div></div>
+
+  <div class="card"><div class="sw t-seersucker"></div>
+    <div class="card-foot"><span class="n">11 &middot; Seersucker</span>
+    <p>Puckered bands in dusty blue over a fine all-over weave. The only swatch with a visible second tone &mdash; included so you can see where the line is. To my eye it&rsquo;s still stripe, not block, but you may read it differently.</p></div></div>
+
+  <div class="card"><div class="sw t-scrim"></div>
+    <div class="card-foot"><span class="n">12 &middot; Muslin scrim</span>
+    <p>Open weave, 7px gaps, dusty blue at higher opacity on the brighter cream. Airy and light. This is the closest to what&rsquo;s on the site now, shown for comparison.</p></div></div>
+
+</div>
+
+<div class="section-label"><b>The grain is the whole trick</b> &mdash; same slub linen, three levels</div>
+<p class="section-note">Left is the pure CSS weave with no noise layer. The middle is what every swatch above uses. The right is pushed hard. Without the grain it&rsquo;s a diagram of cloth; with it, it&rsquo;s cloth.</p>
+<div class="grid">
+  <div class="card"><div class="sw t-slub nograin"></div>
+    <div class="card-foot"><span class="n">Grain 0%</span><p>Clean, mechanical, slightly cold. You can see the repeat.</p></div></div>
+  <div class="card"><div class="sw t-slub"></div>
+    <div class="card-foot"><span class="n">Grain 20% &nbsp;&larr; default</span><p>The repeat disappears. Enough fuzz to feel woven, still clean behind type.</p></div></div>
+  <div class="card"><div class="sw t-slub grain-hi"></div>
+    <div class="card-foot"><span class="n">Grain 42%</span><p>Properly rough &mdash; raw linen. Too much for body copy, right for a hero or a full-bleed break.</p></div></div>
+</div>
+
+<div class="section-label"><b>Applied</b> &mdash; the newsletter section, three grounds</div>
+<div class="full"><div class="full-wrap">
+  <div class="nl t-slub"><div class="panel"><h2>Stay in the loop.</h2>
+    <p>New drops, pop-up dates, and the occasional love letter.</p>
+    <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div>
+</div></div>
+<div class="applied-cap">02 &middot; Slub linen</div>
+
+<div class="full"><div class="full-wrap">
+  <div class="nl t-herring"><div class="panel"><h2>Stay in the loop.</h2>
+    <p>New drops, pop-up dates, and the occasional love letter.</p>
+    <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div>
+</div></div>
+<div class="applied-cap">04 &middot; Herringbone</div>
+
+<div class="full"><div class="full-wrap">
+  <div class="nl t-basket"><div class="panel"><h2>Stay in the loop.</h2>
+    <p>New drops, pop-up dates, and the occasional love letter.</p>
+    <div class="nl-form"><input type="email" placeholder="Your email address"><button>Sign Up</button></div></div></div>
+</div></div>
+<div class="applied-cap">06 &middot; Basketweave, tonal &mdash; your reference image, decolored</div>
+
+<div style="height:40px"></div>
+</body></html>

@@ -5,8 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Old Friends — Handmade Goods</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&family=Italianno&family=Parisienne&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  /* ── DISPLAY SCRIPT ────────────────────────────────────────────────
+     Le Studio Nocturne (PeachCreme, Creative Market) is a licensed font,
+     so it is not fetched from a CDN -- it has to live in this repo.
+     Drop the files in  fonts/  and these two rules pick them up:
+         fonts/LeStudioNocturne-Standard.woff2
+         fonts/LeStudioNocturne-Bold.woff2
+     Until they are there, the page falls back to Italianno, which is the
+     closest free match for weight and slant, so nothing looks broken. */
+  @font-face {
+    font-family: 'Le Studio Nocturne';
+    src: url('fonts/LeStudioNocturne-Standard.woff2') format('woff2'),
+         url('fonts/LeStudioNocturne-Standard.otf')   format('opentype');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Le Studio Nocturne';
+    src: url('fonts/LeStudioNocturne-Bold.woff2') format('woff2'),
+         url('fonts/LeStudioNocturne-Bold.otf')   format('opentype');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+</style>
 <style>
   :root {
     --sage: #9E983C;
@@ -15,21 +38,24 @@
     --terra: #9E1431;
     --terra-dark: #7A0F26;
     --terra-light: #BE5C72;
-    --cream: #EDE1C5;
+    --cream: #F6EDD8;            /* one cream everywhere */
     --cream-text: #FFFAEE;
     --linen: #E2D5B7;
     --stone: #CFC1A3;
     --walnut: #5A4A3A;
     --light-sage: #D3D0A7;
-    --white: #FDFBF8;
+    --cream-light: #F6EDD8;      /* same value -- kept so var(--white) still resolves */
+    --white: var(--cream-light);
     --dusty: #B7C9CB;
     --stitch: #9E1431;
+    --font-script: 'Le Studio Nocturne', 'Italianno', 'Parisienne', cursive;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
 
   body {
+    position: relative;
     font-family: 'DM Sans', sans-serif;
     background: var(--cream);
     color: var(--brown);
@@ -43,12 +69,17 @@
   .texture-linen {
     position: relative;
   }
+  /* Paper, not pattern. A fine fibre grain plus a slow low-frequency
+     mottle, both greyscale, both multiplied over whatever colour the
+     section already is. Two differently-sized tiles so no repeat is ever
+     visible. This replaces the old 6px dot grid. */
   .texture-linen::after {
     content: '';
     position: absolute;
     inset: 0;
-    opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h1v1H0zM3 3h1v1H3z' fill='%236A4630' fill-opacity='1'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='pf'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23pf)' opacity='0.17'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='760' height='760'%3E%3Cfilter id='pm'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='760' height='760' filter='url(%23pm)' opacity='0.11'/%3E%3C/svg%3E");
+    background-size: 320px 320px, 760px 760px;
+    mix-blend-mode: multiply;
     pointer-events: none;
   }
 
@@ -142,15 +173,32 @@
 
   /* ── HERO ── */
   .hero {
-    position: relative;
+    /* Pinned, so the collection travels up over it rather than pushing
+       it off. Scoped to .layer-stage so it releases once Core Collection
+       has passed instead of sitting behind the rest of the document. */
+    position: sticky;
+    top: 0;
+    z-index: 0;
     height: 85vh;
     min-height: 600px;
-    background: var(--sage) url('hero-totes.png') center/cover no-repeat;
+    background: var(--sage);
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     overflow: hidden;
+  }
+  .hero-shot {
+    position: absolute; inset: 0;
+    background: url('hero-totes.png') center/cover no-repeat;
+    will-change: transform;
+  }
+  /* the underneath layer falls into shadow as cloth is laid over it */
+  .hero-veil {
+    position: absolute; inset: 0;
+    background: var(--brown);
+    opacity: 0;
+    pointer-events: none;
   }
   .hero-content {
     position: relative;
@@ -238,6 +286,15 @@
     padding: 80px 0 100px;
     background: var(--white);
     position: relative;
+    /* laid on top of the hero, not after it */
+    z-index: 1;
+    margin-top: -46px;
+    box-shadow: 0 -16px 34px rgba(90, 74, 58, 0.22);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero { position: relative; }
+    .hero-shot { transform: none !important; }
+    .hero-veil { opacity: 0 !important; }
   }
   .featured-header {
     display: flex;
@@ -353,7 +410,7 @@
     display: flex; flex-direction: column; justify-content: center;
     position: relative;
   }
-  .split-content .section-label { color: var(--dusty); }
+  .split-content .section-label { color: var(--dusty); margin-bottom: 30px; }
   .split-content h2 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 38px; font-weight: 400; font-style: italic;
@@ -412,7 +469,7 @@
 
   /* ── LOCATION ── */
   .location {
-    background: #9e983c;
+    background: var(--cream);
     padding: 80px 0;
     position: relative;
   }
@@ -424,32 +481,33 @@
   .location h2 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 36px; font-weight: 400; font-style: italic;
-    color: var(--cream-text); margin-bottom: 24px;
+    color: var(--brown); margin-bottom: 24px;
   }
   .location p {
-    color: var(--cream-text); font-size: 15px; line-height: 1.8; margin-bottom: 12px;
+    color: var(--walnut); font-size: 15px; line-height: 1.8; margin-bottom: 12px;
   }
-  .location-details { color: var(--cream-text); font-size: 14px; }
+  .location-details { color: var(--walnut); font-size: 14px; }
   .location-details a {
     color: inherit;
     text-decoration: underline;
-    text-decoration-color: var(--terra-light);
+    text-decoration-color: var(--terra);
     text-underline-offset: 3px;
     transition: color 0.2s ease;
   }
-  .location-details a:hover { color: var(--terra-light); }
+  .location-details a:hover { color: var(--terra); }
   .location-details strong {
     display: block;
     font-family: 'Cormorant Garamond', serif;
     font-size: 20px; font-weight: 500;
+    color: var(--brown);
     margin-bottom: 6px; margin-top: 24px;
   }
   .location-map {
     aspect-ratio: 4/3;
     border-radius: 6px;
     overflow: hidden;
-    border: 2px solid rgba(237,225,197,0.35);
-    box-shadow: 0 8px 30px rgba(106,70,48,0.25);
+    border: 2px solid rgba(106,70,48,0.22);
+    box-shadow: 0 8px 30px rgba(106,70,48,0.14);
     position: relative;
     z-index: 1;
   }
@@ -499,9 +557,6 @@
   /* product cards: lift, tilt, stitched frame appears */
   .product-card { transition: transform .5s cubic-bezier(.22,1,.36,1), opacity .8s ease; }
 
-  /* folk motifs twirl on hover */
-  .value-motif { transition: transform .5s cubic-bezier(.34,1.56,.64,1); }
-  .value-item:hover .value-motif { transform: rotate(12deg) scale(1.12); }
 
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; }
@@ -513,17 +568,14 @@
     padding: 80px 0;
     text-align: center;
     position: relative;
-    background-color: var(--cream-text);
-    background-image:
-      repeating-linear-gradient(90deg, rgba(183,201,203,0.60) 0 3px, transparent 3px 6px),
-      repeating-linear-gradient(0deg,  rgba(183,201,203,0.60) 0 3px, transparent 3px 6px);
+    background-color: var(--brown);
   }
   .newsletter-panel {
     position: relative;
     max-width: 520px;
     margin: 0 auto;
     padding: 44px 34px;
-    background: var(--cream-text);
+    background: var(--cream-light);
     border: 2px dashed rgba(106, 70, 48, 0.34);
   }
   .newsletter h2 {
@@ -613,6 +665,108 @@
     .split-content { padding: 50px 30px; }
     .newsletter-panel { padding: 34px 20px; }
   }
+
+  /* ══ DISPLAY SCRIPT ══════════════════════════════════════════════
+     Every section head is set in the script face. Product names, body
+     copy, labels and the wordmark are untouched -- the script is the
+     one voice on the page, not a texture applied everywhere. Script
+     faces run small for their point size, so each is stepped up and
+     given tighter leading than the serif it replaces. */
+  .intro h2, .featured h2, .split-content h2,
+  .values h2, .location h2, .newsletter h2 {
+    font-family: var(--font-script);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0.005em;
+    line-height: 1.06;
+  }
+  .intro h2         { font-size: clamp(38px, 5vw,   56px); }
+  .featured h2      { font-size: clamp(38px, 5vw,   56px); }
+  .split-content h2 { font-size: clamp(40px, 5.2vw, 62px); line-height: 1.14;
+                      margin-bottom: 0.7em; }
+  .values h2        { font-size: clamp(38px, 5vw,   56px); }
+  .location h2      { font-size: clamp(38px, 5vw,   56px); }
+  .newsletter h2    { font-size: clamp(34px, 4.4vw, 48px); }
+
+  /* Script faces hang a long way below the baseline and rise a long way
+     above it, so the gap under a heading has to scale with the heading
+     rather than sit at a pixel value inherited from the 36px serif these
+     replaced. padding-bottom gives the descenders somewhere to go;
+     margin-bottom in em keeps the rhythm right at every size. */
+  .intro h2, .featured h2, .split-content h2,
+  .values h2, .location h2, .newsletter h2 {
+    padding-bottom: 0.14em;
+    margin-bottom: 0.55em;
+  }
+  .values h2   { margin-bottom: 60px; }  /* wants extra air before the grid */
+  .featured h2 { margin-bottom: 0; }     /* .featured-header supplies the gap;
+                                            a margin here would drag the
+                                            flex-end "View all" down with it */
+
+
+  /* commission photography now fills its half of the split */
+  .split-image { overflow: hidden; }
+  .split-photo {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+
+  /* == HAND-DRAWN MOTIFS ===========================================
+     Three little drawings, and that is all -- no animation, nothing
+     moving. The hand-drawn quality is a filter: a very low-frequency
+     feTurbulence (0.022, so the noise wanders slowly rather than
+     buzzing) fed into feDisplacementMap, which pushes the path off its
+     mathematical line the way a pencil wanders off a ruler. Two seeds,
+     so the outline and the stitches wobble independently and no two
+     lines agree with each other -- which is what stops it reading as
+     vector art.
+  */
+  .value-motif  { height: 92px; width: auto; margin: 0 auto 20px; display: block; }
+
+  /* == ONE PAPER, ONE CREAM ========================================
+     Every cream on the site is now the same cream, and the texture is
+     no longer a property of individual sections -- it is a single fixed
+     sheet of paper laid over the whole page and multiplied down. That
+     means the grain is identical on cream, on olive and on brown, so
+     the newsletter and the footer read as one continuous brown instead
+     of two browns that nearly match. It sits below the nav (z 100) and
+     ignores the pointer, so nothing interactive is affected.
+  */
+  .paper-grain {
+    /* absolute, not fixed: paper travels with the page. Fixed would hold the
+       grain still while the content slid underneath it, which reads as glass. */
+    position: absolute; inset: 0; z-index: 4;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='pf'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23pf)' opacity='0.17'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='760' height='760'%3E%3Cfilter id='pm'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='760' height='760' filter='url(%23pm)' opacity='0.11'/%3E%3C/svg%3E");
+    background-size: 320px 320px, 760px 760px;
+  }
+  /* the old per-section grain would double up on top of it */
+  .texture-linen::after { display: none; }
+
+  /* announcement bar: no folk icons, just a hairline between the two lines */
+  .announcement { display: flex; align-items: center; justify-content: center; gap: 18px; }
+  .announcement .ann-rule {
+    display: inline-block; width: 1px; height: 11px;
+    background: currentColor; opacity: 0.42;
+  }
+  .announcement .motif-inline { display: none; }
+
+  /* stockist addresses open in Google Maps */
+  .location-details a.addr {
+    display: inline-block;
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgba(158, 20, 49, 0.45);
+    text-underline-offset: 3px;
+    transition: text-decoration-color .25s ease, color .25s ease;
+  }
+  .location-details a.addr:hover {
+    color: var(--terra);
+    text-decoration-color: var(--terra);
+  }
 </style>
 </head>
 <body>
@@ -658,13 +812,7 @@
 </svg>
 
 <!-- Announcement Bar -->
-<div class="announcement">
-  <svg width="12" height="12" class="motif-inline" style="color: var(--cream-text)"><use href="#folk-star"/></svg>
-  Free shipping on orders over $75
-  <svg width="12" height="12" class="motif-inline" style="color: var(--cream-text)"><use href="#folk-circle"/></svg>
-  Handmade in Chattanooga
-  <svg width="12" height="12" class="motif-inline" style="color: var(--cream-text)"><use href="#folk-star"/></svg>
-</div>
+<div class="announcement"><span>Free shipping on orders over $75</span><span class="ann-rule" aria-hidden="true"></span><span>Handmade in Chattanooga</span></div>
 
 <!-- Navigation -->
 <nav>
@@ -691,7 +839,10 @@
 </nav>
 
 <!-- Hero -->
+<div class="layer-stage">
 <section class="hero">
+  <div class="hero-shot" id="heroShot"></div>
+  <div class="hero-veil" id="heroVeil" aria-hidden="true"></div>
   <!-- Background folk art motifs -->
   <div class="hero-motifs">
     <svg width="80" height="80" style="top:10%; left:8%; color: var(--cream-text)"><use href="#folk-star"/></svg>
@@ -729,7 +880,8 @@
       </div>
       <div class="product-card">
         <div class="product-img-wrap">
-          <div class="product-img-placeholder">product photo</div>
+          <img class="product-img" src="images/bag3.jpg" alt="Quilted Hoodie — Floral" loading="lazy">
+          <img class="product-img product-img-hover" src="images/bag4.jpg" alt="" loading="lazy">
           <button class="add-to-bag">Add to Bag</button>
         </div>
         <div class="product-name">Quilted Hoodie — Floral</div>
@@ -737,7 +889,8 @@
       </div>
       <div class="product-card">
         <div class="product-img-wrap">
-          <div class="product-img-placeholder">product photo</div>
+          <img class="product-img" src="images/scrunchie.WEBP" alt="Linen Scrunchie Set" loading="lazy">
+          <img class="product-img product-img-hover" src="images/screunchie1.WEBP" alt="" loading="lazy">
           <button class="add-to-bag">Add to Bag</button>
         </div>
         <div class="product-name">Linen Scrunchie Set</div>
@@ -745,7 +898,7 @@
       </div>
       <div class="product-card">
         <div class="product-img-wrap">
-          <div class="product-img-placeholder">product photo</div>
+          <img class="product-img" src="images/bag4.jpg" alt="Vintage Quilt Jacket" loading="lazy">
           <div class="product-tag product-tag--sold">Sold</div>
           <button class="add-to-bag" disabled>Sold Out</button>
         </div>
@@ -756,12 +909,16 @@
   </div>
 </section>
 
+</div><!-- /.layer-stage -->
+
 <!-- Stitch divider -->
 <div class="stitch-border" style="opacity: 0.4;"></div>
 
 <!-- Commission Section -->
 <section id="commission" class="split">
-  <div class="split-image">[ commission work photography ]</div>
+  <div class="split-image">
+    <img class="split-photo" src="images/bag2.jpg" alt="A commissioned tote made from a customer’s fabric" loading="lazy">
+  </div>
   <div class="split-content">
     <div class="section-label">Commission</div>
     <h2>Bring us your<br>fabrics, your stories.</h2>
@@ -776,14 +933,17 @@
     <h2>Rooted in intention.</h2>
     <div class="values-grid">
       <div class="value-item">
+        <img class="value-motif motif-love" src="images/motif-hearts.png" alt="Two hearts holding each other">
         <h3>Made With Love</h3>
         <p>Every stitch, every seam, every detail — crafted by hand with care. No shortcuts, no mass production.</p>
       </div>
       <div class="value-item">
+        <img class="value-motif motif-last" src="images/motif-machine.png" alt="A vintage sewing machine">
         <h3>Built to Last</h3>
         <p>We make things meant to stay — pieces you'll reach for again and again, that get better with age.</p>
       </div>
       <div class="value-item">
+        <img class="value-motif motif-mind" src="images/motif-cotton.png" alt="A cotton boll">
         <h3>Mindful Materials</h3>
         <p>Responsibly sourced linens and fabrics, pre-loved textiles given new purpose. Sustainability isn't a trend for us.</p>
       </div>
@@ -800,12 +960,10 @@
         <p>Shop our pieces in person or come say hello at our next pop-up event.</p>
         <div class="location-details">
           <strong>Sower</strong>
-          3929 St Elmo Ave<br>
-          Chattanooga, TN 37409
+          <a class="addr" href="https://www.google.com/maps/search/?api=1&query=Sower%2C+3929+St+Elmo+Ave%2C+Chattanooga%2C+TN+37409" target="_blank" rel="noopener">3929 St Elmo Ave<br>Chattanooga, TN 37409</a>
 
-          <strong>Mara Mae's</strong>
-          34 N Jefferson Ave<br>
-          Cookeville, TN 38501
+          <strong>Mara Mae&rsquo;s</strong>
+          <a class="addr" href="https://www.google.com/maps/search/?api=1&query=Mara+Mae%27s%2C+34+N+Jefferson+Ave%2C+Cookeville%2C+TN+38501" target="_blank" rel="noopener">34 N Jefferson Ave<br>Cookeville, TN 38501</a>
 
           <strong>Next Pop Up</strong>
           Date & time coming soon.<br>
@@ -816,6 +974,8 @@
     </div>
   </div>
 </section>
+
+</div><!-- /.layer-stage -->
 
 <!-- Stitch divider -->
 <div class="stitch-border" style="opacity: 0.4;"></div>
@@ -950,5 +1110,35 @@
 <script src="search.js"></script>
 
 
+<script>
+/* Hero handoff. The hero is pinned, so its own rect stops changing the
+   moment it sticks -- measuring it would report no progress until the
+   very end. What actually moves is the collection, so that is what we
+   measure: its top travels from the hero's height down to zero as it
+   covers it, which is a clean 0-to-1 with no magic numbers. */
+(function () {
+  var hero = document.querySelector('.hero'),
+      shot = document.getElementById('heroShot'),
+      veil = document.getElementById('heroVeil'),
+      coll = document.querySelector('.layer-stage .featured');
+  if (!hero || !shot || !coll) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var ticking = false;
+  function update() {
+    var h = hero.offsetHeight;
+    var p = 1 - coll.getBoundingClientRect().top / h;
+    p = p < 0 ? 0 : p > 1 ? 1 : p;
+    shot.style.transform = 'translateY(' + (p * -34).toFixed(1) + 'px) scale(' + (1 + p * 0.03).toFixed(4) + ')';
+    veil.style.opacity = (p * 0.32).toFixed(3);   /* how deep the shadow goes -- one number to taste */
+    ticking = false;
+  }
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  update();
+})();
+</script>
+<div class="paper-grain" aria-hidden="true"></div>
 </body>
 </html>

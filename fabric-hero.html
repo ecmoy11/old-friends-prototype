@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Old Friends — fabric hero study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+<style>
+:root{
+  --cream:#EDE1C5; --cream-lt:#FFFAEE; --dusty:#B7C9CB; --olive:#9E983C;
+  --terra:#9E1431; --terra-dark:#7A0F26; --brown:#6A4630; --walnut:#5A4A3A; --stone:#CFC1A3;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--cream);font-family:'DM Sans',system-ui,sans-serif;color:var(--brown);
+  -webkit-font-smoothing:antialiased}
+
+/* ---------- PAPER GROUND ----------------------------------------------
+   No geometry, no repeat you can see. Two noise fields multiplied over a
+   flat cream: a fine fiber grain, and a slow low-frequency mottle that
+   keeps any one area from looking flat. This is the site's background. */
+.paper{position:relative;background-color:var(--cream)}
+.paper.lt{background-color:var(--cream-lt)}
+.paper::before,.paper::after{content:'';position:absolute;inset:0;pointer-events:none;
+  mix-blend-mode:multiply;z-index:0}
+.paper::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23f)'/%3E%3C/svg%3E");
+  background-size:320px 320px;opacity:.15}
+.paper::after{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='760' height='760'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='760' height='760' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size:760px 760px;opacity:.10}
+.paper > *{position:relative;z-index:1}
+
+/* ---------- HERO ---------- */
+#hero{position:relative;height:100vh;width:100%;overflow:hidden}
+/* Behind the cloth. As the cloth lifts on scroll, whatever is here is
+   uncovered -- point --hero-photo at a real file and the cloth becomes a
+   sheet being pulled off the thing you are selling. */
+#reveal{position:absolute;inset:0;z-index:0;background:var(--hero-photo,none) center/cover no-repeat,
+  linear-gradient(160deg,#E2D5B7,#CFC1A3);display:flex;align-items:flex-end;justify-content:center;
+  padding-bottom:64px}
+#reveal span{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.1em;
+  color:rgba(90,74,58,.55)}
+#clothwrap{position:absolute;inset:0;z-index:1;will-change:transform,opacity}
+#clothwrap canvas{display:block}
+/* same paper grain laid over the canvas so cloth and page share one surface */
+#hero .grainover{position:absolute;inset:0;z-index:2;pointer-events:none;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23f)'/%3E%3C/svg%3E");
+  background-size:320px 320px;opacity:.16}
+#hero .vig{position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:radial-gradient(120% 85% at 50% 40%,transparent 55%,rgba(90,74,58,.13) 100%)}
+
+.hero-inner{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;
+  justify-content:center;padding:0 clamp(24px,7vw,110px);pointer-events:none}
+.eyebrow{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--brown);
+  opacity:.75;margin:0 0 22px}
+.wordmark{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+  font-size:clamp(56px,11.5vw,168px);line-height:.86;margin:0;color:var(--brown);
+  text-shadow:0 1px 0 rgba(255,250,238,.5)}
+.wordmark .ghost{display:block;color:rgba(106,70,48,.26);text-shadow:none}
+.hero-sub{margin:30px 0 0;max-width:31ch;font-size:14px;line-height:1.65;color:var(--walnut)}
+.hero-cta{margin-top:32px;pointer-events:auto}
+.btn{display:inline-block;padding:13px 26px;background:var(--terra);color:var(--cream-lt);
+  border:2px dashed var(--terra);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  text-decoration:none;border-radius:4px;transition:background .25s,border-color .25s}
+.btn:hover{background:var(--terra-dark);border-color:var(--terra-dark)}
+.scrollhint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:4;
+  font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--walnut);opacity:.6}
+
+/* ---------- SECTIONS BELOW (the handoff) ---------- */
+section.pg{padding:clamp(70px,11vh,130px) clamp(24px,7vw,110px)}
+.rule{height:1px;background:rgba(106,70,48,.16);margin:0}
+h2.sec{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
+  font-size:clamp(30px,4.4vw,52px);margin:0 0 20px;color:var(--brown)}
+p.body{max-width:56ch;font-size:14.5px;line-height:1.75;color:var(--walnut);margin:0 0 16px}
+.cards{display:grid;gap:26px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:44px}
+.card{background:rgba(255,250,238,.62);border:1px solid rgba(106,70,48,.14);padding:0 0 18px}
+.card .ph{aspect-ratio:4/5;background:rgba(106,70,48,.07);display:flex;align-items:center;
+  justify-content:center;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(90,74,58,.4)}
+.card h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:19px;margin:16px 18px 4px}
+.card span{display:block;margin:0 18px;font-size:12px;color:var(--walnut)}
+
+/* ---------- CONTROL PANEL ---------- */
+#panel{position:fixed;right:16px;bottom:16px;z-index:50;background:rgba(24,24,24,.93);
+  color:#e8e8e4;border-radius:8px;padding:12px 13px 13px;width:236px;
+  font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.03em;
+  box-shadow:0 8px 26px rgba(0,0,0,.3);backdrop-filter:blur(6px)}
+#panel h4{margin:0 0 9px;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#8a8a86;font-weight:500}
+#panel .grp{margin-bottom:11px}
+#panel .grp:last-child{margin-bottom:0}
+#panel button{font-family:inherit;font-size:10px;color:#e8e8e4;background:#333;border:1px solid #444;
+  border-radius:4px;padding:6px 8px;cursor:pointer;margin:0 4px 4px 0;transition:.15s}
+#panel button:hover{background:#3f3f3f}
+#panel button.on{background:#e8e8e4;color:#181818;border-color:#e8e8e4}
+#panel .sw{width:22px;height:22px;border-radius:4px;border:2px solid #444;cursor:pointer;
+  margin:0 5px 0 0;padding:0;display:inline-block;vertical-align:middle}
+#panel .sw.on{border-color:#e8e8e4}
+#panel .fps{color:#6f6f6c;margin-top:9px;font-size:9px}
+#panel .hide{position:absolute;top:9px;right:10px;color:#8a8a86;cursor:pointer;font-size:11px;line-height:1}
+#showpanel{position:fixed;right:16px;bottom:16px;z-index:50;display:none;background:rgba(24,24,24,.93);
+  color:#e8e8e4;border:none;border-radius:6px;padding:8px 11px;font-family:ui-monospace,Menlo,monospace;
+  font-size:10px;cursor:pointer}
+@media (max-width:720px){#panel{display:none}}
+</style></head>
+<body>
+
+<div id="hero">
+  <div id="reveal"><span>hero photo goes here &mdash; set --hero-photo in the CSS above</span></div>
+  <div id="clothwrap"></div>
+  <div class="grainover"></div>
+  <div class="vig"></div>
+  <div class="hero-inner">
+    <p class="eyebrow">Chattanooga, Tennessee &middot; est. 2023</p>
+    <h1 class="wordmark">Old Friends<span class="ghost">worn in, not out.</span></h1>
+    <p class="hero-sub">Pre-loved clothing and handmade goods, mended and made by hand in small batches.</p>
+    <div class="hero-cta"><a class="btn" href="#story">Shop the shelf</a></div>
+  </div>
+  <div class="scrollhint">scroll</div>
+</div>
+
+<div class="rule"></div>
+
+<section class="pg paper" id="story">
+  <h2 class="sec">Everything here had a life before.</h2>
+  <p class="body">A jacket that went to somebody&rsquo;s first job. A tablecloth from a kitchen that isn&rsquo;t there anymore. We find them, mend them, and send them out again &mdash; sometimes as they were, sometimes as something else entirely.</p>
+  <p class="body">Bring us your grandmother&rsquo;s curtains and we&rsquo;ll bring you back a tote bag you&rsquo;ll actually use.</p>
+</section>
+
+<div class="rule"></div>
+
+<section class="pg paper lt">
+  <h2 class="sec">On the shelf</h2>
+  <div class="cards">
+    <div class="card"><div class="ph">product</div><h3>Patchwork tote</h3><span>$48</span></div>
+    <div class="card"><div class="ph">product</div><h3>Mended chore coat</h3><span>$86</span></div>
+    <div class="card"><div class="ph">product</div><h3>Scrap scrunchie set</h3><span>$14</span></div>
+  </div>
+</section>
+
+<div id="panel">
+  <span class="hide" onclick="hidePanel()">&times;</span>
+  <h4>Gesture</h4>
+  <div class="grp">
+    <button id="g-shake" class="on" onclick="setGesture('shake')">Shake out</button>
+    <button id="g-wave" onclick="setGesture('wave')">Throw the wave</button>
+    <button id="g-drape" onclick="setGesture('drape')">Drape</button>
+  </div>
+  <h4>Cloth</h4>
+  <div class="grp" id="swatches"></div>
+  <h4>Detail</h4>
+  <div class="grp">
+    <button id="t-weave" class="on" onclick="toggleWeave()">Weave lines</button>
+    <button id="t-stitch" class="on" onclick="toggleStitch()">Selvedge stitch</button>
+  </div>
+  <div class="grp"><button onclick="replay()">&#8635; Replay gesture</button></div>
+  <div class="fps" id="fps">&mdash;</div>
+</div>
+<button id="showpanel" onclick="showPanel()">controls</button>
+
+<script>
+/* =====================================================================
+   VERLET CLOTH
+   A grid of particles held by three kinds of link: structural (the warp
+   and weft), shear (the diagonals, which stop the mesh collapsing into
+   spikes), and bend (every second neighbour, weak, which is what makes
+   cloth resist a sharp crease). Gravity pulls, links resist, and the top
+   edge is held by hands we animate.
+
+   The cloth is ONE colour. Every bit of tonal variation you see is light
+   falling across folds -- no colour blocking anywhere.
+   ===================================================================== */
+
+var COLS = 48, ROWS = 30;
+var ITER = 3;
+var GRAV = 0.40;
+var DAMP = 0.986;
+
+var P = [], LINKS = [], LUM = [], LUM2 = [];
+var restW, restH, originX, originY;
+var gesture = 'shake';
+var tGest = 0;
+var showWeave = true, showStitch = true;
+var reduced = false;
+
+var WAYS = [
+  {name:'cream', base:'#EDE1C5', shade:'#96794C', light:'#FFFCF3'},
+  {name:'dusty', base:'#B7C9CB', shade:'#5F7478', light:'#E8F1F2'},
+  {name:'olive', base:'#9E983C', shade:'#514E1B', light:'#D8D496'},
+  {name:'brown', base:'#6A4630', shade:'#33200F', light:'#B7906F'},
+  {name:'berry', base:'#9E1431', shade:'#4C0716', light:'#DC7286'}
+];
+var way = 0, cShade, cLight, cWeaveDark;
+
+function pickColors(){
+  var w = WAYS[way];
+  cShade = color(w.shade);
+  cLight = color(w.light);
+  cWeaveDark = color(w.shade);
+}
+
+function setup(){
+  var c = createCanvas(windowWidth, windowHeight);
+  c.parent('clothwrap');
+  pixelDensity(1);
+  reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (windowWidth < 900){ COLS = 34; ROWS = 22; }
+  pickColors();
+  buildSwatches();
+  buildCloth();
+  noStroke();
+}
+
+function buildCloth(){
+  /* Overscan sideways so no vertical edge is ever visible. The bottom hem
+     stays inside the viewport on purpose: a raw hem swinging free is the
+     single strongest "this is cloth" signal available. */
+  var padX = width * 0.16;
+  originX = -padX;
+  originY = -height * 0.20;
+  restW = (width + padX*2) / (COLS-1);
+  restH = (height * 1.15) / (ROWS-1);
+
+  P = [];
+  for (var j=0;j<ROWS;j++){
+    P[j] = [];
+    for (var i=0;i<COLS;i++){
+      var x = originX + i*restW, y = originY + j*restH;
+      var z = (noise(i*0.42, j*0.06, 3.3)-0.5) * 26;   /* seed the buckling */
+      P[j][i] = {x:x, y:y, z:z, px:x, py:y, pz:z, rx:x, ry:y, pin:false};
+    }
+  }
+
+  /* Gathers. The hands hold the top edge narrower than the cloth actually
+     is (86%), with an uneven, hand-made jitter. The excess width has to go
+     somewhere, so it becomes standing folds -- the cloth can never settle
+     into a flat sheet, which is exactly how a gathered curtain behaves. */
+  var cx = originX + (COLS-1)*restW/2;
+  for (i=0;i<COLS;i++){
+    var g = cx + (i-(COLS-1)/2)*restW*0.86;
+    g += (noise(i*0.33, 91.7)-0.5) * restW * 0.55;
+    P[0][i].rx = g; P[0][i].x = g; P[0][i].px = g; P[0][i].z = 0; P[0][i].pz = 0;
+  }
+
+  LUM = []; LUM2 = [];
+  for (j=0;j<ROWS;j++){ LUM[j]=new Float32Array(COLS); LUM2[j]=new Float32Array(COLS); }
+
+  var diag = Math.sqrt(restW*restW + restH*restH);
+  LINKS = [];
+  for (j=0;j<ROWS;j++) for (i=0;i<COLS;i++){
+    if (i<COLS-1) LINKS.push([P[j][i], P[j][i+1], restW, 1.0]);
+    if (j<ROWS-1) LINKS.push([P[j][i], P[j+1][i], restH, 1.0]);
+    if (i<COLS-1 && j<ROWS-1){                       /* shear */
+      LINKS.push([P[j][i],   P[j+1][i+1], diag, 0.32]);
+      LINKS.push([P[j][i+1], P[j+1][i],   diag, 0.32]);
+    }
+    if (i<COLS-2) LINKS.push([P[j][i], P[j][i+2], restW*2, 0.05]);   /* bend */
+    if (j<ROWS-2) LINKS.push([P[j][i], P[j+2][i], restH*2, 0.05]);
+  }
+
+  tGest = 0;
+  applyGestureInit();
+  if (reduced) for (var k=0;k<500;k++) simStep();
+}
+
+function applyGestureInit(){
+  var j,i,p;
+  for (j=0;j<ROWS;j++) for (i=0;i<COLS;i++){
+    p = P[j][i];
+    p.x = p.rx; p.y = p.ry; p.px = p.x; p.py = p.y; p.pin = false;
+  }
+  if (gesture === 'wave'){
+    /* Nothing to displace -- the wave is injected at the top edge and
+       travels, so the cloth simply starts hanging. */
+    for (i=0;i<COLS;i++) P[0][i].pin = true;
+  } else if (gesture === 'drape'){
+    P[0][0].pin = true; P[0][COLS-1].pin = true;
+  } else {
+    /* shake: the whole top edge held in two hands, flicked once. */
+    for (j=0;j<ROWS;j++) for (i=0;i<COLS;i++){
+      p = P[j][i]; p.y = p.ry + 46; p.py = p.y;
+    }
+    for (i=0;i<COLS;i++) P[0][i].pin = true;
+  }
+}
+
+function easeOut(t){ return 1 - Math.pow(1-t, 3); }
+
+function simStep(){
+  var i,j,p,lag,tt,dec;
+  tGest++;
+
+  /* --- the hands --- */
+  if (gesture === 'shake'){
+    for (i=0;i<COLS;i++){
+      lag = i/(COLS-1);
+      tt = tGest - lag*11; if (tt < 0) tt = 0;
+      dec = Math.exp(-tt/42);
+      p = P[0][i];
+      p.y = p.ry + dec * Math.sin(tt/4.7) * 74;
+      p.x = p.rx + dec * Math.sin(tt/6.3) * 30 * (lag-0.5) * 2;
+      p.z = dec * Math.sin(tt/5.4) * 46;          /* it billows towards you */
+      p.px = p.x; p.py = p.y; p.pz = p.z;
+    }
+  } else if (gesture === 'wave'){
+    /* One hand snaps the near corner and a hump runs the length of the
+       cloth -- a gaussian pulse whose centre travels left to right along
+       the held edge. The body lags behind it by itself; that lag is the
+       whole effect. */
+    var head = tGest * 1.35;
+    var fade = Math.exp(-tGest/190);
+    for (i=0;i<COLS;i++){
+      var dd = i - head;
+      var amp = Math.exp(-(dd*dd)/210) * 118 * fade;
+      p = P[0][i];
+      p.y = p.ry - amp;
+      p.x = p.rx + amp * 0.28;
+      p.z = amp * 0.42;
+      p.px = p.x; p.py = p.y; p.pz = p.z;
+    }
+  } else {
+    var sway = Math.sin(frameCount/86) * 10;
+    P[0][0].x = P[0][0].rx + sway;             P[0][0].px = P[0][0].x;
+    P[0][COLS-1].x = P[0][COLS-1].rx - sway;   P[0][COLS-1].px = P[0][COLS-1].x;
+  }
+
+  /* --- integrate --- */
+  var breeze = frameCount * 0.006;
+  for (j=0;j<ROWS;j++) for (i=0;i<COLS;i++){
+    p = P[j][i];
+    if (p.pin) continue;
+    var vx = (p.x - p.px) * DAMP;
+    var vy = (p.y - p.py) * DAMP;
+    var vz = (p.z - p.pz) * DAMP;
+    p.px = p.x; p.py = p.y; p.pz = p.z;
+    var n = noise(i*0.085, j*0.085, breeze) - 0.5;   /* never dead still */
+    p.x += vx + n * 0.75;
+    p.y += vy + GRAV + n * 0.30;
+    p.z += vz + n * 0.85;
+  }
+
+  /* --- relax the links --- */
+  for (var k=0;k<ITER;k++){
+    for (var L=0;L<LINKS.length;L++){
+      var l = LINKS[L], a = l[0], b = l[1];
+      var dx = b.x-a.x, dy = b.y-a.y, dz = b.z-a.z;
+      var d = Math.sqrt(dx*dx+dy*dy+dz*dz);
+      if (d === 0) continue;
+      var f = (d - l[2]) / d * 0.5 * l[3];
+      var ox = dx*f, oy = dy*f, oz = dz*f;
+      if (!a.pin){ a.x += ox; a.y += oy; a.z += oz; }
+      if (!b.pin){ b.x -= ox; b.y -= oy; b.z -= oz; }
+    }
+  }
+}
+
+/* The cloth lives in three dimensions even though it is drawn flat.
+   Each cell's surface normal is the cross product of its two edges; dot
+   that against a light coming over your left shoulder and you have the
+   shading. Nothing is painted -- every tone on screen is geometry. */
+var LX=-0.42, LY=-0.50, LZ=0.76;
+function cellLum(a,b,d){
+  var ux=b.x-a.x, uy=b.y-a.y, uz=b.z-a.z;
+  var vx=d.x-a.x, vy=d.y-a.y, vz=d.z-a.z;
+  var nx=uy*vz-uz*vy, ny=uz*vx-ux*vz, nz=ux*vy-uy*vx;
+  var m=Math.sqrt(nx*nx+ny*ny+nz*nz);
+  if (m===0) return 0.7;
+  nx/=m; ny/=m; nz/=m;
+  if (nz<0){ nx=-nx; ny=-ny; nz=-nz; }
+  var l = nx*LX + ny*LY + nz*LZ;
+  if (l<0) l=0;
+  var t = 0.10 + 0.90*l;
+  return t<0?0:(t>1?1:t);
+}
+var PCX=0, PCY=0, PSC=0.00060;
+function sx(p){ return PCX + (p.x-PCX)*(1+p.z*PSC); }
+function sy(p){ return PCY + (p.y-PCY)*(1+p.z*PSC); }
+
+function draw(){
+  clear();
+  PCX = width/2; PCY = height/2;
+  if (!reduced) simStep();
+
+  var j,i,a,b,c,d,t;
+
+  /* Shade every cell, then blur the shading twice. Without this the
+     per-cell normals read as blocky mosaic; two cheap box passes and it
+     becomes continuous light on a continuous surface. */
+  for (j=0;j<ROWS-1;j++)
+    for (i=0;i<COLS-1;i++)
+      LUM[j][i] = cellLum(P[j][i], P[j][i+1], P[j+1][i]);
+
+  for (var pass=0; pass<2; pass++){
+    for (j=0;j<ROWS-1;j++){
+      for (i=0;i<COLS-1;i++){
+        var acc=0, cnt=0;
+        for (var dj=-1;dj<=1;dj++) for (var di=-1;di<=1;di++){
+          var jj=j+dj, ii=i+di;
+          if (jj<0||ii<0||jj>=ROWS-1||ii>=COLS-1) continue;
+          acc += LUM[jj][ii]; cnt++;
+        }
+        LUM2[j][i] = acc/cnt;
+      }
+    }
+    var tmp = LUM; LUM = LUM2; LUM2 = tmp;
+  }
+
+  for (j=0;j<ROWS-1;j++){
+    for (i=0;i<COLS-1;i++){
+      a=P[j][i]; b=P[j][i+1]; c=P[j+1][i+1]; d=P[j+1][i];
+      t = LUM[j][i];
+      fill(lerpColor(cShade, cLight, t*t*(3-2*t)));
+      quad(sx(a),sy(a),sx(b),sy(b),sx(c),sy(c),sx(d),sy(d));
+    }
+  }
+
+  /* --- the weave, riding on the drape ---
+     Warp and weft drawn through the real particle positions, so the
+     threads crowd together inside a fold on their own. Alpha is tied to
+     the shading: where the cloth is flat and lit, the threads all but
+     disappear, so it never reads as a grid laid over the page. */
+  if (showWeave){
+    noFill(); strokeWeight(1);
+    for (j=0;j<ROWS-1;j+=4){
+      for (i=0;i<COLS-1;i++){
+        t = LUM[j][i];
+        cWeaveDark.setAlpha(38 * (1-t) * (1-t));
+        stroke(cWeaveDark);
+        line(sx(P[j][i]),sy(P[j][i]),sx(P[j][i+1]),sy(P[j][i+1]));
+      }
+    }
+    for (i=0;i<COLS-1;i+=4){
+      for (j=0;j<ROWS-1;j++){
+        t = LUM[j][i];
+        cWeaveDark.setAlpha(38 * (1-t) * (1-t));
+        stroke(cWeaveDark);
+        line(sx(P[j][i]),sy(P[j][i]),sx(P[j+1][i]),sy(P[j+1][i]));
+      }
+    }
+  }
+
+  /* --- raw hem, and a line of running stitch just above it --- */
+  var hem = ROWS-1;
+  cWeaveDark.setAlpha(190);
+  stroke(cWeaveDark); strokeWeight(1.5); noFill();
+  beginShape();
+  for (var h=0;h<COLS;h++) vertex(sx(P[hem][h]), sy(P[hem][h]));
+  endShape();
+
+  if (showStitch){
+    stroke('#9E1431'); strokeWeight(2.4);
+    for (var s=1;s<COLS-2;s+=4){
+      var q=P[hem-2][s], r=P[hem-2][s+1];
+      line(sx(q),sy(q),sx(r),sy(r));
+    }
+  }
+  noStroke();
+
+  if (frameCount % 20 === 0){
+    document.getElementById('fps').textContent =
+      COLS+'x'+ROWS+' mesh  ·  '+LINKS.length+' links  ·  '+Math.round(frameRate())+' fps';
+  }
+}
+
+/* ---------- scroll handoff: the cloth is lifted away ---------- */
+window.addEventListener('scroll', function(){
+  var h = window.innerHeight;
+  var sp = Math.min(1, window.scrollY / (h*0.85));
+  var el = document.getElementById('clothwrap');
+  el.style.transform = 'translateY(' + (-sp*26) + 'vh) scale(' + (1+sp*0.06) + ')';
+  el.style.opacity = String(1 - sp*0.92);
+}, {passive:true});
+
+/* ---------- controls ---------- */
+function buildSwatches(){
+  var host = document.getElementById('swatches');
+  host.innerHTML = '';
+  WAYS.forEach(function(w,idx){
+    var b = document.createElement('button');
+    b.className = 'sw' + (idx===way?' on':'');
+    b.style.background = w.base;
+    b.title = w.name;
+    b.onclick = function(){ way = idx; pickColors(); buildSwatches(); };
+    host.appendChild(b);
+  });
+}
+function setGesture(g){
+  gesture = g;
+  ['shake','wave','drape'].forEach(function(k){
+    document.getElementById('g-'+k).className = (k===g?'on':'');
+  });
+  buildCloth();
+}
+function replay(){ buildCloth(); }
+function toggleWeave(){ showWeave=!showWeave; document.getElementById('t-weave').className = showWeave?'on':''; }
+function toggleStitch(){ showStitch=!showStitch; document.getElementById('t-stitch').className = showStitch?'on':''; }
+function hidePanel(){ document.getElementById('panel').style.display='none';
+  document.getElementById('showpanel').style.display='block'; }
+function showPanel(){ document.getElementById('panel').style.display='block';
+  document.getElementById('showpanel').style.display='none'; }
+
+function mouseDragged(){
+  if (window.scrollY > window.innerHeight*0.8) return;
+  for (var j=0;j<ROWS;j++) for (var i=0;i<COLS;i++){
+    var p=P[j][i]; if (p.pin) continue;
+    var dx=p.x-mouseX, dy=p.y-mouseY, d=Math.sqrt(dx*dx+dy*dy);
+    if (d < 130){ var f=(1-d/130)*0.55; p.x += (mouseX-pmouseX)*f; p.y += (mouseY-pmouseY)*f; p.z += f*9; }
+  }
+}
+function windowResized(){ resizeCanvas(windowWidth, windowHeight); buildCloth(); }
+</script>
+</body></html>

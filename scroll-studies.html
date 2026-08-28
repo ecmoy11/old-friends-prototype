@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Old Friends — scroll studies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&family=Italianno&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F6EDD8; --cream-text:#FFFAEE; --dusty:#B7C9CB; --sage:#9E983C;
+  --terra:#9E1431; --terra-dark:#7A0F26; --brown:#6A4630; --walnut:#5A4A3A; --stone:#CFC1A3;
+  --font-script:'Le Studio Nocturne','Italianno',cursive;
+}
+*{box-sizing:border-box} html{scroll-behavior:auto}
+body{margin:0;position:relative;background:var(--cream);color:var(--brown);
+  font-family:'DM Sans',system-ui,sans-serif;font-weight:300;line-height:1.7;font-size:15px;
+  -webkit-font-smoothing:antialiased}
+.paper-grain{position:absolute;inset:0;z-index:4;pointer-events:none;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='pf'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23pf)' opacity='0.17'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='760' height='760'%3E%3Cfilter id='pm'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='760' height='760' filter='url(%23pm)' opacity='0.11'/%3E%3C/svg%3E");
+  background-size:320px 320px,760px 760px}
+
+/* ── explorer chrome ───────────────────────────────────────────── */
+.chrome{position:sticky;top:0;z-index:60;background:rgba(24,24,24,.94);color:#e8e8e4;
+  padding:13px 22px;font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.04em;
+  backdrop-filter:blur(6px);display:flex;justify-content:space-between;gap:16px;align-items:center}
+.chrome b{font-weight:500}
+.chrome .prog{color:#8a8a86}
+.note{max-width:660px;margin:0 auto;padding:0 26px}
+.note .n{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--terra);display:block;margin-bottom:10px}
+.note h2{font-family:var(--font-script);font-weight:400;font-size:clamp(38px,5.2vw,60px);
+  line-height:1.05;padding-bottom:.12em;margin:0 0 16px}
+.note p{color:var(--walnut);font-size:14.5px;margin:0 0 8px}
+.note .how{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8a8a86;
+  border-left:2px solid var(--stone);padding-left:12px;margin-top:16px;line-height:1.65}
+section.study{padding:120px 0 40px;position:relative}
+
+/* ══ 1 · THE SEAM ══════════════════════════════════════════════════
+   One running stitch down the whole document, its length tied to how
+   far you've scrolled. The page becomes a single piece of sewing. */
+.seam-rail{position:absolute;left:38px;top:0;bottom:0;width:3px;z-index:3;pointer-events:none}
+.seam-rail::before{content:'';position:absolute;inset:0;
+  background-image:repeating-linear-gradient(180deg,rgba(106,70,48,.14) 0 11px,transparent 11px 19px)}
+.seam-thread{position:absolute;left:0;top:0;width:3px;height:0;
+  background-image:repeating-linear-gradient(180deg,var(--terra) 0 11px,transparent 11px 19px)}
+.seam-knot{position:absolute;left:-3.5px;width:10px;height:10px;border-radius:50%;
+  background:var(--terra);opacity:0;transform:scale(.2);
+  transition:opacity .45s ease,transform .5s cubic-bezier(.2,1.5,.4,1)}
+.seam-knot.tied{opacity:1;transform:scale(1)}
+@media (max-width:820px){.seam-rail{display:none}}
+
+/* ══ 2 · UNCOVERED, NOT FADED IN ═══════════════════════════════════ */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 26px;max-width:1180px;margin:46px auto 0}
+.tile{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--stone)}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  clip-path:inset(100% 0 0 0);transform:scale(1.07);
+  transition:clip-path 1.05s cubic-bezier(.22,.85,.2,1),transform 1.35s cubic-bezier(.22,.85,.2,1)}
+.in .tile img{clip-path:inset(0 0 0 0);transform:scale(1)}
+.in .tile:nth-child(2) img{transition-delay:.10s}
+.in .tile:nth-child(3) img{transition-delay:.20s}
+.in .tile:nth-child(4) img{transition-delay:.30s}
+.cap{display:flex;justify-content:space-between;font-size:12.5px;color:var(--walnut);
+  max-width:1180px;margin:10px auto 0;padding:0 26px}
+
+/* ══ 3 · THE WIPE ══════════════════════════════════════════════════ */
+.stage{height:260vh;position:relative;margin-top:46px}
+.pin{position:sticky;top:42px;height:calc(100vh - 42px);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.wipe{position:relative;width:min(760px,86vw);aspect-ratio:4/3;overflow:hidden;
+  box-shadow:0 14px 44px rgba(90,74,58,.20)}
+.wipe img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.wipe .after{clip-path:inset(0 calc(100% - var(--w,0%)) 0 0)}
+.wipe .edge{position:absolute;top:0;bottom:0;left:var(--w,0%);width:3px;
+  background-image:repeating-linear-gradient(180deg,var(--cream-text) 0 9px,transparent 9px 16px)}
+.wipe .tag{position:absolute;bottom:16px;font-family:ui-monospace,Menlo,monospace;font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;background:rgba(106,70,48,.86);
+  color:var(--cream-text);padding:7px 12px}
+.wipe .tag.l{left:16px}.wipe .tag.r{right:16px}
+
+/* ══ 4 · LAYERED CLOTH ═════════════════════════════════════════════ */
+.stack{margin-top:46px}
+.layer{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:0 30px;box-shadow:0 -18px 40px rgba(90,74,58,.16)}
+.layer h3{font-family:var(--font-script);font-weight:400;font-size:clamp(40px,6vw,74px);
+  line-height:1.02;padding-bottom:.12em;margin:0 0 14px}
+.layer p{max-width:44ch;margin:0 auto;font-size:15px}
+.l1{background:var(--cream)}
+.l2{background:var(--sage);color:var(--cream-text)}
+.l3{background:var(--brown);color:var(--cream-text)}
+
+/* ══ 5 · THE THREAD BETWEEN THE STEPS ══════════════════════════════ */
+.steps{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:26px;
+  max-width:1080px;margin:56px auto 0;padding:0 26px}
+.steps::before{content:'';position:absolute;left:11%;right:11%;top:26px;height:3px;
+  background-image:repeating-linear-gradient(90deg,rgba(106,70,48,.16) 0 10px,transparent 10px 18px)}
+.steps .drawn{position:absolute;left:11%;top:26px;height:3px;width:0;
+  background-image:repeating-linear-gradient(90deg,var(--terra) 0 10px,transparent 10px 18px)}
+.step{text-align:center;position:relative}
+.step .num{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;
+  color:var(--terra);background:var(--cream);width:54px;height:54px;line-height:54px;
+  border-radius:50%;margin:0 auto 14px;position:relative;z-index:2}
+.step h4{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:19px;margin:0 0 6px}
+.step p{font-size:13.5px;color:var(--walnut);margin:0}
+
+@media (prefers-reduced-motion:reduce){
+  .tile img{clip-path:inset(0 0 0 0)!important;transform:none!important;transition:none}
+  .layer{position:static;height:auto;padding:90px 30px}
+  .stage{height:auto}.pin{position:static;height:auto;padding:60px 0}
+}
+@media (max-width:820px){.grid4,.steps{grid-template-columns:repeat(2,1fr)}}
+</style></head>
+<body>
+
+<div class="seam-rail"><div class="seam-thread" id="thread"></div></div>
+
+<div class="chrome">
+  <span><b>Old Friends</b> &nbsp;·&nbsp; scroll studies &nbsp;·&nbsp; five ideas, live</span>
+  <span class="prog" id="prog">seam 0%</span>
+</div>
+
+<!-- 1 -->
+<section class="study" id="s1">
+  <div class="note">
+    <span class="n">01 · The seam</span>
+    <h2>One stitch, the whole way down.</h2>
+    <p>Look at the left margin. A single running stitch is being sewn as you scroll, and it never stops &mdash; it runs the entire length of the page. Every section is a piece of the same seam, and a knot ties off wherever one section meets the next.</p>
+    <p>This is the one I'd fight for. It costs almost nothing, it's on the page the entire time rather than firing once and being over, and it says the thing the brand is actually about: everything here is one continuous piece of handwork.</p>
+    <div class="how">A dashed gradient in a rail the height of the document. Scroll position sets the inner element's height &mdash; that's the whole mechanism. The knots are IntersectionObservers on the section boundaries.</div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="study" id="s2">
+  <div class="note">
+    <span class="n">02 · Uncovered, not faded in</span>
+    <h2>Product photos lift like a cloth.</h2>
+    <p>Right now the grid fades up, which is what every site does. These are wiped open from the bottom with a clip path instead, easing out of a slight over-scale so each one settles rather than arrives. Staggered a tenth of a second apart across the row.</p>
+    <p>Reads as a cover being drawn back off the piece. A fade reads as a browser loading something.</p>
+    <div class="how">clip-path: inset(100% 0 0 0) &rarr; inset(0), plus scale 1.07 &rarr; 1, on a long ease-out. Triggered once by IntersectionObserver, never re-run.</div>
+  </div>
+  <div class="grid4" id="g1">
+    <div class="tile"><img src="images/bag1.jpg" alt=""></div>
+    <div class="tile"><img src="images/bag3.jpg" alt=""></div>
+    <div class="tile"><img src="images/scrunchie.WEBP" alt=""></div>
+    <div class="tile"><img src="images/bag4.jpg" alt=""></div>
+  </div>
+  <div class="cap"><span>Patchwork Tote — Garden</span><span>$48</span></div>
+</section>
+
+<!-- 3 -->
+<section class="study" id="s3">
+  <div class="note">
+    <span class="n">03 · The wipe</span>
+    <h2>Their fabric becomes your piece.</h2>
+    <p>Scroll into the frame below and keep going. It pins, and the scroll drives a seam across the image, turning the fabric someone brought in into the thing Lauren made from it.</p>
+    <p>Of everything here this is the one that does real work. Commission is the hardest thing to explain in words and the easiest thing to show, and the visitor performs the transformation themselves with their own thumb.</p>
+    <div class="how">A 260vh stage with a sticky 100vh child. Scroll progress through the stage sets one CSS variable, which drives the top image's clip-path and the seam's position.</div>
+  </div>
+  <div class="stage" id="stage">
+    <div class="pin">
+      <div class="wipe" id="wipe">
+        <img class="before" src="floral.jpg" alt="">
+        <img class="after" src="images/bag2.jpg" alt="">
+        <div class="edge"></div>
+        <span class="tag l">Her grandmother's curtains</span>
+        <span class="tag r">The tote</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="study" id="s4">
+  <div class="note">
+    <span class="n">04 · Layered cloth</span>
+    <h2>Sections lay over each other.</h2>
+    <p>Instead of scrolling past one another, each section pins and the next slides over the top of it with a soft shadow at its leading edge &mdash; the way you'd lay one piece of fabric over another on a cutting table.</p>
+    <p>Fair warning: this is the showiest thing on this page and the one most likely to wear out. I'd use it for exactly one handoff &mdash; probably hero into Core Collection &mdash; and nowhere else.</p>
+    <div class="how">position: sticky; top: 0 on consecutive full-height sections. No JavaScript at all.</div>
+  </div>
+  <div class="stack">
+    <div class="layer l1"><div><h3>Everything here had a life before.</h3><p>A jacket that went to somebody's first job. A tablecloth from a kitchen that isn't there any more.</p></div></div>
+    <div class="layer l2"><div><h3>We find them and mend them.</h3><p>Sometimes as they were. Sometimes as something else entirely.</p></div></div>
+    <div class="layer l3"><div><h3>Then we send them out again.</h3><p>Worn in, not out.</p></div></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="study" id="s5">
+  <div class="note">
+    <span class="n">05 · The thread between the steps</span>
+    <h2>How it works, sewn together.</h2>
+    <p>The commission process is four numbered steps sitting in a row. A thread draws left to right between them as you scroll, so the four separate things become one sequence you're being walked through.</p>
+    <div class="how">Same trick as the seam, turned ninety degrees: scroll progress across the section sets the width of a dashed gradient.</div>
+  </div>
+  <div class="steps" id="steps">
+    <div class="drawn" id="drawn"></div>
+    <div class="step"><div class="num">1</div><h4>Reach out</h4><p>Tell me about your fabrics.</p></div>
+    <div class="step"><div class="num">2</div><h4>Send your textiles</h4><p>Mail them or drop them off.</p></div>
+    <div class="step"><div class="num">3</div><h4>We design together</h4><p>We settle the piece and the layout.</p></div>
+    <div class="step"><div class="num">4</div><h4>Made by hand</h4><p>One seam at a time.</p></div>
+  </div>
+</section>
+
+<section class="study" style="padding-bottom:160px">
+  <div class="note">
+    <span class="n">Where I'd start</span>
+    <h2>One, three, then two.</h2>
+    <p><b>The seam</b> first &mdash; it's cheap, it's everywhere, and it's the only one that's a brand idea rather than an effect. <b>The wipe</b> second, on the commission page, because it sells the hardest-to-explain thing you offer. <b>The uncover</b> third, as a straight swap for the fade you already have.</p>
+    <p>Four is a party trick. Five is nice but small. And none of it should run for anyone who's asked their machine for reduced motion &mdash; every one of these is already wired to switch off if they have.</p>
+  </div>
+</section>
+
+<div class="paper-grain" aria-hidden="true"></div>
+
+<script>
+(function () {
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var thread = document.getElementById('thread');
+  var prog   = document.getElementById('prog');
+  var stage  = document.getElementById('stage');
+  var wipe   = document.getElementById('wipe');
+  var steps  = document.getElementById('steps');
+  var drawn  = document.getElementById('drawn');
+  var ticking = false;
+
+  /* knots wherever one study meets the next */
+  var rail = document.querySelector('.seam-rail');
+  ['s2','s3','s4','s5'].forEach(function (id) {
+    var sec = document.getElementById(id);
+    var k = document.createElement('span');
+    k.className = 'seam-knot';
+    k.style.top = (sec.offsetTop - 5) + 'px';
+    rail.appendChild(k);
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) k.classList.add('tied'); });
+    }, { rootMargin: '-45% 0px -45% 0px' }).observe(sec);
+  });
+
+  /* one-shot reveals */
+  new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.2 }).observe(document.getElementById('g1'));
+
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+  function update() {
+    var y = window.scrollY, vh = innerHeight;
+
+    /* 1 · the seam grows with the document */
+    var max = document.documentElement.scrollHeight - vh;
+    var p = clamp(max > 0 ? y / max : 0);
+    thread.style.height = (p * 100) + '%';
+    prog.textContent = 'seam ' + Math.round(p * 100) + '%';
+
+    /* 3 · scroll through the stage drives the wipe */
+    if (stage) {
+      var r = stage.getBoundingClientRect();
+      var w = clamp(-r.top / (r.height - vh));
+      wipe.style.setProperty('--w', (w * 100).toFixed(2) + '%');
+    }
+
+    /* 5 · and the thread between the steps */
+    if (steps) {
+      var s = steps.getBoundingClientRect();
+      var d = clamp((vh * 0.85 - s.top) / (vh * 0.55));
+      drawn.style.width = (d * 78) + '%';
+    }
+    ticking = false;
+  }
+
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+  if (!reduced) {
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+  }
+  update();
+})();
+</script>
+</body></html>

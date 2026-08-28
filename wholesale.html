@@ -5,7 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wholesale — Old Friends</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&family=Italianno&family=Parisienne&display=swap" rel="stylesheet">
+<style>
+  /* ── DISPLAY SCRIPT ────────────────────────────────────────────────
+     Le Studio Nocturne is licensed (PeachCreme / Creative Market) so it
+     is not on a CDN -- the files live in fonts/. See fonts/README.txt.
+     Falls back to Italianno until they are dropped in. */
+  @font-face {
+    font-family: 'Le Studio Nocturne';
+    src: url('fonts/LeStudioNocturne-Standard.woff2') format('woff2'),
+         url('fonts/LeStudioNocturne-Standard.otf')   format('opentype');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'Le Studio Nocturne';
+    src: url('fonts/LeStudioNocturne-Bold.woff2') format('woff2'),
+         url('fonts/LeStudioNocturne-Bold.otf')   format('opentype');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+</style>
 <style>
   :root {
     --sage: #9E983C;
@@ -14,13 +33,15 @@
     --terra: #9E1431;
     --terra-dark: #7A0F26;
     --terra-light: #BE5C72;
-    --cream: #EDE1C5;
+    --cream: #F6EDD8;            /* one cream everywhere */
     --cream-text: #FFFAEE;
     --linen: #E2D5B7;
     --stone: #CFC1A3;
     --walnut: #5A4A3A;
     --light-sage: #D3D0A7;
-    --white: #FDFBF8;
+    --cream-light: #F6EDD8;      /* same value -- kept so var(--white) still resolves */
+    --white: var(--cream-light);
+    --font-script: 'Le Studio Nocturne', 'Italianno', 'Parisienne', cursive;
     --dusty: #B7C9CB;
   }
 
@@ -28,6 +49,7 @@
   html { scroll-behavior: smooth; }
 
   body {
+    position: relative;
     font-family: 'DM Sans', sans-serif;
     background: var(--cream);
     color: var(--brown);
@@ -101,11 +123,11 @@
   /* ── PAGE HEAD ── */
   .page-head { text-align: center; padding: 80px 0 40px; }
   .page-head h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(38px, 5vw, 56px);
+    font-family: var(--font-script);
+    font-size: clamp(46px, 6.4vw, 76px);
     font-weight: 400;
-    font-style: italic;
-    line-height: 1.15;
+    font-style: normal;
+    line-height: 1.06;
     color: var(--brown);
     max-width: 720px;
     margin: 0 auto;
@@ -125,36 +147,39 @@
     grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
-  .offering-card { background: var(--white); padding: 36px 32px; }
+  /* The two offering cards carry the olive. Everything inside them
+     flips to cream so the contrast holds. */
+  .offering-card { background: var(--sage); padding: 36px 32px; }
   .offering-card h3 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 24px; font-weight: 500; font-style: italic;
-    margin-bottom: 12px; color: var(--brown);
+    margin-bottom: 12px; color: var(--cream-text);
   }
-  .offering-card p { color: var(--walnut); font-size: 14px; line-height: 1.8; margin-bottom: 10px; }
+  .offering-card p { color: rgba(255, 250, 238, 0.88); font-size: 14px; line-height: 1.8; margin-bottom: 10px; }
   .offering-card ul { list-style: none; margin-top: 14px; }
   .offering-card li {
-    color: var(--walnut); font-size: 14px; padding: 8px 0;
-    border-bottom: 1px dashed var(--stone);
+    color: rgba(255, 250, 238, 0.88); font-size: 14px; padding: 8px 0;
+    border-bottom: 1px dashed rgba(255, 250, 238, 0.32);
   }
   .offering-card li:last-child { border-bottom: none; }
-  .offering-card li::before { content: '✂ '; color: var(--terra); font-size: 12px; margin-right: 6px; }
+  .offering-card li::before { content: '✂ '; color: var(--cream-text); font-size: 12px; margin-right: 6px; }
 
   /* ── STOCKISTS ── */
-  .stockists { padding: 80px 0; background: var(--sage); text-align: center; }
+  /* Currently stocked sits on cream now, so its type comes back to brown. */
+  .stockists { padding: 80px 0; background: var(--cream); text-align: center; }
   .stockists h2 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 34px; font-weight: 400; font-style: italic;
-    color: var(--cream-text); margin-bottom: 14px;
+    color: var(--brown); margin-bottom: 14px;
   }
-  .stockists .sub { color: var(--light-sage); font-size: 14px; margin-bottom: 40px; }
+  .stockists .sub { color: var(--walnut); font-size: 14px; margin-bottom: 40px; }
   .stockist-row { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
-  .stockist { color: var(--cream-text); font-size: 14px; }
+  .stockist { color: var(--walnut); font-size: 14px; }
   .stockist strong {
     display: block;
     font-family: 'Cormorant Garamond', serif;
     font-size: 22px; font-weight: 500; font-style: italic;
-    margin-bottom: 4px;
+    margin-bottom: 4px; color: var(--brown);
   }
 
   /* ── INQUIRE ── */
@@ -228,11 +253,55 @@
     .footer-top { grid-template-columns: 1fr; }
     .logo-img { height: 26px; }
   }
+
+  /* filler photography -- framing is already right, just swap the src */
+  .ph-fill { position: relative; overflow: hidden; }
+  .ph-img  { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+  /* Script heads need more air than the serif they replaced: the loops rise
+     well above the cap line and the descenders hang a long way below, so a
+     tight line-height collides and a zero bottom margin crowds the copy. */
+  .page-head .section-label, .about-head .section-label { margin-bottom: 46px; }
+  .page-head h1, .about-head h1 { line-height: 1.05; padding-bottom: 0.14em; margin-bottom: 0.62em; }
+  /* wide enough that the last line doesn't orphan a single word */
+  .page-head .lede { margin-top: 0; max-width: 60ch; margin-left: auto; margin-right: auto; }
+  /* two lines, and 'Old Friends' never splits across them */
+  .page-head h1 .keep { white-space: nowrap; }
+  .page-head h1 { max-width: 16ch; }
+
+  /* == ONE PAPER, ONE CREAM ========================================
+     Every cream on the site is now the same cream, and the texture is
+     no longer a property of individual sections -- it is a single fixed
+     sheet of paper laid over the whole page and multiplied down. That
+     means the grain is identical on cream, on olive and on brown, so
+     the newsletter and the footer read as one continuous brown instead
+     of two browns that nearly match. It sits below the nav (z 100) and
+     ignores the pointer, so nothing interactive is affected.
+  */
+  .paper-grain {
+    /* absolute, not fixed: paper travels with the page. Fixed would hold the
+       grain still while the content slid underneath it, which reads as glass. */
+    position: absolute; inset: 0; z-index: 4;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='pf'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23pf)' opacity='0.17'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='760' height='760'%3E%3Cfilter id='pm'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='760' height='760' filter='url(%23pm)' opacity='0.11'/%3E%3C/svg%3E");
+    background-size: 320px 320px, 760px 760px;
+  }
+  /* the old per-section grain would double up on top of it */
+  .texture-linen::after { display: none; }
+
+  /* announcement bar: no folk icons, just a hairline between the two lines */
+  .announcement { display: flex; align-items: center; justify-content: center; gap: 18px; }
+  .announcement .ann-rule {
+    display: inline-block; width: 1px; height: 11px;
+    background: currentColor; opacity: 0.42;
+  }
+  .announcement .motif-inline { display: none; }
 </style>
 </head>
 <body>
 
-<div class="announcement">Free shipping on orders over $75 &middot; Handmade in Chattanooga</div>
+<div class="announcement"><span>Free shipping on orders over $75</span><span class="ann-rule" aria-hidden="true"></span><span>Handmade in Chattanooga</span></div>
 
 <nav>
   <a href="index.html">
@@ -257,7 +326,7 @@
 <div class="container">
   <div class="page-head reveal">
     <div class="section-label">Wholesale</div>
-    <h1>Stock Old Friends in your shop.</h1>
+    <h1>Stock <span class="keep">Old Friends</span><br>in your shop.</h1>
     <p class="lede">If you run a store that loves handmade, sustainable goods with a story, I&rsquo;d love to be on your shelves. Here&rsquo;s how carrying Old Friends works.</p>
   </div>
 </div>
@@ -369,5 +438,6 @@
 <script src="detail.js"></script>
 <script src="search.js"></script>
 
+<div class="paper-grain" aria-hidden="true"></div>
 </body>
 </html>
