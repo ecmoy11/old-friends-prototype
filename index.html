@@ -35,8 +35,9 @@
 <link rel="preload" href="fonts/LeStudioNocturne-Standard.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&display=swap">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
   /* ── DISPLAY SCRIPT ────────────────────────────────────────────────
      Le Studio Nocturne is the display face; Italianno stays behind it as
@@ -56,7 +57,7 @@
   @font-face {
     font-family: 'Le Studio Nocturne';
     src: url('fonts/LeStudioNocturne-Standard.woff2') format('woff2');
-    font-weight: 400; font-style: normal; font-display: swap;
+    font-weight: 400; font-style: normal; font-display: block;
   }
   @font-face {
     font-family: 'Italianno';
@@ -812,6 +813,7 @@
 </style>
 </head>
 <body>
+<noscript><style>#stitch-load{display:none}</style></noscript>
 <div id="stitch-load">
   <div class="rig">
     <svg viewBox="0 0 130 92" role="img" aria-label="Loading">
