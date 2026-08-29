@@ -6,32 +6,35 @@
 <title>The Collection — Old Friends</title>
 <style>
   /* ══ STITCHING LOADER ═══════════════════════════════════════════════
-     Inline, first thing in the head, and drawn rather than an <img>: it
-     has to paint before the stylesheet, the webfont or any image has
-     arrived, so it cannot depend on any of them. Drawing it also means
-     the wheel and the needle can actually move, which a flat PNG can't.
-     Shown once per session -- after the first page the font is cached
-     and fonts.ready resolves instantly, so replaying it would just be a
-     flash of cream between pages. */
+     The homepage machine, with its hand wheel turning. The artwork is a
+     flat image, so the wheel is redrawn: a cream disc covers the static
+     spokes and leaves the brushy rim showing, and new spokes turn inside
+     it. The overlay box sits on the wheel's outer rim, which runs
+     x 262-322, y 38-168 in the 330x270 png.
+
+     Inline and first in the head on purpose -- it has to paint before the
+     stylesheet or the webfont arrive, since covering that moment is the
+     entire point. */
   #stitch-load{position:fixed;inset:0;z-index:9999;background:#F6EDD8;
     display:flex;align-items:center;justify-content:center;
     transition:opacity .45s ease}
   #stitch-load.done{opacity:0;pointer-events:none}
-  #stitch-load .rig{width:180px}
-  #stitch-load svg{width:100%;height:auto;display:block;overflow:visible}
-  .sl-line{fill:none;stroke:#9E983C;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-  .sl-solid{fill:#9E983C}
-  .sl-wheel{transform-origin:97px 36px;animation:sl-spin 1.15s linear infinite}
-  @keyframes sl-spin{to{transform:rotate(360deg)}}
-  .sl-needle{animation:sl-stab 1.15s cubic-bezier(.5,0,.5,1) infinite}
-  @keyframes sl-stab{0%,100%{transform:translateY(0)}45%{transform:translateY(7px)}}
-  .sl-cloth{animation:sl-feed 1.15s linear infinite}
-  @keyframes sl-feed{to{transform:translateX(-9px)}}
-  .sl-stitch{fill:none;stroke:#9E1431;stroke-width:2.2;stroke-linecap:butt;stroke-dasharray:4.5 4.5}
+  #stitch-load .rig{width:190px}
+  .sl-machine{position:relative;width:100%}
+  .sl-machine img{width:100%;height:auto;display:block}
+  .sl-wheel{position:absolute;left:79.4%;top:14.1%;width:18.2%;height:48.1%}
+  /* A square viewBox mapped into a box that isn't square, so a plain
+     rotation inside comes out as the ellipse the wheel actually is --
+     turning rather than tumbling. transform-origin is in user units, not
+     a percentage: a percentage resolves against the spokes' own bounding
+     box rather than the wheel's axle. */
+  .sl-spin{animation:sl-turn 1.6s linear infinite;transform-origin:100px 100px}
+  @keyframes sl-turn{to{transform:rotate(360deg)}}
   .sl-cap{margin-top:20px;text-align:center;font:400 10px/1.6 ui-monospace,Menlo,monospace;
     letter-spacing:.22em;text-transform:uppercase;color:rgba(90,74,58,.5)}
-  @media (prefers-reduced-motion:reduce){.sl-wheel,.sl-needle,.sl-cloth{animation:none}}
+  @media (prefers-reduced-motion:reduce){.sl-spin{animation:none}}
 </style>
+<link rel="preload" href="images/motif-machine.png" as="image">
 <link rel="preload" href="fonts/LeStudioNocturne-Standard.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -703,30 +706,16 @@
 <noscript><style>#stitch-load{display:none}</style></noscript>
 <div id="stitch-load">
   <div class="rig">
-    <svg viewBox="0 0 130 92" role="img" aria-label="Loading">
-      <g class="sl-cloth">
-        <path class="sl-line" d="M2 68 H128" style="stroke:rgba(158,152,60,.34)"/>
-        <path class="sl-stitch" d="M2 68 H40"/>
-      </g>
-      <rect class="sl-line" x="8" y="70" width="114" height="12" rx="2.5"/>
-      <path class="sl-line" d="M26 30 H74 C84 30 88 40 90 52 C91 60 92 66 94 70 H74
-                               C72 62 66 56 56 54 C46 52 36 53 30 55 C28 47 27 38 26 30 Z"/>
-      <rect class="sl-line" x="19" y="28" width="9" height="30" rx="2.5"/>
-      <rect class="sl-line" x="56" y="16" width="12" height="3" rx="1.2"/>
-      <rect class="sl-line" x="58.5" y="19" width="7" height="8"/>
-      <rect class="sl-line" x="56" y="27" width="12" height="3" rx="1.2"/>
-      <g class="sl-wheel">
-        <circle class="sl-line" cx="97" cy="36" r="9"/>
-        <path class="sl-line" style="stroke-width:1.6"
-              d="M97 27 V45 M88 36 H106 M90.6 29.6 L103.4 42.4 M103.4 29.6 L90.6 42.4"/>
-      </g>
-      <circle class="sl-solid" cx="97" cy="36" r="2.2"/>
-      <g class="sl-needle">
-        <rect class="sl-line" x="21.4" y="56" width="4.2" height="6" rx="1.2"/>
-        <path class="sl-line" style="stroke-width:1.8" d="M23.5 62 V68"/>
-      </g>
-      <path class="sl-line" style="stroke-width:1.8" d="M20 67.5 C21.5 66.5 25.5 66.5 27 67.5"/>
-    </svg>
+    <div class="sl-machine">
+      <img src="images/motif-machine.png" alt="">
+      <svg class="sl-wheel" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true">
+        <circle cx="100" cy="100" r="74" fill="#F6EDD8"/>
+        <g class="sl-spin" fill="none" stroke="#9E983C" stroke-width="7.5" stroke-linecap="round">
+          <path d="M100 32 V168 M32 100 H168 M52 52 L148 148 M148 52 L52 148"/>
+        </g>
+        <circle cx="100" cy="100" r="14" fill="#9E983C"/>
+      </svg>
+    </div>
     <div class="sl-cap">one moment</div>
   </div>
 </div>
