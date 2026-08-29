@@ -15,12 +15,13 @@
       note: 'One of one — the fabrics that made this bag are gone for good, so no two will ever match.',
       images: ['images/bag1.jpg', 'images/bag2.jpg']
     },
-    'Vintage Quilt Jacket': {
+    'Quilt Jacket': {
       story: 'Cut from a hand-tied quilt found at an estate sale in Signal Mountain. Boxy fit, patch pockets, and decades of softness already worked in.',
       materials: 'Vintage cotton quilt, cotton batting',
       dimensions: 'Fits like a modern M/L — 24" chest flat, 26" length',
       care: 'Spot clean or hand wash cold. Line dry.',
-      note: 'One of one — sold to a good home. The archive stays up so you can see where pieces end up.'
+      note: 'One of one — sold to a good home. The archive stays up so you can see where pieces end up.',
+      images: ['images/quilt-jacket-1.jpg', 'images/quilt-jacket-2.jpg']
     },
     'Quilted Hoodie — Floral': {
       story: 'Our signature silhouette in a faded floral quilt top. Deep hood, kangaroo pocket, and a drape that feels more heirloom than loungewear.',
