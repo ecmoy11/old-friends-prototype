@@ -213,7 +213,9 @@
       if (window.OFDetail) window.OFDetail.showByName(name.trim());
       return;
     }
-    var priceText = (card.querySelector('.product-price') || {}).textContent || '$0';
+    /* Sale cards carry both prices; charge the .price-now one. */
+    var priceEl = card.querySelector('.price-now') || card.querySelector('.product-price');
+    var priceText = (priceEl || {}).textContent || '$0';
     var price = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
     var imgEl = card.querySelector('.product-img');
     addItem(name.trim(), price, imgEl ? imgEl.getAttribute('src') : null);

@@ -6,96 +6,55 @@
 (function () {
 
   /* ═══════════ EDIT PRODUCT INFO HERE ═══════════ */
+  /* PRODUCT COPY — verbatim from Lauren's Square listings, pulled 2026-08-30.
+     Do not paraphrase or "improve" these: they are her voice and her factual
+     claims about her own goods. Where she has written nothing, the field is
+     left out on purpose and renders as "\u2014" until she writes it. */
   var PRODUCTS = {
-    'Patchwork Tote — Garden': {
-      story: 'Pieced from three vintage floral prints — a 1970s daisy chain, a red meadow calico, and a brushed brown rose — with sturdy cream cotton straps. Roomy enough for a library haul or a farmers market run.',
-      materials: 'Reclaimed vintage cotton, quilted; new cotton webbing straps',
-      dimensions: '14" W × 15" H × 4" D, 11" strap drop',
-      care: 'Machine wash cold, gentle. Lay flat to dry.',
-      note: 'One of one — the fabrics that made this bag are gone for good, so no two will ever match.',
-      images: ['images/bag1.jpg', 'images/bag2.jpg']
+    'Whimsy Quilt Tote Bag': {
+      story: 'Sustainably made from a vintage quilt, this tote gives new life to beautiful details of butterflies and florals. With a magnetic clasp and front pocket for easy storage, it\u2019s the perfect mix of form and function.',
+      materials: 'Vintage quilt; magnetic clasp, front pocket',
+      note: 'One of one \u2014 cut from a single quilt, so no two will ever match.',
+      images: ['images/whimsy-quilt-tote.jpg', 'images/whimsy-quilt-tote-2.jpg']
     },
-    'Quilt Jacket': {
-      story: 'Cut from a hand-tied quilt found at an estate sale in Signal Mountain. Boxy fit, patch pockets, and decades of softness already worked in.',
-      materials: 'Vintage cotton quilt, cotton batting',
-      dimensions: 'Fits like a modern M/L — 24" chest flat, 26" length',
-      care: 'Spot clean or hand wash cold. Line dry.',
-      note: 'One of one — sold to a good home. The archive stays up so you can see where pieces end up.',
-      images: ['images/quilt-jacket-1.jpg', 'images/quilt-jacket-2.jpg']
+    'Coffee Bean Tote Bag': {
+      story: 'Crafted from repurposed coffee bean bags, this tote blends sustainability with style. Fully lined for durability, it features a magnetic clasp for easy closure and a handy front pocket for quick grabs. A perfect everyday bag with a story worth carrying.',
+      materials: 'Repurposed coffee bean sacks, fully lined; magnetic clasp, front pocket',
+      note: 'Made from sacks that already crossed an ocean once.',
+      images: ['images/coffee-bean-tote.jpg']
     },
-    'Quilted Hoodie — Floral': {
-      story: 'Our signature silhouette in a faded floral quilt top. Deep hood, kangaroo pocket, and a drape that feels more heirloom than loungewear.',
-      materials: 'Vintage quilt top, new cotton jersey lining and ribbing',
-      dimensions: 'Fits like a relaxed M — 23" chest flat, 25" length',
-      care: 'Hand wash cold. Lay flat to dry.',
-      note: 'One of one — made from a single quilt, and there was only ever one of those.'
+    'Chocolate Covered Starberry Quilted Tote': {
+      /* Lauren has written no description for this one \u2014 only the flaw note. */
+      note: 'Imperfection on the front top left of the body of the tote, where the strap meets the bag (shown in the third photo).',
+      images: ['images/starberry-tote.jpg', 'images/starberry-tote-2.jpg', 'images/starberry-tote-3.jpg', 'images/starberry-tote-4.jpg']
     },
-    'Linen Scrunchie Set': {
-      story: 'Three oversized scrunchies sewn from linen offcuts, so nothing from the cutting table goes to waste. Colors vary with whatever the current batch of remnants allows.',
-      materials: '100% linen remnants, elastic core',
-      dimensions: 'Set of 3, approx. 4.5" diameter',
-      care: 'Hand wash cold. Air dry.',
-      note: 'Small batch — each set is cut from the week’s remnants, so your trio will be its own little family.'
+    'Large Origami Tote Bag': {
+      /* No description on Square yet. */
+      images: ['images/origami-tote.jpg', 'images/origami-tote-2.jpg']
     },
-    '70s Corduroy Shirt': {
-      story: 'A honey-brown snap-front corduroy shirt from the 1970s, broken in exactly the way you want it to be. Minor wear at the cuffs adds to the story.',
-      materials: 'Cotton corduroy',
-      dimensions: 'Tagged L, fits like a modern M — 22" chest flat',
-      care: 'Machine wash cold, inside out. Hang dry.',
-      note: 'Pre-loved — inspected, laundered, and mended by hand where needed.'
+    'Green Gingham Market Bag with Pouch': {
+      /* No description on Square yet. */
+      images: ['images/gingham-market-bag.jpg', 'images/gingham-market-bag-2.jpg', 'images/gingham-market-bag-3.jpg']
     },
-    'Memory Quilt Throw': {
-      story: 'A commission-style throw pieced from a mix of feed sacks and shirting scraps, hand-tied with terracotta thread. Made to be dragged to the couch, the porch, the yard.',
-      materials: 'Vintage cotton, new cotton batting, embroidery thread ties',
-      dimensions: '50" × 65"',
-      care: 'Machine wash cold, gentle. Tumble dry low.',
-      note: 'One of one — want one made from your own fabrics? See our commission page.'
+    'Upcycled Lace Tablecloth Market Bags': {
+      story: 'This handmade lace market bag is inspired by the feelings of a sunny day at the farmers market picking up fresh fruit or a reading day on the beach when you have nothing else to do but romanticize your days. Made with vintage lace linens these bags vary in color and design making for a unique one-of-a-kind piece that will be treasured for years to come!',
+      materials: 'Vintage lace tablecloth linens',
+      note: 'Due to the nature of vintage linens each bag will vary in texture, design, and in color.',
+      images: ['images/lace-market-bag.jpg', 'images/lace-market-bag-2.jpg']
     },
-    'Wool Fisherman Sweater': {
-      story: 'A cream cable-knit fisherman sweater with real heft. Sourced pre-loved, de-pilled, and ready for another few decades of wear.',
-      materials: '100% wool',
-      dimensions: 'Fits like a modern M/L — 23" chest flat',
-      care: 'Hand wash cold with wool wash. Lay flat to dry.',
-      note: 'Pre-loved — inspected, laundered, and mended by hand where needed.'
-    },
-    'Hand-Stitched Hair Ribbons': {
-      story: 'Long cotton ribbons finished with hand-rolled hems and a single embroidered folk star at each end. Tie them in hair, on bags, around gifts.',
-      materials: 'Cotton voile remnants, embroidery thread',
-      dimensions: 'Set of 2, each 1.5" × 34"',
-      care: 'Hand wash cold. Iron on low.',
-      note: 'Small batch — embroidered one at a time, no two stars quite alike.'
-    },
-    'Floral Prairie Dress': {
-      story: 'A late-70s prairie dress in a tiny wildflower print — ruffled yoke, full skirt, and a matching fabric belt still with it after all these years.',
-      materials: 'Cotton blend',
-      dimensions: 'Tagged 10, fits like a modern S/M — 19" chest flat, 46" length',
-      care: 'Machine wash cold, gentle. Hang dry.',
-      note: 'Pre-loved — inspected, laundered, and mended by hand where needed.'
-    },
-    'Upcycled Chore Coat': {
-      story: 'A classic chore coat rebuilt from heavyweight canvas drop cloths, lined at the collar with a strip of vintage quilt. Gets better with every wear and wash.',
-      materials: 'Upcycled cotton canvas, vintage quilt trim, corozo buttons',
-      dimensions: 'Fits like a modern L — 24" chest flat, 30" length',
-      care: 'Machine wash cold. Hang dry.',
-      note: 'One of one — the quilt trim on this coat came from a single worn quilt corner.'
-    },
-    'Patch Kit — Folk Motifs': {
-      story: 'Five iron-on patches in our folk motifs — star, flower, cat, leaf, and circle — screen printed on quilted scrap and edged by hand. Mend something and make it yours.',
-      materials: 'Quilted cotton scrap, iron-on backing',
-      dimensions: 'Set of 5, each approx. 2" – 3"',
-      care: 'Iron on medium, 30 seconds. Wash inside out.',
-      note: 'Small batch — printed and cut in runs of twenty.'
-    },
-    'Broken-In Levi’s 501s': {
-      story: 'A pair of 501s with the kind of fade you can’t fake — high rise, straight leg, hemmed once and worn well.',
-      materials: '100% cotton denim',
-      dimensions: 'Tagged 32 × 32, measures 31" waist, 30" inseam',
-      care: 'Machine wash cold, inside out. Hang dry.',
-      note: 'Pre-loved — inspected, laundered, and mended by hand where needed.'
+    'Handmade Scrunchies': {
+      story: 'Handmade from a mix of old and new fabrics, this oversized lace scrunchie brings a timeless cottagecore touch to your winter wardrobe. Designed to add texture and charm to cozy layers, it\u2019s the perfect accessory to elevate your everyday messy bun or low pony when the jackets start piling on. We like to plop this over an already secured bun to add some whimsy to our outfit!',
+      materials: 'A mix of old and new fabrics; elastic core',
+      dimensions: 'Elastic size 5"; scrunchie approx. 5" from side to side',
+      /* Square advertises "BUY 1 FOR $15, OR 2 FOR $25" here, which contradicts
+         the $9\u2013$14 listing price. Left out until Lauren says which is right. */
+      images: ['images/scrunchies.jpg', 'images/scrunchies-2.jpg', 'images/scrunchies-3.jpg',
+               'images/scrunchies-4.jpg', 'images/scrunchies-5.jpg', 'images/scrunchies-6.jpg',
+               'images/scrunchies-7.jpg', 'images/scrunchies-8.jpg', 'images/scrunchies-9.jpg']
     },
     'Digital Gift Card': {
-      story: 'For when you know they’d love something handmade, but the choosing should be theirs. Pick an amount, write a little note, and we’ll email it to them — no shipping, no packaging, no waiting.',
-      materials: 'Delivered by email — zero waste',
+      story: 'For when you know they\u2019d love something handmade, but the choosing should be theirs. Pick an amount, write a little note, and we\u2019ll email it to them \u2014 no shipping, no packaging, no waiting.',
+      materials: 'Delivered by email \u2014 zero waste',
       note: 'Gift cards never expire, and they work on everything: pre-loved, handmade, and commissions alike.'
     }
   };
@@ -109,7 +68,10 @@
     '.pd-modal.open { display: grid; opacity: 1; transform: translate(-50%, -50%); }',
     '.pd-close { position: absolute; top: 12px; right: 14px; z-index: 2; background: var(--cream); border: none; font-size: 24px; line-height: 1; color: var(--brown); cursor: pointer; padding: 6px 10px; transition: color .3s; }',
     '.pd-close:hover { color: var(--terra); }',
-    '.pd-gallery { background: var(--linen); display: flex; flex-direction: column; min-height: 0; }',
+    /* min-width:0 is load-bearing: without it the thumb strip's min-content
+       width forces this grid column wider than its 1fr share and squeezes
+       the copy column. With it, the strip scrolls instead. */
+    '.pd-gallery { background: var(--linen); display: flex; flex-direction: column; min-height: 0; min-width: 0; }',
     '.pd-main { flex: 1; min-height: 0; position: relative; display: flex; align-items: center; justify-content: center; font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--walnut); opacity: 1; }',
     '.pd-main .pd-ph { opacity: .4; font-size: 15px; }',
     '.pd-main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; will-change: transform; }',
@@ -119,8 +81,11 @@
     '.pd-main.zoomed img { transform: scale(2.4); }',
     '.pd-zoom-hint { position: absolute; bottom: 10px; right: 10px; z-index: 1; background: rgba(106,70,48,0.75); color: var(--cream-text); font-family: "DM Sans", sans-serif; font-size: 9px; letter-spacing: .15em; text-transform: uppercase; padding: 5px 10px; pointer-events: none; opacity: .85; }',
     '.pd-main.zoomed .pd-zoom-hint { display: none; }',
-    '.pd-thumbs { display: flex; gap: 6px; padding: 10px; background: var(--linen); }',
-    '.pd-thumbs button { width: 56px; height: 56px; padding: 0; border: 2px solid transparent; cursor: pointer; background: var(--stone); overflow: hidden; }',
+    /* Products can carry up to 9 shots (scrunchie colourways), which is wider
+       than the gallery column — scroll the strip rather than squashing the
+       thumbs, and keep them from shrinking out of square. */
+    '.pd-thumbs { display: flex; gap: 6px; padding: 10px; background: var(--linen); overflow-x: auto; scrollbar-width: thin; }',
+    '.pd-thumbs button { width: 56px; height: 56px; flex: 0 0 56px; padding: 0; border: 2px solid transparent; cursor: pointer; background: var(--stone); overflow: hidden; }',
     '.pd-thumbs button.active { border-color: var(--terra); }',
     '.pd-thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }',
     '.pd-info { padding: 40px 36px 32px; overflow-y: auto; }',
@@ -336,7 +301,10 @@
   function show(card) {
     var name = (card.querySelector('.product-name') || {}).textContent || '';
     name = name.trim();
-    var priceText = ((card.querySelector('.product-price') || {}).textContent || '').trim();
+    var priceBlock = card.querySelector('.product-price');
+    var priceHTML = priceBlock ? priceBlock.innerHTML.trim() : '';
+    var priceEl = card.querySelector('.price-now') || priceBlock;
+    var priceText = ((priceEl || {}).textContent || '').trim();
     var tagText = ((card.querySelector('.product-tag') || {}).textContent || '').trim();
     var sold = /sold/i.test(tagText);
     var isGift = card.hasAttribute('data-gift');
@@ -365,16 +333,23 @@
       return;
     }
 
-    /* images: prefer what's on the card, fall back to the map */
+    /* Gallery = the card's own images first (so the thumb you clicked leads),
+       then any extra shots from the map. Deduped, order preserved. Cards carry
+       at most two images; detail shots (interior, flaws, labels) live in the
+       map and only surface here. */
     var images = [];
     card.querySelectorAll('.product-img-wrap img').forEach(function (im) {
-      images.push(im.getAttribute('src'));
+      var src = im.getAttribute('src');
+      if (src && images.indexOf(src) === -1) images.push(src);
     });
-    if (!images.length && info.images) images = info.images.slice();
+    if (info.images) info.images.forEach(function (src) {
+      if (src && images.indexOf(src) === -1) images.push(src);
+    });
 
     current = { name: name, price: parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0, img: images[0] || null, sold: sold };
 
-    els.price.textContent = priceText;
+    /* keep the struck-through original visible in the detail view */
+    els.price.innerHTML = priceHTML;
 
     els.thumbs.innerHTML = images.length > 1
       ? images.map(function (src) {

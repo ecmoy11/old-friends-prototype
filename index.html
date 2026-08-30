@@ -436,6 +436,23 @@
   }
   .product-price { color: var(--walnut); font-size: 13px; justify-self: end; white-space: nowrap; padding-right: 10px; }
 
+  /* ── SALE PRICING (mirrors shop.html) ──
+     <div class="product-price">
+       <span class="price-was">$55</span><span class="price-now">$38.50</span>
+     </div>
+     Sizes in em so the same spans work in the detail modal too. */
+  .price-was {
+    color: var(--walnut);
+    opacity: 0.55;
+    margin-right: 7px;
+    font-size: 0.92em;
+    text-decoration: line-through;
+    text-decoration-color: var(--terra);
+    text-decoration-thickness: 1px;
+  }
+  .price-now { color: var(--terra); font-weight: 500; }
+  .product-tag--sale { background: var(--terra-dark); color: var(--cream-text); }
+
   /* ── SPLIT SECTION (Commission) ── */
   .split {
     display: grid;
@@ -957,41 +974,40 @@
     <div class="product-grid">
       <div class="product-card">
         <div class="product-img-wrap">
-          <img class="product-img" src="images/bag1.jpg" alt="Patchwork Tote — Garden" loading="lazy">
-          <img class="product-img product-img-hover" src="images/bag2.jpg" alt="" loading="lazy">
-          <div class="product-tag">New</div>
+          <img class="product-img" src="images/whimsy-quilt-tote.jpg" alt="Whimsy Quilt Tote Bag" loading="lazy">
+          <img class="product-img product-img-hover" src="images/whimsy-quilt-tote-2.jpg" alt="" loading="lazy">
+          <div class="product-tag product-tag--sale">On Sale</div>
           <button class="add-to-bag">Add to Bag</button>
         </div>
-        <div class="product-name">Patchwork Tote — Garden</div>
-        <div class="product-price">$48</div>
+        <div class="product-name">Whimsy Quilt Tote Bag</div>
+        <div class="product-price"><span class="price-was">$55</span><span class="price-now">$38.50</span></div>
       </div>
       <div class="product-card">
         <div class="product-img-wrap">
-          <img class="product-img" src="images/bag3.jpg" alt="Quilted Hoodie — Floral" loading="lazy">
-          <img class="product-img product-img-hover" src="images/bag4.jpg" alt="" loading="lazy">
+          <img class="product-img" src="images/coffee-bean-tote.jpg" alt="Coffee Bean Tote Bag" loading="lazy">
+          <div class="product-tag product-tag--sale">On Sale</div>
           <button class="add-to-bag">Add to Bag</button>
         </div>
-        <div class="product-name">Quilted Hoodie — Floral</div>
-        <div class="product-price">$85</div>
+        <div class="product-name">Coffee Bean Tote Bag</div>
+        <div class="product-price"><span class="price-was">$45</span><span class="price-now">$31.50</span></div>
       </div>
       <div class="product-card">
         <div class="product-img-wrap">
-          <img class="product-img" src="images/scrunchie.WEBP" alt="Linen Scrunchie Set" loading="lazy">
-          <img class="product-img product-img-hover" src="images/screunchie1.WEBP" alt="" loading="lazy">
+          <img class="product-img" src="images/origami-tote.jpg" alt="Large Origami Tote Bag" loading="lazy">
+          <img class="product-img product-img-hover" src="images/origami-tote-2.jpg" alt="" loading="lazy">
           <button class="add-to-bag">Add to Bag</button>
         </div>
-        <div class="product-name">Linen Scrunchie Set</div>
-        <div class="product-price">$18</div>
+        <div class="product-name">Large Origami Tote Bag</div>
+        <div class="product-price">$65</div>
       </div>
       <div class="product-card">
         <div class="product-img-wrap">
-          <img class="product-img" src="images/quilt-jacket-1.jpg" alt="Quilt Jacket" loading="lazy">
-          <img class="product-img product-img-hover" src="images/quilt-jacket-2.jpg" alt="" loading="lazy">
-          <div class="product-tag product-tag--sold">Sold</div>
-          <button class="add-to-bag" disabled>Sold Out</button>
+          <img class="product-img" src="images/scrunchies.jpg" alt="Handmade Scrunchies" loading="lazy">
+          <img class="product-img product-img-hover" src="images/scrunchies-2.jpg" alt="" loading="lazy">
+          <button class="add-to-bag">Add to Bag</button>
         </div>
-        <div class="product-name">Quilt Jacket</div>
-        <div class="product-price">$120</div>
+        <div class="product-name">Handmade Scrunchies</div>
+        <div class="product-price">From $9</div>
       </div>
     </div>
   </div>

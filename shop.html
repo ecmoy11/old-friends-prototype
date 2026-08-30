@@ -421,6 +421,25 @@
   }
   .product-price { color: var(--walnut); font-size: 13px; justify-self: end; white-space: nowrap; }
 
+  /* ── SALE PRICING ──
+     Markup: <div class="product-price">
+               <span class="price-was">$55</span><span class="price-now">$38.50</span>
+             </div>
+     A card with no .price-now behaves exactly as before. All price-reading
+     JS (sort, cart, detail) prefers .price-now when present, so the sale
+     price is the one that gets added up. */
+  .price-was {
+    color: var(--walnut);
+    opacity: 0.55;
+    margin-right: 7px;
+    font-size: 0.92em;
+    text-decoration: line-through;
+    text-decoration-color: var(--terra);
+    text-decoration-thickness: 1px;
+  }
+  .price-now { color: var(--terra); font-weight: 500; }
+  .product-tag--sale { background: var(--terra-dark); color: var(--cream-text); }
+
   /* ── GIFT CARD (envelope resting on floral) ── */
   .giftcard-env {
     position: absolute;
@@ -930,10 +949,11 @@
     <div class="shop-controls">
       <div class="filter-row">
         <button class="filter-btn active" data-filter="all">Everything</button>
-        <button class="filter-btn" data-filter="preloved">Pre-Loved</button>
-        <button class="filter-btn" data-filter="handmade">Handmade</button>
-        <button class="filter-btn" data-filter="accessories">Accessories</button>
+        <button class="filter-btn" data-filter="bags">Bags</button>
+        <button class="filter-btn" data-filter="scrunchies">Scrunchies</button>
+        <button class="filter-btn" data-filter="clothing">Clothing</button>
         <button class="filter-btn" data-filter="gift">Gifts</button>
+        <button class="filter-btn" data-filter="sale">On Sale</button>
       </div>
       <div class="sort-row">
         <label class="instock-toggle"><input type="checkbox" id="instock-only"> Available only</label>
@@ -947,83 +967,70 @@
     </div>
     <div class="shop-count" id="shop-count"></div>
     <div class="product-grid shop-grid">
-      <div class="product-card" data-cat="handmade">
+      <div class="product-card" data-cat="bags" data-sale>
         <div class="product-img-wrap">
-          <img class="product-img" src="images/bag1.jpg" alt="Patchwork Tote — Garden" loading="lazy">
-          <img class="product-img product-img-hover" src="images/bag2.jpg" alt="" loading="lazy">
-          <div class="product-tag">New</div>
+          <img class="product-img" src="images/whimsy-quilt-tote.jpg" alt="Whimsy Quilt Tote Bag" loading="lazy">
+          <img class="product-img product-img-hover" src="images/whimsy-quilt-tote-2.jpg" alt="" loading="lazy">
+          <div class="product-tag product-tag--sale">On Sale</div>
           <button class="add-to-bag">Add to Bag</button>
         </div>
-        <div class="product-name">Patchwork Tote — Garden</div>
+        <div class="product-name">Whimsy Quilt Tote Bag</div>
+        <div class="product-price"><span class="price-was">$55</span><span class="price-now">$38.50</span></div>
+      </div>
+      <div class="product-card" data-cat="bags" data-sale>
+        <div class="product-img-wrap">
+          <img class="product-img" src="images/coffee-bean-tote.jpg" alt="Coffee Bean Tote Bag" loading="lazy">
+          <div class="product-tag product-tag--sale">On Sale</div>
+          <button class="add-to-bag">Add to Bag</button>
+        </div>
+        <div class="product-name">Coffee Bean Tote Bag</div>
+        <div class="product-price"><span class="price-was">$45</span><span class="price-now">$31.50</span></div>
+      </div>
+      <div class="product-card" data-cat="bags">
+        <div class="product-img-wrap">
+          <img class="product-img" src="images/starberry-tote.jpg" alt="Chocolate Covered Starberry Quilted Tote" loading="lazy">
+          <img class="product-img product-img-hover" src="images/starberry-tote-2.jpg" alt="" loading="lazy">
+          <button class="add-to-bag">Add to Bag</button>
+        </div>
+        <div class="product-name">Chocolate Covered Starberry Quilted Tote</div>
         <div class="product-price">$48</div>
       </div>
-      <div class="product-card" data-cat="preloved">
+      <div class="product-card" data-cat="bags">
         <div class="product-img-wrap">
-          <img class="product-img" src="images/quilt-jacket-1.jpg" alt="Quilt Jacket" loading="lazy">
-          <img class="product-img product-img-hover" src="images/quilt-jacket-2.jpg" alt="" loading="lazy">
+          <img class="product-img" src="images/origami-tote.jpg" alt="Large Origami Tote Bag" loading="lazy">
+          <img class="product-img product-img-hover" src="images/origami-tote-2.jpg" alt="" loading="lazy">
+          <button class="add-to-bag">Add to Bag</button>
+        </div>
+        <div class="product-name">Large Origami Tote Bag</div>
+        <div class="product-price">$65</div>
+      </div>
+      <div class="product-card" data-cat="bags">
+        <div class="product-img-wrap">
+          <img class="product-img" src="images/gingham-market-bag.jpg" alt="Green Gingham Market Bag with Pouch" loading="lazy">
+          <img class="product-img product-img-hover" src="images/gingham-market-bag-2.jpg" alt="" loading="lazy">
+          <button class="add-to-bag">Add to Bag</button>
+        </div>
+        <div class="product-name">Green Gingham Market Bag with Pouch</div>
+        <div class="product-price">$20</div>
+      </div>
+      <div class="product-card" data-cat="bags">
+        <div class="product-img-wrap">
+          <img class="product-img" src="images/lace-market-bag.jpg" alt="Upcycled Lace Tablecloth Market Bags" loading="lazy">
+          <img class="product-img product-img-hover" src="images/lace-market-bag-2.jpg" alt="" loading="lazy">
           <div class="product-tag product-tag--sold">Sold</div>
           <button class="add-to-bag" disabled>Sold Out</button>
         </div>
-        <div class="product-name">Quilt Jacket</div>
-        <div class="product-price">$120</div>
+        <div class="product-name">Upcycled Lace Tablecloth Market Bags</div>
+        <div class="product-price">$48</div>
       </div>
-      <div class="product-card" data-cat="handmade">
+      <div class="product-card" data-cat="scrunchies">
         <div class="product-img-wrap">
-          <img class="product-img" src="images/bag4.jpg" alt="" loading="lazy">
+          <img class="product-img" src="images/scrunchies.jpg" alt="Handmade Scrunchies" loading="lazy">
+          <img class="product-img product-img-hover" src="images/scrunchies-2.jpg" alt="" loading="lazy">
           <button class="add-to-bag">Add to Bag</button>
         </div>
-        <div class="product-name">Quilted Hoodie — Floral</div>
-        <div class="product-price">$85</div>
-      </div>
-      <div class="product-card" data-cat="accessories">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/scrunchie.WEBP" alt="" loading="lazy">
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Linen Scrunchie Set</div>
-        <div class="product-price">$18</div>
-      </div>
-      <div class="product-card" data-cat="preloved">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/bag1.jpg" alt="" loading="lazy">
-          <div class="product-tag">New</div>
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Wool Fisherman Sweater</div>
-        <div class="product-price">$42</div>
-      </div>
-      <div class="product-card" data-cat="accessories">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/bag2.jpg" alt="" loading="lazy">
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Hand-Stitched Hair Ribbons</div>
-        <div class="product-price">$14</div>
-      </div>
-      <div class="product-card" data-cat="preloved">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/bag3.jpg" alt="" loading="lazy">
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Floral Prairie Dress</div>
-        <div class="product-price">$38</div>
-      </div>
-      <div class="product-card" data-cat="handmade">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/scrunchie.WEBP" alt="" loading="lazy">
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Upcycled Chore Coat</div>
-        <div class="product-price">$95</div>
-      </div>
-      <div class="product-card" data-cat="accessories">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/bag4.jpg" alt="" loading="lazy">
-          <div class="product-tag">New</div>
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Patch Kit — Folk Motifs</div>
-        <div class="product-price">$22</div>
+        <div class="product-name">Handmade Scrunchies</div>
+        <div class="product-price">From $9</div>
       </div>
       <div class="product-card" data-cat="gift" data-gift>
         <div class="product-img-wrap">
@@ -1113,7 +1120,11 @@
     var countEl = document.getElementById('shop-count');
     var state = { filter: 'all', sort: 'featured', instock: false };
 
-    function price(c) { return parseFloat((c.querySelector('.product-price').textContent || '').replace(/[^0-9.]/g, '')) || 0; }
+    /* On-sale cards hold two numbers; .price-now is the one that counts. */
+    function price(c) {
+      var el = c.querySelector('.price-now') || c.querySelector('.product-price');
+      return parseFloat((el.textContent || '').replace(/[^0-9.]/g, '')) || 0;
+    }
     function name(c) { return (c.querySelector('.product-name').textContent || '').trim(); }
     function isSold(c) {
       var t = c.querySelector('.product-tag');
@@ -1130,8 +1141,9 @@
 
       var shown = 0;
       cards.forEach(function (c) {
-        var show = (state.filter === 'all' || c.dataset.cat === state.filter)
-          && (!state.instock || !isSold(c));
+        var matches = state.filter === 'all'
+          || (state.filter === 'sale' ? c.hasAttribute('data-sale') : c.dataset.cat === state.filter);
+        var show = matches && (!state.instock || !isSold(c));
         c.classList.toggle('hide', !show);
         if (show) {
           shown++;
@@ -1151,6 +1163,17 @@
         apply();
       });
     });
+    /* Hide any filter with nothing behind it (Clothing, until Lauren adds some).
+       The button reappears on its own once a card carries that data-cat. */
+    btns.forEach(function (btn) {
+      var f = btn.dataset.filter;
+      if (f === 'all') return;
+      var has = cards.some(function (c) {
+        return f === 'sale' ? c.hasAttribute('data-sale') : c.dataset.cat === f;
+      });
+      if (!has) btn.style.display = 'none';
+    });
+
     sortSel.addEventListener('change', function () { state.sort = sortSel.value; apply(); });
     instock.addEventListener('change', function () { state.instock = instock.checked; apply(); });
 
