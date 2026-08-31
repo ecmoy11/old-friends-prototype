@@ -26,3 +26,9 @@ _to_delete/
 # The desktop OTF/TTF are licensed for local use, not for serving.
 fonts/Le-Studio-Nocturne-Nostalgic-Set/
 fonts/LeStudioNocturne-Bold.woff2
+
+# Secrets -- never commit. Square tokens can read customers and issue refunds.
+.dev.vars
+.env
+.env.*
+.dev.vars*

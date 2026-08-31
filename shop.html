@@ -1108,8 +1108,12 @@
   })();
 </script>
 <script>
-  /* stitched filters + sort */
-  (function () {
+  /* stitched filters + sort
+     Exposed as window.initShopGrid so shop-render.js can call it again after
+     it swaps the hardcoded cards for live ones from /api/products. Listeners
+     bind once; the card list is re-snapshotted on every call. */
+  var __shopBound = false;
+  window.initShopGrid = function () {
     var grid = document.querySelector('.shop-grid');
     var cards = Array.prototype.slice.call(grid.querySelectorAll('.product-card'));
     cards.forEach(function (c, i) { c.dataset.order = i; });
@@ -1155,14 +1159,21 @@
       countEl.textContent = shown + (shown === 1 ? ' piece' : ' pieces');
     }
 
-    btns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        btns.forEach(function (b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        state.filter = btn.dataset.filter;
-        apply();
+    if (!__shopBound) {
+      btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          btns.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          state.filter = btn.dataset.filter;
+          window.__shopApply();
+        });
       });
-    });
+      sortSel.addEventListener('change', function () { state.sort = sortSel.value; window.__shopApply(); });
+      instock.addEventListener('change', function () { state.instock = instock.checked; window.__shopApply(); });
+      __shopBound = true;
+    }
+    window.__shopApply = apply;
+
     /* Hide any filter with nothing behind it (Clothing, until Lauren adds some).
        The button reappears on its own once a card carries that data-cat. */
     btns.forEach(function (btn) {
@@ -1171,19 +1182,18 @@
       var has = cards.some(function (c) {
         return f === 'sale' ? c.hasAttribute('data-sale') : c.dataset.cat === f;
       });
-      if (!has) btn.style.display = 'none';
+      btn.style.display = has ? '' : 'none';
     });
 
-    sortSel.addEventListener('change', function () { state.sort = sortSel.value; apply(); });
-    instock.addEventListener('change', function () { state.instock = instock.checked; apply(); });
-
     apply();
-  })();
+  };
+  window.initShopGrid();
 </script>
 <script src="nav.js"></script>
 <script src="cart.js"></script>
 <script src="detail.js"></script>
 <script src="search.js"></script>
+<script src="shop-render.js"></script>
 
 
 <div class="paper-grain" aria-hidden="true"></div>
