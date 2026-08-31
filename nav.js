@@ -6,8 +6,8 @@
   var LINKS = [
     { label: 'Shop', href: 'shop.html' },
     { label: 'Commission', href: 'commission.html' },
-    { label: 'About', href: 'about.html' },
-    { label: 'Wholesale', href: 'wholesale.html' }
+    { label: 'Wholesale', href: 'wholesale.html' },
+    { label: 'About', href: 'about.html' }
   ];
 
   var navRight = document.querySelector('.nav-right');
