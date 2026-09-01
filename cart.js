@@ -193,11 +193,17 @@
   });
 
   /* ── add to bag ── */
-  function addItem(name, price, img) {
+  /* variationId is Square's catalog variation ID. Checkout prices by that
+     ID rather than by the number we display, so the two can never drift.
+     Two colourways of one product are separate lines, hence the id is part
+     of the dedupe key. */
+  function addItem(name, price, img, variationId) {
     var cart = readCart();
-    var existing = cart.filter(function (i) { return i.name === name; })[0];
+    var existing = cart.filter(function (i) {
+      return i.name === name && (i.variationId || null) === (variationId || null);
+    })[0];
     if (existing) existing.qty += 1;
-    else cart.push({ name: name, price: price, qty: 1, img: img || null });
+    else cart.push({ name: name, price: price, qty: 1, img: img || null, variationId: variationId || null });
     writeCart(cart);
     render();
   }

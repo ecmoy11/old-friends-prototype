@@ -43,6 +43,20 @@
       images: ['images/lace-market-bag.jpg', 'images/lace-market-bag-2.jpg']
     },
     'Handmade Scrunchies': {
+      /* Option names and stock mirrored from her Square listing on
+         2026-08-31. Prices are deliberately ABSENT: the listing spans
+         $9-$14 and the per-variant split could not be read reliably, so
+         the chips show names only and the header keeps the "From $9"
+         range until /api/products supplies the real numbers. Guessing
+         which colourway costs what is exactly the kind of invention that
+         does not belong here. */
+      variations: [
+        { id: 'cache-red-gingham',      name: 'Red Gingham',            priceCents: null, available: true  },
+        { id: 'cache-red-gingham-lace', name: 'Red Gingham with Lace',  priceCents: null, available: true  },
+        { id: 'cache-blue-plaid',       name: 'Blue Plaid',             priceCents: null, available: false },
+        { id: 'cache-blue-plaid-lace',  name: 'Blue Plaid with Lace',   priceCents: null, available: false },
+        { id: 'cache-cloud-print',      name: 'Cloud Print',            priceCents: null, available: true  }
+      ],
       story: 'Handmade from a mix of old and new fabrics, this oversized lace scrunchie brings a timeless cottagecore touch to your winter wardrobe. Designed to add texture and charm to cozy layers, it\u2019s the perfect accessory to elevate your everyday messy bun or low pony when the jackets start piling on. We like to plop this over an already secured bun to add some whimsy to our outfit!',
       images: ['images/scrunchies.jpg', 'images/scrunchies-2.jpg', 'images/scrunchies-3.jpg',
                'images/scrunchies-4.jpg', 'images/scrunchies-5.jpg', 'images/scrunchies-6.jpg',
@@ -113,6 +127,18 @@
     '.pd-modal.pd-is-gift .pd-dl { display: none; }',
     '.pd-gift h4 { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--terra); font-weight: 500; margin-bottom: 10px; }',
     '.pd-amounts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }',
+    /* Variant picker. Same chip language as the gift-card amounts so the
+       modal reads as one thing. A sold-out option stays visible and
+       labelled rather than disappearing — shoppers ask for the one they
+       saw on Instagram, and silence looks like it never existed. */
+    '.pd-opts { margin: 0 0 18px; }',
+    '.pd-opts h4 { font-family: "DM Sans", sans-serif; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--terra); margin: 0 0 10px; font-weight: 500; }',
+    '.pd-opt-list { display: flex; flex-wrap: wrap; gap: 8px; }',
+    '.pd-opt { background: none; border: 1px dashed var(--stone); color: var(--brown); font-family: "DM Sans", sans-serif; font-size: 12px; letter-spacing: .04em; padding: 9px 14px; cursor: pointer; transition: border-color .25s, color .25s, background .25s; }',
+    '.pd-opt:hover:not(:disabled) { border-color: var(--terra); color: var(--terra); }',
+    '.pd-opt.active { border: 1px solid var(--terra); color: var(--terra); background: rgba(158,20,49,0.06); }',
+    '.pd-opt:disabled { opacity: .45; cursor: not-allowed; text-decoration: line-through; text-decoration-color: var(--walnut); }',
+    '.pd-opt-note { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 13px; color: var(--walnut); margin-top: 9px; }',
     '.pd-amt { background: none; border: 1px dashed var(--stone); color: var(--brown); font-family: "DM Sans", sans-serif; font-size: 12px; letter-spacing: .06em; padding: 9px 15px; cursor: pointer; transition: border-color .25s, color .25s, background .25s; }',
     '.pd-amt:hover { border-color: var(--terra); color: var(--terra); }',
     '.pd-amt.active { border: 1px solid var(--terra); color: var(--terra); background: rgba(158,20,49,0.06); }',
@@ -156,6 +182,7 @@
       /* Rows are built at render time from whatever Square returns, so a new
          custom attribute in her Dashboard appears here with no code change. */
       '<div class="pd-dl"><h4>The Details</h4><div class="pd-rows"></div></div>' +
+      '<div class="pd-opts"><h4>Choose an option</h4><div class="pd-opt-list"></div><p class="pd-opt-note"></p></div>' +
       '<div class="pd-gift">' +
         '<h4>Choose an Amount</h4>' +
         '<div class="pd-amounts">' +
@@ -187,6 +214,9 @@
     price: modal.querySelector('.pd-price'),
     story: modal.querySelector('.pd-story'),
     dl: modal.querySelector('.pd-dl'),
+    opts: modal.querySelector('.pd-opts'),
+    optList: modal.querySelector('.pd-opt-list'),
+    optNote: modal.querySelector('.pd-opt-note'),
     rows: modal.querySelector('.pd-rows'),
     note: modal.querySelector('.pd-note'),
     add: modal.querySelector('.pd-add'),
@@ -337,6 +367,57 @@
     }
   }, { passive: false });
 
+  /* ── VARIANTS ──
+     Square is the only source: options, their prices and their stock all
+     come from /api/products. A product with one variation has no picker;
+     a product with several cannot be added until one is chosen, and a
+     sold-out option can never be chosen at all. */
+  function money(n) {
+    return '$' + (n % 1 === 0 ? n : n.toFixed(2));
+  }
+
+  function selectVariant(v) {
+    if (!v || !v.available) return;
+    current.variation = v;
+    current.price = (v.priceCents != null ? v.priceCents / 100 : current.price);
+    current.variationId = v.id;
+    /* With no per-variant price (offline preview only) keep the range on
+       screen rather than asserting a number we don't have. */
+    var showPrice = v.priceCents != null;
+    els.optList.querySelectorAll('.pd-opt').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.vid === v.id);
+    });
+    if (showPrice) els.price.textContent = money(current.price);
+    els.add.disabled = false;
+    els.add.textContent = 'Add to Bag';
+    els.optNote.textContent = '';
+  }
+
+  function renderVariants(info) {
+    var vs = (info.variations || []).filter(function (v) { return v && v.name; });
+    /* One unnamed/default variation is not a choice — don't ask for one. */
+    if (vs.length < 2) {
+      els.opts.style.display = 'none';
+      els.optList.innerHTML = '';
+      return false;
+    }
+    els.opts.style.display = '';
+    els.optList.innerHTML = vs.map(function () { return '<button type="button" class="pd-opt"></button>'; }).join('');
+    els.optList.querySelectorAll('.pd-opt').forEach(function (b, i) {
+      var v = vs[i];
+      b.dataset.vid = v.id;
+      b.disabled = !v.available;
+      b.textContent = v.name + (v.priceCents != null ? '  ' + money(v.priceCents / 100) : '');
+      if (!v.available) b.title = 'Sold out';
+    });
+    var anyAvailable = vs.some(function (v) { return v.available; });
+    els.add.disabled = true;
+    els.add.textContent = anyAvailable ? 'Select an option' : 'Sold Out';
+    els.optNote.textContent = anyAvailable ? '' : 'Every option is spoken for right now.';
+    current.variations = vs;
+    return true;
+  }
+
   function show(card) {
     var name = (card.querySelector('.product-name') || {}).textContent || '';
     name = name.trim();
@@ -384,6 +465,7 @@
         '<img class="pd-env" src="envolope.png" alt="">';
       els.thumbs.innerHTML = '';
       els.thumbs.style.display = 'none';
+      els.opts.style.display = 'none';
       gallery = [];
       galleryIndex = 0;
       resetGiftForm();
@@ -404,7 +486,7 @@
       if (src && images.indexOf(src) === -1) images.push(src);
     });
 
-    current = { name: name, price: parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0, img: images[0] || null, sold: sold };
+    current = { name: name, price: parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0, img: images[0] || null, sold: sold, variation: null, variationId: null, variations: null };
 
     /* keep the struck-through original visible in the detail view */
     els.price.innerHTML = priceHTML;
@@ -419,11 +501,24 @@
     galleryIndex = 0;
     setMainImage(images[0] || null);
 
-    els.add.disabled = sold;
-    els.add.textContent = sold ? 'Sold Out' : 'Add to Bag';
+    /* renderVariants owns the Add button when there is a real choice to
+       make, so don't let the card-level sold flag stomp on it. */
+    current.variations = null;
+    current.variationId = null;
+    if (!renderVariants(info)) {
+      els.add.disabled = sold;
+      els.add.textContent = sold ? 'Sold Out' : 'Add to Bag';
+    }
 
     openModal();
   }
+
+  els.optList.addEventListener('click', function (e) {
+    var b = e.target.closest('.pd-opt');
+    if (!b || b.disabled || !current) return;
+    var v = (current.variations || []).filter(function (x) { return x.id === b.dataset.vid; })[0];
+    selectVariant(v);
+  });
 
   els.thumbs.addEventListener('click', function (e) {
     var b = e.target.closest('button[data-src]');
@@ -452,8 +547,19 @@
       return;
     }
 
+    /* A product with options cannot reach the cart without one chosen —
+       the button stays disabled, but guard here too so no other code path
+       can slip an unspecified variant through. */
+    if (current.variations && current.variations.length && !current.variationId) {
+      els.optNote.textContent = 'Choose an option first.';
+      return;
+    }
+
     if (window.OFCart) {
-      window.OFCart.add(current.name, current.price, current.img);
+      var label = current.variation
+        ? current.name + ' — ' + current.variation.name
+        : current.name;
+      window.OFCart.add(label, current.price, current.img, current.variationId || null);
       closeModal();
       window.OFCart.open();
     }

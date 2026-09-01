@@ -99,6 +99,8 @@
       map[p.name] = {
         story: p.description || '',
         details: p.details || [],
+        /* Options, their prices and their stock — Square's, not ours. */
+        variations: p.variations || [],
         images: p.images.slice()
       };
     });
