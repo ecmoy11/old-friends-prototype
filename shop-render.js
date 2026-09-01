@@ -91,13 +91,14 @@
     var map = window.OFProducts;
     if (!map) return;
     products.forEach(function (p) {
-      var existing = map[p.name] || {};
+      /* REPLACE, never merge. The previous version kept the local
+         materials/dimensions/care/note when Square had none, which meant
+         hand-written placeholder copy stayed stapled to live products and
+         read as Lauren's own words. Square is the only source now: what
+         she has not written simply does not render. */
       map[p.name] = {
-        story: p.description || existing.story || '',
-        materials: existing.materials || '',
-        dimensions: existing.dimensions || '',
-        care: existing.care || '',
-        note: existing.note || '',
+        story: p.description || '',
+        details: p.details || [],
         images: p.images.slice()
       };
     });

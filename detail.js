@@ -6,60 +6,52 @@
 (function () {
 
   /* ═══════════ EDIT PRODUCT INFO HERE ═══════════ */
-  /* PRODUCT COPY — verbatim from Lauren's Square listings, pulled 2026-08-30.
-     Do not paraphrase or "improve" these: they are her voice and her factual
-     claims about her own goods. Where she has written nothing, the field is
-     left out on purpose and renders as "\u2014" until she writes it. */
+  /* ── OFFLINE CACHE ONLY — NOT A SOURCE OF TRUTH ──
+     Square is authoritative for every word a shopper reads. This map is a
+     mirror of Lauren's own Square descriptions, kept so the static
+     GitHub Pages preview is not blank; the moment /api/products answers,
+     everything here is replaced (see mergeCopy in shop-render.js).
+
+     RULES, because this has gone wrong before:
+       - Verbatim from Square or absent. Never paraphrased, never written
+         to fill a gap, never "improved".
+       - No materials / dimensions / care / notes. Those are Square custom
+         attributes now and render from the API only. If Lauren has not
+         filled one in, the row simply does not appear.
+       - A blank field is the correct output for a blank field. */
   var PRODUCTS = {
     'Whimsy Quilt Tote Bag': {
       story: 'Sustainably made from a vintage quilt, this tote gives new life to beautiful details of butterflies and florals. With a magnetic clasp and front pocket for easy storage, it\u2019s the perfect mix of form and function.',
-      materials: 'Vintage quilt; magnetic clasp, front pocket',
-      note: 'One of one \u2014 cut from a single quilt, so no two will ever match.',
       images: ['images/whimsy-quilt-tote.jpg', 'images/whimsy-quilt-tote-2.jpg']
     },
     'Coffee Bean Tote Bag': {
       story: 'Crafted from repurposed coffee bean bags, this tote blends sustainability with style. Fully lined for durability, it features a magnetic clasp for easy closure and a handy front pocket for quick grabs. A perfect everyday bag with a story worth carrying.',
-      materials: 'Repurposed coffee bean sacks, fully lined; magnetic clasp, front pocket',
-      note: 'Made from sacks that already crossed an ocean once.',
       images: ['images/coffee-bean-tote.jpg']
     },
     'Chocolate Covered Starberry Quilted Tote': {
-      /* Lauren has written no description for this one \u2014 only the flaw note. */
-      note: 'Imperfection on the front top left of the body of the tote, where the strap meets the bag (shown in the third photo).',
+      story: '**Imperfection on the front top left of the body of the tote, where the strap meets the bag (shown in third photo)**',
       images: ['images/starberry-tote.jpg', 'images/starberry-tote-2.jpg', 'images/starberry-tote-3.jpg', 'images/starberry-tote-4.jpg']
     },
     'Large Origami Tote Bag': {
-      /* No description on Square yet. */
       images: ['images/origami-tote.jpg', 'images/origami-tote-2.jpg']
     },
     'Green Gingham Market Bag with Pouch': {
-      /* No description on Square yet. */
       images: ['images/gingham-market-bag.jpg', 'images/gingham-market-bag-2.jpg', 'images/gingham-market-bag-3.jpg']
     },
     'Upcycled Lace Tablecloth Market Bags': {
-      story: 'This handmade lace market bag is inspired by the feelings of a sunny day at the farmers market picking up fresh fruit or a reading day on the beach when you have nothing else to do but romanticize your days. Made with vintage lace linens these bags vary in color and design making for a unique one-of-a-kind piece that will be treasured for years to come!',
-      materials: 'Vintage lace tablecloth linens',
-      note: 'Due to the nature of vintage linens each bag will vary in texture, design, and in color.',
+      story: 'This handmade lace market bag is inspired by the feelings of a sunny day at the farmers market picking up fresh fruit or a reading day on the beach when you have nothing else to do but romanticize your days. Made with vintage lace linens these bags vary in color and design making for a unique one-of-a-kind piece that will be treasured for years to come!**Due to the nature of vintage linens each bag will vary in texture, design, and in color.**',
       images: ['images/lace-market-bag.jpg', 'images/lace-market-bag-2.jpg']
     },
     'Handmade Scrunchies': {
       story: 'Handmade from a mix of old and new fabrics, this oversized lace scrunchie brings a timeless cottagecore touch to your winter wardrobe. Designed to add texture and charm to cozy layers, it\u2019s the perfect accessory to elevate your everyday messy bun or low pony when the jackets start piling on. We like to plop this over an already secured bun to add some whimsy to our outfit!',
-      materials: 'A mix of old and new fabrics; elastic core',
-      dimensions: 'Elastic size 5"; scrunchie approx. 5" from side to side',
-      /* Square advertises "BUY 1 FOR $15, OR 2 FOR $25" here, which contradicts
-         the $9\u2013$14 listing price. Left out until Lauren says which is right. */
       images: ['images/scrunchies.jpg', 'images/scrunchies-2.jpg', 'images/scrunchies-3.jpg',
                'images/scrunchies-4.jpg', 'images/scrunchies-5.jpg', 'images/scrunchies-6.jpg',
                'images/scrunchies-7.jpg', 'images/scrunchies-8.jpg', 'images/scrunchies-9.jpg']
     },
     'Digital Gift Card': {
-      story: 'For when you know they\u2019d love something handmade, but the choosing should be theirs. Pick an amount, write a little note, and we\u2019ll email it to them \u2014 no shipping, no packaging, no waiting.',
-      materials: 'Delivered by email \u2014 zero waste',
-      note: 'Gift cards never expire, and they work on everything: pre-loved, handmade, and commissions alike.'
+      story: 'For when you know they\u2019d love something handmade, but the choosing should be theirs. Pick an amount, write a little note, and we\u2019ll email it to them \u2014 no shipping, no packaging, no waiting.'
     }
   };
-  var DEFAULT_NOTE = 'Handmade in Chattanooga with reclaimed materials.';
-  /* ═══════════ END PRODUCT INFO ═══════════ */
 
   var css = [
     '.pd-backdrop { position: fixed; inset: 0; background: rgba(106,70,48,0.5); opacity: 0; pointer-events: none; transition: opacity .35s ease; z-index: 8000; }',
@@ -79,6 +71,18 @@
     '.pd-main.has-img { cursor: zoom-in; }',
     '.pd-main.zoomed { cursor: zoom-out; }',
     '.pd-main.zoomed img { transform: scale(2.4); }',
+    /* Gallery arrows. z-index 2 puts them over the zoom hint (1) and the
+       image; they must stop propagation or the click also toggles zoom. */
+    '.pd-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 38px; height: 52px; display: none; align-items: center; justify-content: center; border: none; cursor: pointer; background: rgba(246,237,216,0.82); color: var(--brown); font-size: 20px; line-height: 1; padding: 0; transition: background .25s, opacity .25s; opacity: 0; }',
+    '.pd-main.has-multi .pd-nav { display: flex; }',
+    '.pd-gallery:hover .pd-nav, .pd-nav:focus-visible { opacity: 1; }',
+    '.pd-nav:hover { background: var(--cream); }',
+    '.pd-nav--prev { left: 0; }',
+    '.pd-nav--next { right: 0; }',
+    /* While zoomed the arrows would fight the pan, so hide them. */
+    '.pd-main.zoomed .pd-nav { display: none; }',
+    /* Touch has no hover — keep them visible there. */
+    '@media (hover: none) { .pd-nav { opacity: 1; } }',
     '.pd-zoom-hint { position: absolute; bottom: 10px; right: 10px; z-index: 1; background: rgba(106,70,48,0.75); color: var(--cream-text); font-family: "DM Sans", sans-serif; font-size: 9px; letter-spacing: .15em; text-transform: uppercase; padding: 5px 10px; pointer-events: none; opacity: .85; }',
     '.pd-main.zoomed .pd-zoom-hint { display: none; }',
     /* Products can carry up to 9 shots (scrunchie colourways), which is wider
@@ -149,12 +153,9 @@
       '<h2 class="pd-name"></h2>' +
       '<div class="pd-price"></div>' +
       '<p class="pd-story"></p>' +
-      '<div class="pd-dl">' +
-        '<h4>The Details</h4>' +
-        '<div class="pd-row"><dt>Materials</dt><dd data-f="materials"></dd></div>' +
-        '<div class="pd-row"><dt>Dimensions</dt><dd data-f="dimensions"></dd></div>' +
-        '<div class="pd-row"><dt>Care</dt><dd data-f="care"></dd></div>' +
-      '</div>' +
+      /* Rows are built at render time from whatever Square returns, so a new
+         custom attribute in her Dashboard appears here with no code change. */
+      '<div class="pd-dl"><h4>The Details</h4><div class="pd-rows"></div></div>' +
       '<div class="pd-gift">' +
         '<h4>Choose an Amount</h4>' +
         '<div class="pd-amounts">' +
@@ -185,6 +186,8 @@
     name: modal.querySelector('.pd-name'),
     price: modal.querySelector('.pd-price'),
     story: modal.querySelector('.pd-story'),
+    dl: modal.querySelector('.pd-dl'),
+    rows: modal.querySelector('.pd-rows'),
     note: modal.querySelector('.pd-note'),
     add: modal.querySelector('.pd-add'),
     giftAmts: modal.querySelectorAll('.pd-amt'),
@@ -259,18 +262,47 @@
   backdrop.addEventListener('click', closeModal);
   modal.querySelector('.pd-close').addEventListener('click', closeModal);
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeModal(); return; }
+    /* Don't hijack arrows while someone is typing in the gift-card form. */
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
   });
+
+  /* The gallery the modal is currently showing, and where we are in it.
+     step() and the arrow keys both work off this, so thumbs, arrows and
+     the keyboard can never disagree about which photo is showing. */
+  var gallery = [];
+  var galleryIndex = 0;
 
   function setMainImage(src) {
     els.main.classList.remove('zoomed');
     els.main.classList.toggle('has-img', !!src);
-    els.main.innerHTML = src
+    var idx = gallery.indexOf(src);
+    if (idx > -1) galleryIndex = idx;
+    var multi = gallery.length > 1;
+    els.main.innerHTML = (src
       ? '<img src="' + src + '" alt=""><span class="pd-zoom-hint">Click to zoom</span>'
-      : '<span class="pd-ph">product photography coming soon</span>';
+      : '<span class="pd-ph">product photography coming soon</span>')
+      + '<button class="pd-nav pd-nav--prev" type="button" aria-label="Previous photo">&#8249;</button>'
+      + '<button class="pd-nav pd-nav--next" type="button" aria-label="Next photo">&#8250;</button>';
+    els.main.classList.toggle('has-multi', multi);
     els.thumbs.querySelectorAll('button').forEach(function (b) {
       b.classList.toggle('active', b.dataset.src === src);
     });
+    var active = els.thumbs.querySelector('button.active');
+    if (active && active.scrollIntoView) {
+      active.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
+  }
+
+  /* Wraps at both ends so the arrows never dead-end. */
+  function step(delta) {
+    if (gallery.length < 2) return;
+    galleryIndex = (galleryIndex + delta + gallery.length) % gallery.length;
+    setMainImage(gallery[galleryIndex]);
   }
 
   /* ── zoom: click to magnify at that spot, move to pan, click to zoom out ── */
@@ -283,6 +315,13 @@
     img.style.transformOrigin = x + '% ' + y + '%';
   }
   els.main.addEventListener('click', function (e) {
+    /* An arrow click is navigation, not a zoom toggle. Check first. */
+    var nav = e.target.closest('.pd-nav');
+    if (nav) {
+      e.stopPropagation();
+      step(nav.classList.contains('pd-nav--next') ? 1 : -1);
+      return;
+    }
     if (modal.classList.contains('pd-is-gift')) return;
     if (!els.main.querySelector('img')) return;
     zoomOrigin(e.clientX, e.clientY);
@@ -314,11 +353,28 @@
     els.name.textContent = name;
     els.tag.textContent = tagText;
     els.tag.style.display = tagText ? 'inline-block' : 'none';
-    els.story.textContent = info.story || 'Description coming soon — every piece gets its own story before it ships.';
-    els.note.textContent = '✂ ' + (info.note || DEFAULT_NOTE);
-    modal.querySelector('[data-f="materials"]').textContent = info.materials || '—';
-    modal.querySelector('[data-f="dimensions"]').textContent = info.dimensions || '—';
-    modal.querySelector('[data-f="care"]').textContent = info.care || '—';
+    /* No story, no paragraph. The old placeholder promised something about
+       Lauren's process that nobody had actually committed to. */
+    els.story.textContent = info.story || '';
+    els.story.style.display = info.story ? '' : 'none';
+    /* Details come from Square custom attributes and nowhere else. No
+       row for a field Lauren has not filled in, and no default text — an
+       empty details block hides itself rather than printing dashes. */
+    var rows = info.details || [];
+    els.rows.innerHTML = rows.map(function (r) {
+      return '<div class="pd-row"><dt></dt><dd></dd></div>';
+    }).join('');
+    els.rows.querySelectorAll('.pd-row').forEach(function (el, i) {
+      el.querySelector('dt').textContent = rows[i].name;
+      el.querySelector('dd').textContent = rows[i].value;
+    });
+    els.dl.style.display = rows.length ? '' : 'none';
+
+    /* The ✂ line is Lauren's note if she wrote one, and otherwise nothing.
+       It used to fall back to a hardcoded house line, which put words in
+       her mouth on every product that had no note. */
+    els.note.textContent = info.note ? '✂ ' + info.note : '';
+    els.note.style.display = info.note ? '' : 'none';
 
     if (isGift) {
       current = { name: name, price: 0, img: GIFT_IMG, sold: false, gift: true };
@@ -328,6 +384,8 @@
         '<img class="pd-env" src="envolope.png" alt="">';
       els.thumbs.innerHTML = '';
       els.thumbs.style.display = 'none';
+      gallery = [];
+      galleryIndex = 0;
       resetGiftForm();
       openModal();
       return;
@@ -357,6 +415,8 @@
         }).join('')
       : '';
     els.thumbs.style.display = images.length > 1 ? 'flex' : 'none';
+    gallery = images.slice();
+    galleryIndex = 0;
     setMainImage(images[0] || null);
 
     els.add.disabled = sold;

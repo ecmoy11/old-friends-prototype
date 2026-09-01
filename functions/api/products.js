@@ -10,15 +10,16 @@
 const CATALOG_PATH   = "/v2/catalog/search";
 const INVENTORY_PATH = "/v2/inventory/counts/batch-retrieve";
 
-function squareFetch(env, path, body) {
+function squareFetch(env, path, body, method) {
+  const verb = method || "POST";
   return fetch(env.SQUARE_BASE + path, {
-    method: "POST",
+    method: verb,
     headers: {
       "Authorization": `Bearer ${env.SQUARE_ACCESS_TOKEN}`,
       "Square-Version": env.SQUARE_VERSION,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(body),
+    ...(verb === "GET" ? {} : { body: JSON.stringify(body) }),
   }).then(async (r) => {
     const json = await r.json();
     if (!r.ok) throw new Error(`Square ${path} ${r.status}: ${JSON.stringify(json.errors || json)}`);
@@ -43,6 +44,59 @@ async function fetchAllItems(env) {
     cursor = page.cursor;
   } while (cursor);
   return { objects, related };
+}
+
+/* The human-readable name of a custom attribute lives on its DEFINITION
+   object, not on the value, so we fetch definitions and join by id — the
+   same shape as images and categories above.
+
+   Deliberately generic: whatever attributes Lauren creates in Square
+   ("Materials", "Dimensions", "Care", anything later) flow straight to
+   the product detail view. Adding a field is a Dashboard action for her,
+   never a code change for us. */
+async function fetchAttributeDefs(env) {
+  const defs = {};
+  let cursor;
+  do {
+    const qs = new URLSearchParams({ types: "CUSTOM_ATTRIBUTE_DEFINITION" });
+    if (cursor) qs.set("cursor", cursor);
+    const page = await squareFetch(env, `/v2/catalog/list?${qs}`, null, "GET");
+    for (const o of page.objects || []) {
+      const d = o.custom_attribute_definition_data || {};
+      const selections = {};
+      for (const sel of d.selection_config?.allowed_selections || []) {
+        selections[sel.uid] = sel.name;
+      }
+      defs[o.id] = { name: d.name || d.key || "", type: d.type, selections };
+    }
+    cursor = page.cursor;
+  } while (cursor);
+  return defs;
+}
+
+/* One item's custom attributes as ordered {name, value} rows, skipping
+   anything blank. Never invents a row and never supplies a default. */
+function detailRows(item, defs) {
+  const rows = [];
+  const values = item.custom_attribute_values || {};
+  for (const key of Object.keys(values)) {
+    const v = values[key] || {};
+    const def = defs[v.custom_attribute_definition_id] || {};
+    let out = null;
+    if (v.string_value != null) out = String(v.string_value);
+    else if (v.number_value != null) out = String(v.number_value);
+    else if (v.boolean_value != null) out = v.boolean_value ? "Yes" : "No";
+    else if (Array.isArray(v.selection_uid_values)) {
+      out = v.selection_uid_values
+        .map((uid) => (def.selections || {})[uid])
+        .filter(Boolean).join(", ");
+    }
+    if (out == null) continue;
+    out = out.trim();
+    if (!out) continue;
+    rows.push({ name: def.name || v.name || key, value: out });
+  }
+  return rows;
 }
 
 async function fetchStock(env, variationIds) {
@@ -79,6 +133,12 @@ export async function onRequestGet({ env }) {
     for (const o of related) {
       if (o.type === "CATEGORY") categoryNames[o.id] = o.category_data?.name || null;
     }
+
+    /* A missing/failed definitions call must not empty the shop — details
+       are an enhancement, not a requirement. Degrade to no rows. */
+    let attrDefs = {};
+    try { attrDefs = await fetchAttributeDefs(env); }
+    catch (e) { console.warn("custom attribute definitions unavailable:", e.message); }
 
     const variationIds = objects.flatMap(
       (o) => (o.item_data?.variations || []).map((v) => v.id)
@@ -131,6 +191,9 @@ export async function onRequestGet({ env }) {
         name: it.name || "",
         /* Lauren's words, verbatim. Never synthesised here. */
         description: it.description || null,
+        /* Whatever custom attributes she has filled in, in Square's order.
+           Absent field => absent row. Nothing is defaulted or invented. */
+        details: detailRows(it, attrDefs),
         images: (it.image_ids || []).map((id) => imageUrls[id]).filter(Boolean),
         category: categoryNames[it.category_id] || it.category_id || null,
         variations,
