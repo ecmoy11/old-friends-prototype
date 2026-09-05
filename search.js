@@ -48,21 +48,25 @@
   var input = panel.querySelector('.srch-input');
   var results = panel.querySelector('.srch-results');
 
-  /* searchable index from the shared product copy in detail.js */
+  /* Searchable index, built from the catalog — Square's names, Lauren's
+     descriptions, her custom attribute values and her option names. No
+     product text lives in this file or in detail.js any more. */
   function buildIndex() {
-    var products = window.OFProducts || {};
-    return Object.keys(products).map(function (name) {
-      var p = products[name];
-      return {
-        name: name,
-        hay: (name + ' ' + (p.story || '') + ' ' + (p.materials || '') + ' ' + (p.note || '')).toLowerCase()
-      };
+    var C = window.OFCatalog;
+    if (!C) return [];
+    return C.all().map(function (p) {
+      var parts = [p.name, p.description || '', p.category || ''];
+      (p.details || []).forEach(function (r) { parts.push(r.name, r.value); });
+      (p.variations || []).forEach(function (v) { if (v.name) parts.push(v.name); });
+      return { name: p.name, hay: parts.join(' ').toLowerCase() };
     });
   }
   var index = null;
 
+  if (window.OFCatalog) window.OFCatalog.ready.then(function () { index = buildIndex(); });
+
   function openSearch() {
-    if (!index) index = buildIndex();
+    if (!index || !index.length) index = buildIndex();
     panel.classList.add('open');
     backdrop.classList.add('open');
     document.body.style.overflow = 'hidden';

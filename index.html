@@ -370,6 +370,17 @@
   }
   .featured-link:hover { opacity: 0.7; }
 
+  /* Core Collection breaks the 1200px container. The four squares were
+     reading as thumbnails inside all that side margin, and widening the
+     section is what makes them bigger, since each is 1fr of whatever the
+     row is. aspect-ratio 1/1 on .product-img-wrap carries the extra width
+     into extra height on its own, so they stay square. The 1800px cap
+     stops a 27-inch display from turning four products into billboards. */
+  .featured > .container {
+    max-width: 1800px;
+    padding: 0 clamp(24px, 4.5vw, 72px);
+  }
+
   .product-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -417,6 +428,11 @@
   }
   .product-img-hover { opacity: 0; transition: opacity 0.45s ease; }
   .product-card:hover .product-img-hover { opacity: 1; }
+
+  /* A product with no photo in Square shows an empty frame, not a stand-in
+     image. Substituting one would be the same lie as substituting copy. */
+  .product-img--none { background: var(--stone); }
+
   .product-tag {
     position: absolute;
     top: 12px; left: 12px;
@@ -430,17 +446,17 @@
   .product-tag--sold { background: var(--dusty); color: var(--brown); }
   .product-name {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 16px; font-weight: 500;
+    font-size: 19px; font-weight: 500;
     margin-bottom: 0;
     padding-left: 10px;
   }
-  .product-price { color: var(--walnut); font-size: 13px; justify-self: end; white-space: nowrap; padding-right: 10px; }
+  .product-price { color: var(--walnut); font-size: 15px; justify-self: end; white-space: nowrap; padding-right: 10px; }
 
-  /* ── SALE PRICING (mirrors shop.html) ──
-     <div class="product-price">
-       <span class="price-was">$55</span><span class="price-now">$38.50</span>
-     </div>
-     Sizes in em so the same spans work in the detail modal too. */
+  /* ── SALE PRICING — CURRENTLY UNUSED (mirrors shop.html) ──
+     Nothing renders these today. There is no source in Square for a
+     struck-through original, and the promo they were written for is over.
+     They come back when the API can report a real compareAtCents, not as
+     a number typed into this file. */
   .price-was {
     color: var(--walnut);
     opacity: 0.55;
@@ -986,44 +1002,15 @@
       </div>
       <a href="shop.html" class="featured-link">View All</a>
     </div>
-    <div class="product-grid">
-      <div class="product-card">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/whimsy-quilt-tote.jpg" alt="Whimsy Quilt Tote Bag" loading="lazy">
-          <img class="product-img product-img-hover" src="images/whimsy-quilt-tote-2.jpg" alt="" loading="lazy">
-          <div class="product-tag product-tag--sale">On Sale</div>
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Whimsy Quilt Tote Bag</div>
-        <div class="product-price"><span class="price-was">$55</span><span class="price-now">$38.50</span></div>
-      </div>
-      <div class="product-card">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/coffee-bean-tote.jpg" alt="Coffee Bean Tote Bag" loading="lazy">
-          <div class="product-tag product-tag--sale">On Sale</div>
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Coffee Bean Tote Bag</div>
-        <div class="product-price"><span class="price-was">$45</span><span class="price-now">$31.50</span></div>
-      </div>
-      <div class="product-card">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/origami-tote.jpg" alt="Large Origami Tote Bag" loading="lazy">
-          <img class="product-img product-img-hover" src="images/origami-tote-2.jpg" alt="" loading="lazy">
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Large Origami Tote Bag</div>
-        <div class="product-price">$65</div>
-      </div>
-      <div class="product-card">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/scrunchies.jpg" alt="Handmade Scrunchies" loading="lazy">
-          <img class="product-img product-img-hover" src="images/scrunchies-2.jpg" alt="" loading="lazy">
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Handmade Scrunchies</div>
-        <div class="product-price">From $9</div>
-      </div>
+    <!-- EMPTY ON PURPOSE.
+         These four cards used to be hardcoded, and index.html did not even
+         load the renderer — so the homepage showed invented prices and let
+         a scrunchie into the bag with no colourway, in every environment,
+         forever. shop-render.js now fills this from the catalog.
+         WHAT APPEARS HERE IS LAUREN'S CHOICE, made in Square: Dashboard >
+         Custom attributes > a Toggle named "Featured", ticked per item.
+         No list of product names lives in this repo. -->
+    <div class="product-grid" id="featured-grid"></div>
     </div>
   </div>
 </section>
@@ -1215,10 +1202,12 @@
 
   })();
 </script>
+<script src="catalog.js"></script>
 <script src="nav.js"></script>
 <script src="cart.js"></script>
 <script src="detail.js"></script>
 <script src="search.js"></script>
+<script src="shop-render.js"></script>
 
 
 <script>

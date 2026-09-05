@@ -1,0 +1,287 @@
+{
+  "source": "snapshot",
+  "generatedAt": "2026-09-05T00:08:25.933Z",
+  "squareEnv": "production",
+  "products": [
+    {
+      "id": "65TYGSAYPD5LW4QI55JVASEL",
+      "name": "Handmade Scrunchies",
+      "description": "Handmade from a mix of old and new fabrics, this oversized lace scrunchie brings a timeless cottagecore touch to your winter wardrobe. Designed to add texture and charm to cozy layers, it’s the perfect accessory to elevate your everyday messy bun or low pony when the jackets start piling on.\n\n\nWe like to plop this over an already secured bun to add some whimsy to our outfit!\n\n\nElastic Size: 5\"\nDiameter of scrunchie: ~5\" from side to side\n\n\nBUY 1 FOR $15, OR 2 FOR $25\n*discount applied in cart at checkout*",
+      "details": [],
+      "featured": false,
+      "images": [
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/08886e443bb05fe91c13b39d0ed3daffdc5eb270/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/96ae2442795c05668400027fd9443c1e1b81439b/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/01ac8c895cc26032394631b8a8ec8a9e9469ab26/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/d0f9ecd57c717780b877535eda7a5570c79a2136/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/617881e08cab1722a8aeffa8e25a5bee0c6e6b5f/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/c5866de82a3fa5c244ed70dd3ffcae98a5852113/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/f5bd29fb607ae18b4f5909293dfe17677adcf40f/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/41dc91fe23c8d0c3727e6362eaec76a34dd6698c/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/9f26e8ec7b885a298ea430cba2ea305490874421/original.jpeg"
+      ],
+      "category": null,
+      "variations": [
+        {
+          "id": "Z7DIGZS4M3Q3WTQHJLEELM3T",
+          "name": "Red Gingham",
+          "priceCents": 900,
+          "tracked": true,
+          "quantity": 6,
+          "available": true
+        },
+        {
+          "id": "TDG7NOHDXNYRRTXY5DFIY33W",
+          "name": "Red Gingham with Lace",
+          "priceCents": 1400,
+          "tracked": true,
+          "quantity": 1,
+          "available": true
+        },
+        {
+          "id": "GZJA5SLJV7EGTWITIQU5VOCJ",
+          "name": "Blue Plaid",
+          "priceCents": 900,
+          "tracked": true,
+          "quantity": 0,
+          "available": false
+        },
+        {
+          "id": "RBSCIAQCV5LGOTJON3RSSHZ4",
+          "name": "Blue Plaid with Lace",
+          "priceCents": 1400,
+          "tracked": true,
+          "quantity": 0,
+          "available": false
+        },
+        {
+          "id": "H5SJPBRBD7V77P7X63XJUCNH",
+          "name": "Cloud Print",
+          "priceCents": 900,
+          "tracked": true,
+          "quantity": 2,
+          "available": true
+        }
+      ],
+      "requiresChoice": true,
+      "priceFromCents": 900,
+      "priceToCents": 1400,
+      "compareAtCents": null,
+      "soldOut": false,
+      "untracked": false
+    },
+    {
+      "id": "LJLD6GYRIUN26Q6HYXM7SMRB",
+      "name": "Coffee Bean Tote Bag",
+      "description": "Crafted from repurposed coffee bean bags, this tote blends sustainability with style. Fully lined for durability, it features a magnetic clasp for easy closure and a handy front pocket for quick grabs. A perfect everyday bag with a story worth carrying.",
+      "details": [],
+      "featured": false,
+      "images": [
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/5f09744dc92e54b8af7660caaa7dd19e2ad2526f/original.jpeg"
+      ],
+      "category": null,
+      "variations": [
+        {
+          "id": "RRIQ5DTRQYW7DBD2T6EGIAQG",
+          "name": "Regular",
+          "priceCents": 4500,
+          "tracked": true,
+          "quantity": 1,
+          "available": true
+        }
+      ],
+      "requiresChoice": false,
+      "priceFromCents": 4500,
+      "priceToCents": 4500,
+      "compareAtCents": null,
+      "soldOut": false,
+      "untracked": false
+    },
+    {
+      "id": "RQMFZYZQ2JZFT4VJ2DTZEQBQ",
+      "name": "Whimsy Quilt Tote Bag",
+      "description": "Sustainably made from a vintage quilt, this tote gives new life to beautiful details of butterflies and florals. With a magnetic clasp and front pocket for easy storage, it’s the perfect mix of form and function.",
+      "details": [],
+      "featured": false,
+      "images": [
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/deb8a395acb480c92ce00071eef560e452b07272/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/eba2927b5dd96312cff54de04edbf45a29082863/original.jpeg"
+      ],
+      "category": null,
+      "variations": [
+        {
+          "id": "NT3BGPGQWIAX2N3ONH4SKIVH",
+          "name": "Regular",
+          "priceCents": 5500,
+          "tracked": true,
+          "quantity": 1,
+          "available": true
+        }
+      ],
+      "requiresChoice": false,
+      "priceFromCents": 5500,
+      "priceToCents": 5500,
+      "compareAtCents": null,
+      "soldOut": false,
+      "untracked": false
+    },
+    {
+      "id": "GZYSE4VIX4DXCHTWWVRAPWTI",
+      "name": "Upcycled Lace Tablecloth Market Bags",
+      "description": "This handmade lace market bag is inspired by the feelings of a sunny day at the farmers market picking up fresh fruit or a reading day on the beach when you have nothing else to do but romanticize your days. Made with vintage lace linens these bags vary in color and design making for a unique one-of-a-kind piece that will be treasured for years to come!\n\n**Due to the nature of vintage linens each bag will vary in texture, design, and in color.**",
+      "details": [],
+      "featured": false,
+      "images": [
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/ae5a420a2041afb5ae47738119e6b3cc99974355/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/2a926117fad7852758fdf9a985675e1fcff40c86/original.jpeg"
+      ],
+      "category": null,
+      "variations": [
+        {
+          "id": "Y5VF47HH3S4HFIMUHBELYGWE",
+          "name": "White Rose Design",
+          "priceCents": 4800,
+          "tracked": true,
+          "quantity": 0,
+          "available": false
+        },
+        {
+          "id": "QH4JLCXAZYDKYTXTPHFHV25F",
+          "name": "White Leaf Design",
+          "priceCents": 4800,
+          "tracked": true,
+          "quantity": 0,
+          "available": false
+        }
+      ],
+      "requiresChoice": true,
+      "priceFromCents": 4800,
+      "priceToCents": 4800,
+      "compareAtCents": null,
+      "soldOut": true,
+      "untracked": false
+    },
+    {
+      "id": "DJSKOKJXNQZOZ3OGEZM33WJM",
+      "name": "Large Origami Tote Bag",
+      "description": null,
+      "details": [],
+      "featured": false,
+      "images": [
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/2d832b7813b32489cc442c5a7bfbf86750cdd87b/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/f17d71684dc68968eae673e6ab091cdb5e4fb809/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/d3428c20c8122f106fcacbf04f2ded15584fb270/original.jpeg"
+      ],
+      "category": null,
+      "variations": [
+        {
+          "id": "HPOSFHM7QYHRX4K5OX3DKILW",
+          "name": "Regular",
+          "priceCents": 6500,
+          "tracked": true,
+          "quantity": 1,
+          "available": true
+        }
+      ],
+      "requiresChoice": false,
+      "priceFromCents": 6500,
+      "priceToCents": 6500,
+      "compareAtCents": null,
+      "soldOut": false,
+      "untracked": false
+    },
+    {
+      "id": "433I27Q6ZZJKL2MHTHPHQU44",
+      "name": "Chocolate Covered Starberry Quilted Tote",
+      "description": "**Imperfection on the front top left of the body of the tote, where the strap meets the bag (shown in third photo)**",
+      "details": [],
+      "featured": false,
+      "images": [
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/261c476ef51ad629b8ac15434042715e6af99843/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/111cba7f815e6eda0231fd7e0ae16a653e3e5415/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/3d995e30ace1790d523930d08c10099cd7761d92/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/e919daa7702cda0e8094abff0c4808b57e29269f/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/b7d8703aa3a92735d5885a8833e3a50bee69ccd3/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/34ab522e2a3f90fcc2444de48040a4c2c5d973d2/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/7094ab33739e7869f2856f1761fe6f25eccdfbfe/original.jpeg"
+      ],
+      "category": null,
+      "variations": [
+        {
+          "id": "ZVJAVSR7QRURWKEWDL5V756C",
+          "name": "Regular",
+          "priceCents": 4800,
+          "tracked": true,
+          "quantity": 1,
+          "available": true
+        }
+      ],
+      "requiresChoice": false,
+      "priceFromCents": 4800,
+      "priceToCents": 4800,
+      "compareAtCents": null,
+      "soldOut": false,
+      "untracked": false
+    },
+    {
+      "id": "NV6ZCVEQL6FTZA2EF42INVD3",
+      "name": "Green Gingham Market Bag with Pouch",
+      "description": null,
+      "details": [],
+      "featured": false,
+      "images": [
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/f54c183d684fb7f1a1f5399937b890b2df93e88c/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/e15dbf9fcd6e62eae8081317014b14720295e2c6/original.jpeg",
+        "https://items-images-production.s3.us-west-2.amazonaws.com/files/4381ec5561727175ecaa7465ae61c820b462679b/original.jpeg"
+      ],
+      "category": null,
+      "variations": [
+        {
+          "id": "5B6HN7P6ZKOLGZY6WNU4VF32",
+          "name": "Regular",
+          "priceCents": 2000,
+          "tracked": true,
+          "quantity": 1,
+          "available": true
+        }
+      ],
+      "requiresChoice": false,
+      "priceFromCents": 2000,
+      "priceToCents": 2000,
+      "compareAtCents": null,
+      "soldOut": false,
+      "untracked": false
+    },
+    {
+      "id": "64SAV3GPQBQDIZZHH5T7HUYQ",
+      "name": "Commission Project",
+      "description": "Commisions | What I charge\nMinimum of $25 for one hour or less of work\nEach additional hour is +$22\nPLUS cost of materials",
+      "details": [],
+      "featured": false,
+      "images": [],
+      "category": null,
+      "variations": [
+        {
+          "id": "M5QC4IICMDF64SHEFMXNBF24",
+          "name": "Regular",
+          "priceCents": 2500,
+          "tracked": false,
+          "quantity": null,
+          "available": false
+        }
+      ],
+      "requiresChoice": false,
+      "priceFromCents": 2500,
+      "priceToCents": 2500,
+      "compareAtCents": null,
+      "soldOut": true,
+      "untracked": true
+    }
+  ],
+  "meta": {
+    "totalInCatalog": 65,
+    "shown": 8,
+    "featured": 0,
+    "filter": "ecom_visibility=VISIBLE"
+  }
+}

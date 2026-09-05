@@ -403,6 +403,11 @@
   }
   .product-img-hover { opacity: 0; transition: opacity 0.45s ease; }
   .product-card:hover .product-img-hover { opacity: 1; }
+
+  /* A product with no photo in Square shows an empty frame, not a stand-in
+     image. Substituting one would be the same lie as substituting copy. */
+  .product-img--none { background: var(--stone); }
+
   .product-tag {
     position: absolute;
     top: 12px; left: 12px;
@@ -421,13 +426,17 @@
   }
   .product-price { color: var(--walnut); font-size: 13px; justify-self: end; white-space: nowrap; }
 
-  /* ── SALE PRICING ──
-     Markup: <div class="product-price">
-               <span class="price-was">$55</span><span class="price-now">$38.50</span>
-             </div>
-     A card with no .price-now behaves exactly as before. All price-reading
-     JS (sort, cart, detail) prefers .price-now when present, so the sale
-     price is the one that gets added up. */
+  /* ── SALE PRICING — CURRENTLY UNUSED, AND DELIBERATELY SO ──
+     Nothing renders .price-was / .price-now today. Square has no
+     sale_price field, Lauren's discounts are cart-level, and the 30%-off
+     promo these styles were written for is over. The struck prices that
+     used to sit in this page's HTML ($38.50, $31.50) were invented by us
+     and were charged to nobody.
+     The rule: this styling comes back when /api/products can report a real
+     compareAtCents from Square (see the CalculateOrder plan). It does not
+     come back as a number typed into HTML.
+     What she actually runs now is a quantity bundle ("BUY 1 FOR $15, OR 2
+     FOR $25"), which needs its own treatment, not a struck price. */
   .price-was {
     color: var(--walnut);
     opacity: 0.55;
@@ -962,14 +971,11 @@
       <div class="section-label">Shop</div>
     </div>
     <div class="shop-controls">
-      <div class="filter-row">
-        <button class="filter-btn active" data-filter="all">Everything</button>
-        <button class="filter-btn" data-filter="bags">Bags</button>
-        <button class="filter-btn" data-filter="scrunchies">Scrunchies</button>
-        <button class="filter-btn" data-filter="clothing">Clothing</button>
-        <button class="filter-btn" data-filter="gift">Gifts</button>
-        <button class="filter-btn" data-filter="sale">On Sale</button>
-      </div>
+      <!-- Built by shop-render.js from the categories Square actually
+           returns. A hardcoded row here went stale the moment Lauren
+           renamed a category, and showed a Clothing button with nothing
+           behind it. -->
+      <div class="filter-row"></div>
       <div class="sort-row">
         <label class="instock-toggle"><input type="checkbox" id="instock-only"> Available only</label>
         <select class="sort-select" id="sort-select" aria-label="Sort products">
@@ -981,73 +987,16 @@
       </div>
     </div>
     <div class="shop-count" id="shop-count"></div>
+    <!-- EMPTY ON PURPOSE.
+         Every product card is rendered by shop-render.js from the catalog
+         (Square via /api/products, or the committed products.json snapshot).
+         Do not paste product markup back in here: cart.js and detail.js key
+         off data-pid and look everything up in the catalog, so a hand-written
+         card is not a product — it is a card that cannot be bought and will
+         log an error if anyone tries.
+         The gift card below is the one exception; it is not a catalog item. -->
     <div class="product-grid shop-grid">
-      <div class="product-card" data-cat="bags" data-sale>
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/whimsy-quilt-tote.jpg" alt="Whimsy Quilt Tote Bag" loading="lazy">
-          <img class="product-img product-img-hover" src="images/whimsy-quilt-tote-2.jpg" alt="" loading="lazy">
-          <div class="product-tag product-tag--sale">On Sale</div>
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Whimsy Quilt Tote Bag</div>
-        <div class="product-price"><span class="price-was">$55</span><span class="price-now">$38.50</span></div>
-      </div>
-      <div class="product-card" data-cat="bags" data-sale>
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/coffee-bean-tote.jpg" alt="Coffee Bean Tote Bag" loading="lazy">
-          <div class="product-tag product-tag--sale">On Sale</div>
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Coffee Bean Tote Bag</div>
-        <div class="product-price"><span class="price-was">$45</span><span class="price-now">$31.50</span></div>
-      </div>
-      <div class="product-card" data-cat="bags">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/starberry-tote.jpg" alt="Chocolate Covered Starberry Quilted Tote" loading="lazy">
-          <img class="product-img product-img-hover" src="images/starberry-tote-2.jpg" alt="" loading="lazy">
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Chocolate Covered Starberry Quilted Tote</div>
-        <div class="product-price">$48</div>
-      </div>
-      <div class="product-card" data-cat="bags">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/origami-tote.jpg" alt="Large Origami Tote Bag" loading="lazy">
-          <img class="product-img product-img-hover" src="images/origami-tote-2.jpg" alt="" loading="lazy">
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Large Origami Tote Bag</div>
-        <div class="product-price">$65</div>
-      </div>
-      <div class="product-card" data-cat="bags">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/gingham-market-bag.jpg" alt="Green Gingham Market Bag with Pouch" loading="lazy">
-          <img class="product-img product-img-hover" src="images/gingham-market-bag-2.jpg" alt="" loading="lazy">
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Green Gingham Market Bag with Pouch</div>
-        <div class="product-price">$20</div>
-      </div>
-      <div class="product-card" data-cat="bags">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/lace-market-bag.jpg" alt="Upcycled Lace Tablecloth Market Bags" loading="lazy">
-          <img class="product-img product-img-hover" src="images/lace-market-bag-2.jpg" alt="" loading="lazy">
-          <div class="product-tag product-tag--sold">Sold</div>
-          <button class="add-to-bag" disabled>Sold Out</button>
-        </div>
-        <div class="product-name">Upcycled Lace Tablecloth Market Bags</div>
-        <div class="product-price">$48</div>
-      </div>
-      <div class="product-card" data-cat="scrunchies">
-        <div class="product-img-wrap">
-          <img class="product-img" src="images/scrunchies.jpg" alt="Handmade Scrunchies" loading="lazy">
-          <img class="product-img product-img-hover" src="images/scrunchies-2.jpg" alt="" loading="lazy">
-          <button class="add-to-bag">Add to Bag</button>
-        </div>
-        <div class="product-name">Handmade Scrunchies</div>
-        <div class="product-price">From $9</div>
-      </div>
-      <div class="product-card" data-cat="gift" data-gift>
+      <div class="product-card" data-cat="gift" data-gift data-cat-label="Gifts" data-gift-from="25">
         <div class="product-img-wrap">
           <img class="product-img" src="floral.jpg" alt="Old Friends digital gift card — an envelope resting on watercolor florals" loading="lazy">
           <img class="giftcard-env" src="envolope.png" alt="" loading="lazy">
@@ -1122,88 +1071,12 @@
 
   })();
 </script>
-<script>
-  /* stitched filters + sort
-     Exposed as window.initShopGrid so shop-render.js can call it again after
-     it swaps the hardcoded cards for live ones from /api/products. Listeners
-     bind once; the card list is re-snapshotted on every call. */
-  var __shopBound = false;
-  window.initShopGrid = function () {
-    var grid = document.querySelector('.shop-grid');
-    var cards = Array.prototype.slice.call(grid.querySelectorAll('.product-card'));
-    cards.forEach(function (c, i) { c.dataset.order = i; });
-
-    var btns = document.querySelectorAll('.filter-btn');
-    var sortSel = document.getElementById('sort-select');
-    var instock = document.getElementById('instock-only');
-    var countEl = document.getElementById('shop-count');
-    var state = { filter: 'all', sort: 'featured', instock: false };
-
-    /* On-sale cards hold two numbers; .price-now is the one that counts. */
-    function price(c) {
-      var el = c.querySelector('.price-now') || c.querySelector('.product-price');
-      return parseFloat((el.textContent || '').replace(/[^0-9.]/g, '')) || 0;
-    }
-    function name(c) { return (c.querySelector('.product-name').textContent || '').trim(); }
-    function isSold(c) {
-      var t = c.querySelector('.product-tag');
-      return !!(t && /sold/i.test(t.textContent));
-    }
-
-    function apply() {
-      var sorted = cards.slice();
-      if (state.sort === 'price-asc') sorted.sort(function (a, b) { return price(a) - price(b); });
-      else if (state.sort === 'price-desc') sorted.sort(function (a, b) { return price(b) - price(a); });
-      else if (state.sort === 'name') sorted.sort(function (a, b) { return name(a).localeCompare(name(b)); });
-      else sorted.sort(function (a, b) { return a.dataset.order - b.dataset.order; });
-      sorted.forEach(function (c) { grid.appendChild(c); });
-
-      var shown = 0;
-      cards.forEach(function (c) {
-        var matches = state.filter === 'all'
-          || (state.filter === 'sale' ? c.hasAttribute('data-sale') : c.dataset.cat === state.filter);
-        var show = matches && (!state.instock || !isSold(c));
-        c.classList.toggle('hide', !show);
-        if (show) {
-          shown++;
-          c.classList.remove('in-view');
-          void c.offsetWidth; /* restart the reveal */
-          c.classList.add('in-view');
-        }
-      });
-      countEl.textContent = shown + (shown === 1 ? ' piece' : ' pieces');
-    }
-
-    if (!__shopBound) {
-      btns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          btns.forEach(function (b) { b.classList.remove('active'); });
-          btn.classList.add('active');
-          state.filter = btn.dataset.filter;
-          window.__shopApply();
-        });
-      });
-      sortSel.addEventListener('change', function () { state.sort = sortSel.value; window.__shopApply(); });
-      instock.addEventListener('change', function () { state.instock = instock.checked; window.__shopApply(); });
-      __shopBound = true;
-    }
-    window.__shopApply = apply;
-
-    /* Hide any filter with nothing behind it (Clothing, until Lauren adds some).
-       The button reappears on its own once a card carries that data-cat. */
-    btns.forEach(function (btn) {
-      var f = btn.dataset.filter;
-      if (f === 'all') return;
-      var has = cards.some(function (c) {
-        return f === 'sale' ? c.hasAttribute('data-sale') : c.dataset.cat === f;
-      });
-      btn.style.display = has ? '' : 'none';
-    });
-
-    apply();
-  };
-  window.initShopGrid();
-</script>
+<!-- The filter / sort / count controller moved into shop-render.js.
+     It used to live here and read prices back out of the rendered cards
+     with parseFloat, and decide what was sold by testing tag text for the
+     word "sold". It reads the catalog now, so the number a card sorts by
+     and the number a shopper is charged are the same number. -->
+<script src="catalog.js"></script>
 <script src="nav.js"></script>
 <script src="cart.js"></script>
 <script src="detail.js"></script>

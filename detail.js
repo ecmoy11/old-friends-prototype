@@ -5,72 +5,28 @@
    Fields: story, materials, dimensions, care, note, images[] */
 (function () {
 
-  /* ═══════════ EDIT PRODUCT INFO HERE ═══════════ */
-  /* ── OFFLINE CACHE ONLY — NOT A SOURCE OF TRUTH ──
-     Square is authoritative for every word a shopper reads. This map is a
-     mirror of Lauren's own Square descriptions, kept so the static
-     GitHub Pages preview is not blank; the moment /api/products answers,
-     everything here is replaced (see mergeCopy in shop-render.js).
+  /* ── NO PRODUCT DATA LIVES IN THIS FILE ──
+     There used to be a map of names to stories, images and scrunchie
+     colourways here, described as an "offline cache". It was the reason
+     the shop looked like it worked when it did not: the chips rendered
+     from it carried no prices, so picking one changed nothing, and every
+     word of copy in it was a second place a product could be described.
 
-     RULES, because this has gone wrong before:
-       - Verbatim from Square or absent. Never paraphrased, never written
-         to fill a gap, never "improved".
-       - No materials / dimensions / care / notes. Those are Square custom
-         attributes now and render from the API only. If Lauren has not
-         filled one in, the row simply does not appear.
-       - A blank field is the correct output for a blank field. */
-  var PRODUCTS = {
-    'Whimsy Quilt Tote Bag': {
-      story: 'Sustainably made from a vintage quilt, this tote gives new life to beautiful details of butterflies and florals. With a magnetic clasp and front pocket for easy storage, it\u2019s the perfect mix of form and function.',
-      images: ['images/whimsy-quilt-tote.jpg', 'images/whimsy-quilt-tote-2.jpg']
-    },
-    'Coffee Bean Tote Bag': {
-      story: 'Crafted from repurposed coffee bean bags, this tote blends sustainability with style. Fully lined for durability, it features a magnetic clasp for easy closure and a handy front pocket for quick grabs. A perfect everyday bag with a story worth carrying.',
-      images: ['images/coffee-bean-tote.jpg']
-    },
-    'Chocolate Covered Starberry Quilted Tote': {
-      story: '**Imperfection on the front top left of the body of the tote, where the strap meets the bag (shown in third photo)**',
-      images: ['images/starberry-tote.jpg', 'images/starberry-tote-2.jpg', 'images/starberry-tote-3.jpg', 'images/starberry-tote-4.jpg']
-    },
-    'Large Origami Tote Bag': {
-      images: ['images/origami-tote.jpg', 'images/origami-tote-2.jpg']
-    },
-    'Green Gingham Market Bag with Pouch': {
-      images: ['images/gingham-market-bag.jpg', 'images/gingham-market-bag-2.jpg', 'images/gingham-market-bag-3.jpg']
-    },
-    'Upcycled Lace Tablecloth Market Bags': {
-      story: 'This handmade lace market bag is inspired by the feelings of a sunny day at the farmers market picking up fresh fruit or a reading day on the beach when you have nothing else to do but romanticize your days. Made with vintage lace linens these bags vary in color and design making for a unique one-of-a-kind piece that will be treasured for years to come!**Due to the nature of vintage linens each bag will vary in texture, design, and in color.**',
-      images: ['images/lace-market-bag.jpg', 'images/lace-market-bag-2.jpg']
-    },
-    'Handmade Scrunchies': {
-      /* Option names and stock mirrored from her Square listing on
-         2026-08-31. Prices are deliberately ABSENT: the listing spans
-         $9-$14 and the per-variant split could not be read reliably, so
-         the chips show names only and the header keeps the "From $9"
-         range until /api/products supplies the real numbers. Guessing
-         which colourway costs what is exactly the kind of invention that
-         does not belong here. */
-      variations: [
-        { id: 'cache-red-gingham',      name: 'Red Gingham',            priceCents: null, available: true  },
-        { id: 'cache-red-gingham-lace', name: 'Red Gingham with Lace',  priceCents: null, available: true  },
-        { id: 'cache-blue-plaid',       name: 'Blue Plaid',             priceCents: null, available: false },
-        { id: 'cache-blue-plaid-lace',  name: 'Blue Plaid with Lace',   priceCents: null, available: false },
-        { id: 'cache-cloud-print',      name: 'Cloud Print',            priceCents: null, available: true  }
-      ],
-      story: 'Handmade from a mix of old and new fabrics, this oversized lace scrunchie brings a timeless cottagecore touch to your winter wardrobe. Designed to add texture and charm to cozy layers, it\u2019s the perfect accessory to elevate your everyday messy bun or low pony when the jackets start piling on. We like to plop this over an already secured bun to add some whimsy to our outfit!',
-      images: ['images/scrunchies.jpg', 'images/scrunchies-2.jpg', 'images/scrunchies-3.jpg',
-               'images/scrunchies-4.jpg', 'images/scrunchies-5.jpg', 'images/scrunchies-6.jpg',
-               'images/scrunchies-7.jpg', 'images/scrunchies-8.jpg', 'images/scrunchies-9.jpg']
-    },
-    'Digital Gift Card': {
-      story: 'For when you know they\u2019d love something handmade, but the choosing should be theirs. Pick an amount, write a little note, and we\u2019ll email it to them \u2014 no shipping, no packaging, no waiting.'
-    }
-  };
+     Everything now comes from window.OFCatalog, which gets it from Square.
+     The static preview is served by a dated products.json snapshot built
+     by ./dev/snapshot.sh from that same catalog, so the preview and the
+     live site cannot disagree, and neither can be edited by hand. */
 
   var css = [
     '.pd-backdrop { position: fixed; inset: 0; background: rgba(106,70,48,0.5); opacity: 0; pointer-events: none; transition: opacity .35s ease; z-index: 8000; }',
     '.pd-backdrop.open { opacity: 1; pointer-events: auto; }',
-    '.pd-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, 48%); width: min(920px, calc(100vw - 32px)); max-height: min(640px, calc(100vh - 48px)); background: var(--cream); z-index: 8001; display: none; grid-template-columns: 1fr 1fr; opacity: 0; transition: opacity .4s ease, transform .45s cubic-bezier(.22,1,.36,1); box-shadow: 0 20px 60px rgba(106,70,48,0.35); overflow: hidden; }',
+    /* HEIGHT IS FIXED, NOT max-height. With max-height the modal sized
+       itself to its content, so a product with two sentences of story
+       opened a short box and one with a full description opened a tall
+       one: the frame changed shape product to product and the gallery
+       shrank with it. A set height gives every product the same window;
+       the copy column scrolls when it overflows. */
+    '.pd-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, 48%); width: min(1080px, calc(100vw - 48px)); height: min(780px, calc(100vh - 64px)); background: var(--cream); z-index: 8001; display: none; grid-template-columns: 1fr 1fr; opacity: 0; transition: opacity .4s ease, transform .45s cubic-bezier(.22,1,.36,1); box-shadow: 0 20px 60px rgba(106,70,48,0.35); overflow: hidden; }',
     '.pd-modal.open { display: grid; opacity: 1; transform: translate(-50%, -50%); }',
     '.pd-close { position: absolute; top: 12px; right: 14px; z-index: 2; background: var(--cream); border: none; font-size: 24px; line-height: 1; color: var(--brown); cursor: pointer; padding: 6px 10px; transition: color .3s; }',
     '.pd-close:hover { color: var(--terra); }',
@@ -106,7 +62,7 @@
     '.pd-thumbs button { width: 56px; height: 56px; flex: 0 0 56px; padding: 0; border: 2px solid transparent; cursor: pointer; background: var(--stone); overflow: hidden; }',
     '.pd-thumbs button.active { border-color: var(--terra); }',
     '.pd-thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }',
-    '.pd-info { padding: 40px 36px 32px; overflow-y: auto; }',
+    '.pd-info { padding: 46px 42px 36px; overflow-y: auto; min-height: 0; }',
     '.pd-tag { display: inline-block; background: var(--terra); color: var(--cream-text); font-size: 9px; letter-spacing: .15em; text-transform: uppercase; padding: 4px 10px; margin-bottom: 14px; }',
     '.pd-name { font-family: "Cormorant Garamond", serif; font-size: 30px; font-weight: 500; font-style: italic; color: var(--brown); line-height: 1.15; margin-bottom: 6px; }',
     '.pd-price { font-size: 15px; color: var(--walnut); margin-bottom: 18px; }',
@@ -154,7 +110,7 @@
     '.pd-gift-hint { font-size: 11px; color: var(--walnut); opacity: .75; margin-top: 2px; }',
     '.pd-toast { position: fixed; bottom: 26px; left: 50%; transform: translate(-50%, 10px); background: var(--brown); color: var(--cream-text); font-family: "DM Sans", sans-serif; font-size: 12px; letter-spacing: .08em; padding: 13px 22px; z-index: 9700; opacity: 0; transition: opacity .35s ease, transform .35s ease; box-shadow: 0 10px 30px rgba(106,70,48,0.35); pointer-events: none; max-width: calc(100vw - 48px); text-align: center; }',
     '.pd-toast.show { opacity: 1; transform: translate(-50%, 0); }',
-    '@media (max-width: 760px) { .pd-modal { grid-template-columns: 1fr; max-height: calc(100vh - 24px); overflow-y: auto; } .pd-gallery { min-height: 300px; max-height: 42vh; } .pd-info { padding: 28px 24px 24px; } }',
+    '@media (max-width: 760px) { .pd-modal { grid-template-columns: 1fr; height: auto; max-height: calc(100vh - 24px); overflow-y: auto; } .pd-gallery { min-height: 300px; max-height: 42vh; } .pd-info { padding: 28px 24px 24px; } }',
     '@media (prefers-reduced-motion: reduce) { .pd-modal, .pd-backdrop, .pd-main img { transition: none; } }'
   ].join('\n');
 
@@ -378,25 +334,38 @@
 
   function selectVariant(v) {
     if (!v || !v.available) return;
+    var C = window.OFCatalog;
     current.variation = v;
-    current.price = (v.priceCents != null ? v.priceCents / 100 : current.price);
     current.variationId = v.id;
-    /* With no per-variant price (offline preview only) keep the range on
-       screen rather than asserting a number we don't have. */
-    var showPrice = v.priceCents != null;
+    current.priceCents = v.priceCents;
     els.optList.querySelectorAll('.pd-opt').forEach(function (b) {
       b.classList.toggle('active', b.dataset.vid === v.id);
     });
-    if (showPrice) els.price.textContent = money(current.price);
+    /* The displayed price IS the chosen variation's price, straight from
+       Square. It used to update only when a price happened to be present,
+       which meant the offline chips left "From $9" on screen no matter
+       what you picked. If Square has no price for an option, that option
+       cannot be sold, and we say so rather than showing a stale number. */
+    if (v.priceCents == null) {
+      els.price.textContent = '';
+      els.add.disabled = true;
+      els.add.textContent = 'Unavailable';
+      els.optNote.textContent = 'This option has no price in our system yet.';
+      return;
+    }
+    els.price.textContent = C.money(v.priceCents);
     els.add.disabled = false;
     els.add.textContent = 'Add to Bag';
     els.optNote.textContent = '';
   }
 
-  function renderVariants(info) {
-    var vs = (info.variations || []).filter(function (v) { return v && v.name; });
-    /* One unnamed/default variation is not a choice — don't ask for one. */
-    if (vs.length < 2) {
+  function renderVariants(p) {
+    var C = window.OFCatalog;
+    var vs = C.options(p);
+    /* One unnamed/default variation is not a choice — don't ask for one.
+       requiresChoice is computed once in _catalog.js so the grid, the cart
+       and this picker can never disagree about whether a choice is due. */
+    if (!p.requiresChoice) {
       els.opts.style.display = 'none';
       els.optList.innerHTML = '';
       return false;
@@ -407,7 +376,9 @@
       var v = vs[i];
       b.dataset.vid = v.id;
       b.disabled = !v.available;
-      b.textContent = v.name + (v.priceCents != null ? '  ' + money(v.priceCents / 100) : '');
+      /* Each option carries its own price, because they differ and a
+         shopper should see which one they are choosing. */
+      b.textContent = v.name + (v.priceCents != null ? '  ' + C.money(v.priceCents) : '');
       if (!v.available) b.title = 'Sold out';
     });
     var anyAvailable = vs.some(function (v) { return v.available; });
@@ -418,31 +389,62 @@
     return true;
   }
 
-  function show(card) {
-    var name = (card.querySelector('.product-name') || {}).textContent || '';
-    name = name.trim();
-    var priceBlock = card.querySelector('.product-price');
-    var priceHTML = priceBlock ? priceBlock.innerHTML.trim() : '';
-    var priceEl = card.querySelector('.price-now') || priceBlock;
-    var priceText = ((priceEl || {}).textContent || '').trim();
-    var tagText = ((card.querySelector('.product-tag') || {}).textContent || '').trim();
-    var sold = /sold/i.test(tagText);
-    var isGift = card.hasAttribute('data-gift');
-    var info = PRODUCTS[name] || {};
-    modal.classList.toggle('pd-is-gift', isGift);
+  /* ── GIFT CARD ──
+     The one thing on the site that is not a Square catalog item: it needs
+     the Gift Cards API and its own email delivery. Its card is hand-built
+     in shop.html and it is opened by name, not by id. */
+  function showGift() {
+    modal.classList.add('pd-is-gift');
+    current = { name: 'Digital Gift Card', gift: true, sold: false };
+    els.name.textContent = 'Digital Gift Card';
+    els.tag.textContent = 'Gift';
+    els.tag.style.display = 'inline-block';
+    els.story.textContent = '';
+    els.story.style.display = 'none';
+    els.rows.innerHTML = '';
+    els.dl.style.display = 'none';
+    els.note.textContent = '';
+    els.note.style.display = 'none';
+    els.main.classList.remove('has-img', 'zoomed');
+    els.main.innerHTML = '<img src="' + GIFT_IMG + '" alt="">' +
+                         '<img class="pd-env" src="envolope.png" alt="">';
+    els.thumbs.innerHTML = '';
+    els.thumbs.style.display = 'none';
+    els.opts.style.display = 'none';
+    gallery = [];
+    galleryIndex = 0;
+    resetGiftForm();
+    openModal();
+  }
 
-    els.name.textContent = name;
-    els.tag.textContent = tagText;
-    els.tag.style.display = tagText ? 'inline-block' : 'none';
+  /* ── A PRODUCT, FROM THE CATALOG ──
+     Takes a product object, never a card. Nothing on screen is read back:
+     the name, price, story, detail rows, options and photos are all the
+     ones Square gave us. The card in the grid and this modal are two
+     renderings of one record, so they cannot describe it differently. */
+  function showProduct(p) {
+    var C = window.OFCatalog;
+    if (!p) return false;
+    modal.classList.remove('pd-is-gift');
+
+    els.name.textContent = p.name;
+
+    var blocked = C.blockedReason(p);
+    /* The tag states availability from the stock data, not from whatever
+       word happened to be printed on the card. */
+    els.tag.textContent = p.soldOut ? 'Sold' : (p.untracked ? 'Unavailable' : '');
+    els.tag.style.display = els.tag.textContent ? 'inline-block' : 'none';
+
     /* No story, no paragraph. The old placeholder promised something about
        Lauren's process that nobody had actually committed to. */
-    els.story.textContent = info.story || '';
-    els.story.style.display = info.story ? '' : 'none';
-    /* Details come from Square custom attributes and nowhere else. No
-       row for a field Lauren has not filled in, and no default text — an
-       empty details block hides itself rather than printing dashes. */
-    var rows = info.details || [];
-    els.rows.innerHTML = rows.map(function (r) {
+    els.story.textContent = p.description || '';
+    els.story.style.display = p.description ? '' : 'none';
+
+    /* Details come from Square custom attributes and nowhere else. No row
+       for a field Lauren has not filled in, and no default text — an empty
+       details block hides itself rather than printing dashes. */
+    var rows = p.details || [];
+    els.rows.innerHTML = rows.map(function () {
       return '<div class="pd-row"><dt></dt><dd></dd></div>';
     }).join('');
     els.rows.querySelectorAll('.pd-row').forEach(function (el, i) {
@@ -451,49 +453,16 @@
     });
     els.dl.style.display = rows.length ? '' : 'none';
 
-    /* The ✂ line is Lauren's note if she wrote one, and otherwise nothing.
-       It used to fall back to a hardcoded house line, which put words in
-       her mouth on every product that had no note. */
-    els.note.textContent = info.note ? '✂ ' + info.note : '';
-    els.note.style.display = info.note ? '' : 'none';
+    /* The scissors line was a hardcoded house note printed on every
+       product that had none of its own. There is no such fallback now. */
+    els.note.textContent = '';
+    els.note.style.display = 'none';
 
-    if (isGift) {
-      current = { name: name, price: 0, img: GIFT_IMG, sold: false, gift: true };
-      els.main.classList.remove('has-img', 'zoomed');
-      els.main.innerHTML =
-        '<img src="' + GIFT_IMG + '" alt="">' +
-        '<img class="pd-env" src="envolope.png" alt="">';
-      els.thumbs.innerHTML = '';
-      els.thumbs.style.display = 'none';
-      els.opts.style.display = 'none';
-      gallery = [];
-      galleryIndex = 0;
-      resetGiftForm();
-      openModal();
-      return;
-    }
-
-    /* Gallery = the card's own images first (so the thumb you clicked leads),
-       then any extra shots from the map. Deduped, order preserved. Cards carry
-       at most two images; detail shots (interior, flaws, labels) live in the
-       map and only surface here. */
-    var images = [];
-    card.querySelectorAll('.product-img-wrap img').forEach(function (im) {
-      var src = im.getAttribute('src');
-      if (src && images.indexOf(src) === -1) images.push(src);
-    });
-    if (info.images) info.images.forEach(function (src) {
-      if (src && images.indexOf(src) === -1) images.push(src);
-    });
-
-    current = { name: name, price: parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0, img: images[0] || null, sold: sold, variation: null, variationId: null, variations: null };
-
-    /* keep the struck-through original visible in the detail view */
-    els.price.innerHTML = priceHTML;
-
+    var images = (p.images || []).slice();
     els.thumbs.innerHTML = images.length > 1
       ? images.map(function (src) {
-          return '<button data-src="' + src + '"><img src="' + src + '" alt=""></button>';
+          return '<button data-src="' + src.replace(/"/g, '&quot;') + '"><img src="' +
+                 src.replace(/"/g, '&quot;') + '" alt=""></button>';
         }).join('')
       : '';
     els.thumbs.style.display = images.length > 1 ? 'flex' : 'none';
@@ -501,16 +470,33 @@
     galleryIndex = 0;
     setMainImage(images[0] || null);
 
-    /* renderVariants owns the Add button when there is a real choice to
-       make, so don't let the card-level sold flag stomp on it. */
-    current.variations = null;
-    current.variationId = null;
-    if (!renderVariants(info)) {
-      els.add.disabled = sold;
-      els.add.textContent = sold ? 'Sold Out' : 'Add to Bag';
+    current = {
+      id: p.id,
+      name: p.name,
+      img: images[0] || null,
+      sold: !!blocked,
+      priceCents: null,
+      variation: null,
+      variationId: null,
+      variations: null,
+      gift: false
+    };
+
+    /* Price before a choice is made: the range, stated as a range. It is
+       not flattened to its cheapest end, because that number would be
+       wrong for four of the five scrunchies. */
+    els.price.textContent = C.displayPrice(p);
+
+    if (!renderVariants(p)) {
+      var only = (p.variations || [])[0];
+      current.variationId = only ? only.id : null;
+      current.priceCents = C.priceCentsFor(p, current.variationId);
+      els.add.disabled = !!blocked || current.priceCents == null;
+      els.add.textContent = blocked || 'Add to Bag';
     }
 
     openModal();
+    return true;
   }
 
   els.optList.addEventListener('click', function (e) {
@@ -539,56 +525,77 @@
       }
       els.giftEmail.classList.remove('pd-invalid');
       if (window.OFCart) {
-        window.OFCart.add('Digital Gift Card — $' + giftAmount, giftAmount, GIFT_IMG);
+        window.OFCart.add('Digital Gift Card \u2014 $' + giftAmount, giftAmount, GIFT_IMG, null, null);
         closeModal();
         window.OFCart.open();
       }
-      toast('✂ We’ll email your gift to ' + email + (els.giftNote.value.trim() ? ', note and all.' : '.'));
+      toast('\u2702 We\u2019ll email your gift to ' + email + (els.giftNote.value.trim() ? ', note and all.' : '.'));
       return;
     }
 
-    /* A product with options cannot reach the cart without one chosen —
-       the button stays disabled, but guard here too so no other code path
-       can slip an unspecified variant through. */
+    /* A product with options cannot reach the bag without one chosen. The
+       button is already disabled; this is the second lock, because the
+       grid button used to bypass the first one entirely. */
     if (current.variations && current.variations.length && !current.variationId) {
       els.optNote.textContent = 'Choose an option first.';
       return;
     }
 
+    /* The charged price comes from the catalog, keyed by the variation the
+       shopper actually picked. It is never parsed off the screen. */
+    if (current.priceCents == null) {
+      els.optNote.textContent = 'We can\u2019t price this right now.';
+      return;
+    }
+
     if (window.OFCart) {
       var label = current.variation
-        ? current.name + ' — ' + current.variation.name
+        ? current.name + ' \u2014 ' + current.variation.name
         : current.name;
-      window.OFCart.add(label, current.price, current.img, current.variationId || null);
+      window.OFCart.add(label, current.priceCents / 100, current.img, current.variationId || null, current.id || null);
       closeModal();
       window.OFCart.open();
     }
   });
 
-  /* open on card click — but not when the click was the Add to Bag button */
+  /* ── opening the modal ──
+     A click carries a product id, not a name and not a price. The gift
+     card is the one exception and identifies itself with data-gift. */
   document.addEventListener('click', function (e) {
     if (e.target.closest('.add-to-bag')) return;
     var card = e.target.closest('.product-card');
-    if (card) show(card);
+    if (!card) return;
+    if (card.hasAttribute('data-gift')) { showGift(); return; }
+    showById(card.dataset.pid);
   });
 
-  /* open a product by name if its card exists on this page */
+  function showById(id) {
+    var C = window.OFCatalog;
+    if (!id || !C) return false;
+    return showProduct(C.get(id));
+  }
+
+  /* By name, for search hits and ?open= deep links. Resolves against the
+     catalog, not against whatever cards this page happens to be showing,
+     so a homepage search can open a product the homepage does not list. */
   function showByName(name) {
-    var cards = document.querySelectorAll('.product-card');
-    for (var i = 0; i < cards.length; i++) {
-      var n = ((cards[i].querySelector('.product-name') || {}).textContent || '').trim();
-      if (n === name) { show(cards[i]); return true; }
-    }
-    return false;
+    if (!name) return false;
+    if (name === 'Digital Gift Card') { showGift(); return true; }
+    var C = window.OFCatalog;
+    if (!C) return false;
+    var hit = C.all().filter(function (p) { return p.name === name; })[0];
+    return hit ? showProduct(hit) : false;
   }
 
   /* expose for search + deep links */
-  window.OFDetail = { showByName: showByName };
-  window.OFProducts = PRODUCTS;
+  window.OFDetail = { showById: showById, showByName: showByName };
 
-  /* deep link: shop.html?open=Product Name */
-  try {
-    var openParam = new URLSearchParams(location.search).get('open');
-    if (openParam) showByName(openParam);
-  } catch (e) { /* older browsers: no deep link, no harm */ }
+  /* deep link: shop.html?open=Product Name — after the catalog has loaded,
+     since there is nothing to open before then. */
+  if (window.OFCatalog) window.OFCatalog.ready.then(function () {
+    try {
+      var openParam = new URLSearchParams(location.search).get('open');
+      if (openParam) showByName(openParam);
+    } catch (e) { /* older browsers: no deep link, no harm */ }
+  });
 })();

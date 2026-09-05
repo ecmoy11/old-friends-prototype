@@ -197,37 +197,74 @@
      ID rather than by the number we display, so the two can never drift.
      Two colourways of one product are separate lines, hence the id is part
      of the dedupe key. */
-  function addItem(name, price, img, variationId) {
+  function addItem(name, price, img, variationId, productId) {
     var cart = readCart();
     var existing = cart.filter(function (i) {
       return i.name === name && (i.variationId || null) === (variationId || null);
     })[0];
     if (existing) existing.qty += 1;
-    else cart.push({ name: name, price: price, qty: 1, img: img || null, variationId: variationId || null });
+    else cart.push({
+      name: name, price: price, qty: 1, img: img || null,
+      variationId: variationId || null,
+      /* Kept so checkout can rebuild the Square order from ids rather than
+         from the numbers we happened to render. */
+      productId: productId || null
+    });
     writeCart(cart);
     render();
   }
 
+  /* ── the Add to Bag button on a card ──
+     THIS HANDLER READS NOTHING OUT OF THE CARD. It takes the product id
+     and asks the catalog. The previous version scraped the name out of
+     .product-name and ran parseFloat over the rendered price text, which
+     meant a hand-written card was a real product as far as the bag was
+     concerned — and a product with options went straight in with no option
+     chosen and the bottom of its price range charged. */
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('.add-to-bag');
     if (!btn || btn.disabled) return;
     var card = btn.closest('.product-card');
     if (!card) return;
-    var name = (card.querySelector('.product-name') || {}).textContent || 'Item';
-    /* gift cards need an amount first — hand off to the detail view */
+
+    /* Gift cards need an amount first — hand off to the detail view. */
     if (card.hasAttribute('data-gift')) {
-      if (window.OFDetail) window.OFDetail.showByName(name.trim());
+      if (window.OFDetail) window.OFDetail.showByName('Digital Gift Card');
       return;
     }
-    /* Sale cards carry both prices; charge the .price-now one. */
-    var priceEl = card.querySelector('.price-now') || card.querySelector('.product-price');
-    var priceText = (priceEl || {}).textContent || '$0';
-    var price = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
-    var imgEl = card.querySelector('.product-img');
-    addItem(name.trim(), price, imgEl ? imgEl.getAttribute('src') : null);
+
+    var C = window.OFCatalog;
+    var p = C && C.get(card.dataset.pid);
+    if (!p) {
+      /* No catalog entry means we do not know what this is or what it
+         costs, so it does not go in a bag. A card with no product behind
+         it is a bug, and it is going to be loud about it. */
+      console.error('[Old Friends] Add to Bag on a card with no catalog product:', card.dataset.pid);
+      return;
+    }
+
+    var blocked = C.blockedReason(p);
+    if (blocked) return;
+
+    /* A product with options cannot be added from the grid at all. Open
+       the picker and let the shopper choose; the modal's button is the
+       only path into the bag for these. */
+    if (p.requiresChoice) {
+      if (window.OFDetail) window.OFDetail.showById(p.id);
+      return;
+    }
+
+    var only = (p.variations || [])[0];
+    var cents = C.priceCentsFor(p, only ? only.id : null);
+    if (cents == null) {
+      console.error('[Old Friends] No price for ' + p.name + ' — not adding to the bag.');
+      return;
+    }
+
+    addItem(p.name, cents / 100, (p.images || [])[0] || null, only ? only.id : null, p.id);
 
     var old = btn.textContent;
-    btn.textContent = 'Added ✓';
+    btn.textContent = 'Added \u2713';
     setTimeout(function () { btn.textContent = old; }, 900);
     openDrawer();
   });
