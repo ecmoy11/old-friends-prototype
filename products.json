@@ -1,6 +1,6 @@
 {
   "source": "snapshot",
-  "generatedAt": "2026-09-05T00:08:25.933Z",
+  "generatedAt": "2026-09-05T00:32:40.053Z",
   "squareEnv": "production",
   "products": [
     {
@@ -8,7 +8,7 @@
       "name": "Handmade Scrunchies",
       "description": "Handmade from a mix of old and new fabrics, this oversized lace scrunchie brings a timeless cottagecore touch to your winter wardrobe. Designed to add texture and charm to cozy layers, it’s the perfect accessory to elevate your everyday messy bun or low pony when the jackets start piling on.\n\n\nWe like to plop this over an already secured bun to add some whimsy to our outfit!\n\n\nElastic Size: 5\"\nDiameter of scrunchie: ~5\" from side to side\n\n\nBUY 1 FOR $15, OR 2 FOR $25\n*discount applied in cart at checkout*",
       "details": [],
-      "featured": false,
+      "featured": true,
       "images": [
         "https://items-images-production.s3.us-west-2.amazonaws.com/files/08886e443bb05fe91c13b39d0ed3daffdc5eb270/original.jpeg",
         "https://items-images-production.s3.us-west-2.amazonaws.com/files/96ae2442795c05668400027fd9443c1e1b81439b/original.jpeg",
@@ -75,7 +75,7 @@
       "name": "Coffee Bean Tote Bag",
       "description": "Crafted from repurposed coffee bean bags, this tote blends sustainability with style. Fully lined for durability, it features a magnetic clasp for easy closure and a handy front pocket for quick grabs. A perfect everyday bag with a story worth carrying.",
       "details": [],
-      "featured": false,
+      "featured": true,
       "images": [
         "https://items-images-production.s3.us-west-2.amazonaws.com/files/5f09744dc92e54b8af7660caaa7dd19e2ad2526f/original.jpeg"
       ],
@@ -102,7 +102,7 @@
       "name": "Whimsy Quilt Tote Bag",
       "description": "Sustainably made from a vintage quilt, this tote gives new life to beautiful details of butterflies and florals. With a magnetic clasp and front pocket for easy storage, it’s the perfect mix of form and function.",
       "details": [],
-      "featured": false,
+      "featured": true,
       "images": [
         "https://items-images-production.s3.us-west-2.amazonaws.com/files/deb8a395acb480c92ce00071eef560e452b07272/original.jpeg",
         "https://items-images-production.s3.us-west-2.amazonaws.com/files/eba2927b5dd96312cff54de04edbf45a29082863/original.jpeg"
@@ -195,7 +195,7 @@
       "name": "Chocolate Covered Starberry Quilted Tote",
       "description": "**Imperfection on the front top left of the body of the tote, where the strap meets the bag (shown in third photo)**",
       "details": [],
-      "featured": false,
+      "featured": true,
       "images": [
         "https://items-images-production.s3.us-west-2.amazonaws.com/files/261c476ef51ad629b8ac15434042715e6af99843/original.jpeg",
         "https://items-images-production.s3.us-west-2.amazonaws.com/files/111cba7f815e6eda0231fd7e0ae16a653e3e5415/original.jpeg",
@@ -281,7 +281,7 @@
   "meta": {
     "totalInCatalog": 65,
     "shown": 8,
-    "featured": 0,
+    "featured": 4,
     "filter": "ecom_visibility=VISIBLE"
   }
 }

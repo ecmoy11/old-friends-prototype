@@ -94,10 +94,10 @@ async function fetchAttributeDefs(env) {
    The Featured toggle is control data, not something a shopper reads, so
    it is pulled out here rather than rendering as a "Featured: Yes" row on
    the product page. */
-function readAttributes(item, defs) {
+function readAttributes(catalogObject, defs) {
   const rows = [];
   let featured = false;
-  const values = item.custom_attribute_values || {};
+  const values = catalogObject.custom_attribute_values || {};
   for (const key of Object.keys(values)) {
     const v = values[key] || {};
     const def = defs[v.custom_attribute_definition_id] || {};
@@ -191,7 +191,12 @@ export async function fetchCatalog(env) {
 
   const products = publishable.map((o) => {
     const it = o.item_data || {};
-    const attrs = readAttributes(it, attrDefs);
+    /* `o`, NOT `it`. custom_attribute_values hangs off the CatalogObject,
+       not off item_data. Passing item_data made every attribute lookup
+       read undefined, so `featured` was always false and the detail
+       rows were always empty -- with no error anywhere, because an
+       absent attribute is a legitimate state. */
+    const attrs = readAttributes(o, attrDefs);
 
     const variations = (it.variations || []).map((v) => {
       const vd = v.item_variation_data || {};
